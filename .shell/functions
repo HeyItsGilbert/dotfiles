@@ -42,7 +42,7 @@ function cl() {
 function battery_charge {
   unamestr=$(uname)
   if [[ "$unamestr" -eq 'Darwin' ]]; then
-    echo `python ~/bin/battery.py` 2>/dev/null
+    echo `python ~/.shell/battery.py` 2>/dev/null
   fi
 }
 
