@@ -1,0 +1,27 @@
+# SSH Shortcuts
+alias devrs="moshw ${DEVS}"
+alias dev="fb ${DEVS} ${AD_USER_NAME}"
+alias bp1="moshw $AD_ADMIN@prn-borgprobe01.thefacebook.com"
+alias ghost="ssh -i ~/AWSGhost.pem ec2-user@ec2-54-213-102-218.us-west-2.compute.amazonaws.com"
+
+# Git
+alias gnew='git checkout origin/master -b '
+
+# Filesystem
+alias ..='cd ..'            # Go up one directory
+alias ...='cd ../..'        # Go up two directories
+alias ....='cd ../../..'    # And for good measure
+alias la='ls -lah'           # Long view, show hidden
+#alias la='ls -AF'           # Compact view, show hidden
+alias ll='ls -lFh'          # Long view, no hidden
+#alias ls='ls -h $LS_COLOR'
+#alias la='ls -lah $LS_COLOR'
+#alias ll='ls -lh $LS_COLOR'
+
+# Etc
+alias ssh='ssh -A'
+alias top='top $TOP_OPTIONS'
+alias rcopy='rsync -az --stats --progress --delete'
+alias ..='cl ..'
+alias trim_whitespace="sed -i 's/[ \t]*$//' "
+alias http_headers='curl -svo /dev/null'
