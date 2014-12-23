@@ -1,0 +1,71 @@
+function fb() {
+  HOST=${1}
+  [ -n "$2" ] && sshUserName=${2}
+  echo -e "\nssh ${sshUserName}@${HOST}"
+  ! ping_test $HOST && { echo 'Could not connect. :-( \n'; return 1}
+  ssh ${sshUserName}@${HOST} #${USER} if your ad name and unix match
+}
+
+function ping_test() {
+  HOST=${1}
+  ping -c 1 -t 1 ${HOST} >/dev/null 2>&1
+  if [ "${?}" != "0" ]; then
+    return 1
+  fi
+  return 0
+}
+
+function git_dif() {
+  git diff HEAD^^^
+}
+
+function git_dif_name_only() {
+  git diff HEAD^^^ --name-only
+}
+
+# Searches the It-Infra codebase, by default is case sensitive,
+# otherwise pass ignore after searchKey for non-case specific
+function grepcode () {
+	searchKey="$1"
+	[[ "$2" == "ignore" ]] && grep -r $searchKey ~/it-infra/ ||
+		grep -r $searchKey ~/it-infra/
+}
+
+function grepc () {
+  grepcode "$@"
+}
+
+function cl() {
+  cd "$@" && la;
+}
+
+function battery_charge {
+    echo `python ~/bin/battery.py` 2>/dev/null
+}
+
+function moshw() {
+  # Default dev server, otherwise use first arg
+  if [ -n "$1" ]; then
+    DEVS=$1
+  fi
+
+  if [ -z "$DEVS" ]; then
+    echo "usage: $0 <dev server>; or specify DEVS in the script"
+    exit 1
+  fi
+
+  # Find out what ports are in use already...
+  PORTS_IN_USE=`ssh $DEVS netstat --listening --udp --numeric | \
+    perl -ne '/:(\d+)/ && ($port = int($1)) && \
+    ($port >= 60001 && $port <= 60020) && print "$1 "'`
+
+  for port in $(seq 60001 60020); do
+    if [[ "$PORTS_IN_USE" != *$port* ]]; then
+      echo "Using port $port ..."
+      exec mosh -p $port $DEVS 
+    fi
+  done
+
+  echo "No ports available."
+  exit 1
+}
