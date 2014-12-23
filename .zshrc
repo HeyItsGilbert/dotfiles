@@ -54,7 +54,7 @@ export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/:~/bin
 #Functions
 export CLICOLOR=1
 export LSCOLORS=Hxgxfxfxcxdxdxhbadbxbx
-# export PS1="[\u@\h \w]\\$ "
+#export PS1="[\u@\h \w]\\$ "
 
 # Automatic options added
 setopt appendhistory autocd nomatch autopushd pushdignoredups promptsubst
@@ -77,11 +77,5 @@ promptinit
 if [ -f ~/.bash_local ]; then
     . ~/.bash_local
 fi
-
-# Run on new shell
-echo ""
-echo $fg_bold[red]
-~/news.sh
-echo ""
 
 #export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
