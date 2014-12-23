@@ -40,7 +40,10 @@ function cl() {
 }
 
 function battery_charge {
+  unamestr=$(uname)
+  if [[ "$unamestr" -eq 'Darwin' ]]; then
     echo `python ~/bin/battery.py` 2>/dev/null
+  fi
 }
 
 function moshw() {
@@ -62,7 +65,7 @@ function moshw() {
   for port in $(seq 60001 60020); do
     if [[ "$PORTS_IN_USE" != *$port* ]]; then
       echo "Using port $port ..."
-      exec mosh -p $port $DEVS 
+      exec mosh -p $port $DEVS
     fi
   done
 
