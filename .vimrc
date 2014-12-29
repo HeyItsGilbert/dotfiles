@@ -155,14 +155,14 @@ set pastetoggle=<F2>
 
 " Unbind arrow keys to force yourself to break that habit when you are just
 " getting started.
-" noremap <Left> <Nop>
-" noremap <Right> <Nop>
-" noremap <Up> <Nop>
-" noremap <Down> <Nop>
-" inoremap <Left> <Nop>
-" inoremap <Right> <Nop>
-" inoremap <Up> <Nop>
-" inoremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
 
 " Enter command mode by pressing ; instead of :
 noremap ; :
