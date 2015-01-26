@@ -25,3 +25,7 @@ alias rcopy='rsync -az --stats --progress --delete'
 alias ..='cl ..'
 alias trim_whitespace="sed -i 's/[ \t]*$//' "
 alias http_headers='curl -svo /dev/null'
+
+# Devservers
+alias polgrep='grep -r -i --include \*.pol'
+alias cdc='cd ~/opsfiles/netops/configlets/security/capirca/'
