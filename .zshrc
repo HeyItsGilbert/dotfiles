@@ -60,7 +60,7 @@ export LSCOLORS=Hxgxfxfxcxdxdxhbadbxbx
 setopt appendhistory autocd nomatch autopushd pushdignoredups promptsubst
 unsetopt beep
 bindkey -e
-zstyle :compinstall filename '/home/jlilly/.zshrc'
+zstyle :compinstall filename '/home/gsanchez/.zshrc'
 # end automatic options
 
 # Make prompt prettier
