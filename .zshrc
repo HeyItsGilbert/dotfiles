@@ -77,5 +77,8 @@ promptinit
 if [ -f ~/.bash_local ]; then
     . ~/.bash_local
 fi
+if [ -f ~/.shell/secret]; then
+    . ~/.shell/secret
+fi
 
 #export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
