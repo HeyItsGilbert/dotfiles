@@ -77,7 +77,7 @@ promptinit
 if [ -f ~/.bash_local ]; then
     . ~/.bash_local
 fi
-if [ -f ~/.shell/secret]; then
+if [ -f ~/.shell/secret ]; then
     . ~/.shell/secret
 fi
 
