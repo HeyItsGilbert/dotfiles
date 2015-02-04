@@ -2,6 +2,7 @@
 alias devrs="moshw ${DEVS}"
 alias dev="fb ${DEVS} ${AD_USER_NAME}"
 alias bp1="moshw $AD_ADMIN@prn-borgprobe01.thefacebook.com"
+alias pk="moshw psychoklown.com"
 alias ghost="ssh -i ~/AWSGhost.pem ec2-user@ec2-54-213-102-218.us-west-2.compute.amazonaws.com"
 
 # Git
