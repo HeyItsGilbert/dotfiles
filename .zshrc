@@ -33,10 +33,12 @@ export CLICOLOR=1
 export LSCOLORS=Hxgxfxfxcxdxdxhbadbxbx
 
 # Automatic options added
-#setopt appendhistory autocd nomatch autopushd pushdignoredups promptsubst
-#unsetopt beep
-#bindkey -e
-#zstyle :compinstall filename '$HOME/.zshrc'
+setopt appendhistory autocd nomatch autopushd pushdignoredups promptsubst
+unsetopt beep
+bindkey -e
+bindkey '^[[1;9C' forward-word
+bindkey '^[[1;9D' backward-word
+zstyle :compinstall filename '$HOME/.zshrc'
 # end automatic options
 
 # Make prompt prettier
