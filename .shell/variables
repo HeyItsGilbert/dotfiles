@@ -29,10 +29,10 @@ BROWN="\[\033[0;33m\]"
 COLOR_NONE="\[\033[0m\]"
 
 unamestr=$(uname)
-if [[ "$unamestr" -eq 'Darwin' ]]; then
-	RPROMPT='$(battery_charge)'
-	TERM_APP='iTerm' # 'Terminal' if you use the default terminal app.
-fi
+#if [[ "$unamestr" -eq 'Darwin' ]]; then
+#	RPROMPT='$(battery_charge)'
+#	TERM_APP='iTerm' # 'Terminal' if you use the default terminal app.
+#fi
 
 # ssh to fb boxes
 AD_USER_NAME="gsanchez"
