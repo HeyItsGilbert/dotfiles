@@ -17,7 +17,7 @@ ZSH_THEME="agnoster"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-  plugins=(git)
+  plugins=(git battery)
 elif [[ "$unamestr" == "Darwin"* ]]; then
   plugins=(git osx battery)
 fi
