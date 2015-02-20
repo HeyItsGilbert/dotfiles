@@ -19,7 +19,7 @@ ZSH_THEME="agnoster"
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   plugins=(git)
 elif [[ "$unamestr" == "Darwin"* ]]; then
-  plugins=(git osx)
+  plugins=(git osx battery)
 fi
 
 source $ZSH/oh-my-zsh.sh
@@ -31,6 +31,7 @@ export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/:~/bin
 #Functions
 export CLICOLOR=1
 export LSCOLORS=Hxgxfxfxcxdxdxhbadbxbx
+RPROMPT=$(battery_level_gauge)
 
 # Automatic options added
 setopt appendhistory autocd nomatch autopushd pushdignoredups promptsubst
