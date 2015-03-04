@@ -1,13 +1,13 @@
 export INFOPATH=$INFOPATH:/usr/share/info
 export GREP_OPTIONS='--color=auto'
-#export GREP_COLOR='1;31'
-#export LESS_TERMCAP_mb=$'\E[01;32m'
-#export LESS_TERMCAP_md=$'\E[01;32m'
-#export LESS_TERMCAP_me=$'\E[0m'
-#export LESS_TERMCAP_se=$'\E[0m'
-#export LESS_TERMCAP_so=$'\E[01;44;33m'
-#export LESS_TERMCAP_ue=$'\E[0m'
-#export LESS_TERMCAP_us=$'\E[01;37m'
+export GREP_COLOR='1;31'
+export LESS_TERMCAP_mb=$'\E[01;32m'
+export LESS_TERMCAP_md=$'\E[01;32m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;37m'
 export EDITOR='vim'
 
 export HISTCONTROL=erasedups  # Ignore duplicate entries in history
@@ -29,14 +29,3 @@ BROWN="\[\033[0;33m\]"
 COLOR_NONE="\[\033[0m\]"
 
 unamestr=$(uname)
-#if [[ "$unamestr" -eq 'Darwin' ]]; then
-#	RPROMPT='$(battery_charge)'
-#	TERM_APP='iTerm' # 'Terminal' if you use the default terminal app.
-#fi
-
-# ssh to fb boxes
-AD_USER_NAME="gsanchez"
-UNIX_NAME="gsanchez"
-AD_ADMIN="gsanchezadmin"
-sshUserName="gsanchezadmin"
-DEVS='devrs059.prn2.facebook.com'
