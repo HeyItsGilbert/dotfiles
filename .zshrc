@@ -1,13 +1,13 @@
 # Load custom bits
-. ~/.shell/variables
-. ~/.shell/aliases
-. ~/.shell/functions
 if [ -f ~/.bash_local ]; then
     . ~/.bash_local
 fi
 if [ -f ~/.shell/secret ]; then
     . ~/.shell/secret
 fi
+. ~/.shell/variables
+. ~/.shell/functions
+. ~/.shell/aliases
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
