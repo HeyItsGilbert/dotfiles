@@ -49,30 +49,78 @@ function battery_charge {
 }
 
 function moshw() {
-  # Default dev server, otherwise use first arg
-  if [ -n "$1" ]; then
-    DEVS=$1
-  fi
+PORT_START=60000
+PORT_END=60020
 
-  if [ -z "$DEVS" ]; then
-    echo "usage: $0 <dev server>; or specify DEVS in the script"
-    exit 1
-  fi
+MOSH_DIR=~/.mosh_wrapper
+PORTS=$(seq ${PORT_START} ${PORT_END})
+MOSH_COMMAND="mosh-client"
 
-  # Find out what ports are in use already...
-  PORTS_IN_USE=`ssh $DEVS netstat --listening --udp --numeric | \
-    perl -ne '/:(\d+)/ && ($port = int($1)) && \
-    ($port >= 60001 && $port <= 60020) && print "$1 "'`
+MY_UID=$(id -u)
 
-  for port in $(seq 60001 60020); do
-    if [[ "$PORTS_IN_USE" != *$port* ]]; then
-      echo "Using port $port ..."
-      exec mosh -p $port $DEVS
+DEFAULT_SERVER=dev
+
+if [ -n "${1}" ]; then
+  DEFAULT_SERVER=${1}
+fi
+
+if [ -z "${DEFAULT_SERVER}" ]; then
+  echo "usage: $0 <server> (or specify DEFAULT_SERVER in the script)"
+  exit 1
+fi
+
+if [ ! -d ${MOSH_DIR} ]; then
+    mkdir ${MOSH_DIR}
+fi
+
+port_to_use=""
+for port in ${PORTS}; do
+    portfile=${MOSH_DIR}/port-${port}
+
+    if [ -e ${portfile} ]; then
+        pid=`cat ${portfile}`
+        uid_command=`ps -p ${pid} -o "uid=,comm=" || true`
+        if [ -z "${uid_command}" ]; then
+            # process does not exist
+            rm -f ${portfile}
+        else
+      uid=$(echo ${uid_command} | awk '{ print $1 }')
+      command=$(echo ${uid_command} | awk '{ print $2 }')
+            if [ "${command}" = "${MOSH_COMMAND}" ]; then
+                # pid does not exist
+                rm -f ${portfile}
+            fi
+            if [[ ${uid} != ${MY_UID} ]]; then
+                # Not my process!
+                rm -f ${portfile}
+            fi
+        fi
+    fi
+
+    if [ ! -e ${portfile} ]; then
+        port_to_use=${port}
+        echo $$ > ${portfile}
+        break
+    fi
+done
+
+if [ -n "${port_to_use}" ]; then
+  MOSH_OPTS="-p ${port_to_use}"
+  oldifs=${IFS}
+  IFS='
+'
+  for line in $(host ${DEFAULT_SERVER}); do
+    if echo "${line}" | grep -q "has IPv6 address"; then
+      MOSH_OPTS="-6 ${MOSH_OPTS}"
+      break
     fi
   done
-
-  echo "No ports available."
-  exit 1
+  IFS=${oldifs}
+    exec mosh ${MOSH_OPTS} ${DEFAULT_SERVER}
+else
+    echo "No unused ports to use"
+    exit 1
+fi
 }
 
 function tasty() {
