@@ -26,7 +26,7 @@ source $ZSH/oh-my-zsh.sh
 DEFAULT_USER=`whoami`
 
 # Customize to your needs...
-export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/:~/bin
+export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/:~/bin:~/devtools/arcanist/bin
 
 #Functions
 export CLICOLOR=1
@@ -46,3 +46,4 @@ zstyle :compinstall filename '$HOME/.zshrc'
 autoload -U promptinit
 promptinit
 export LC_ALL=en_US.UTF-8
+eval "$(chef shell-init zsh)"
