@@ -45,7 +45,9 @@ zstyle :compinstall filename '$HOME/.zshrc'
 autoload -U promptinit
 promptinit
 export LC_ALL=en_US.UTF-8
-eval "$(chef shell-init zsh)"
+if [[ "$OSTYPE" = darwin* ]] ; then
+  eval "$(chef shell-init zsh)"
+fi
 setopt PROMPT_SUBST
 TMOUT=1
 TRAPALRM() { zle reset-prompt }
