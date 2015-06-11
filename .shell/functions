@@ -39,15 +39,6 @@ function cl() {
   cd "$@" && la;
 }
 
-function battery_charge {
-  unamestr=$(uname)
-  if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    # Do nothing
-  elif [[ "$unamestr" == "Darwin"* ]]; then
-    echo $(python ~/.shell/battery.py) 2>/dev/null
-  fi
-}
-
 function tasty() {
   taste-tester ${1} -f -s ${2} --chef-port-range 5555,5555 --tunnel-port 4001
 }

@@ -13,11 +13,11 @@ fi
 ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
-ZSH_THEME="agnoster"
+ZSH_THEME="g-agnoster/g-agnoster"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-  plugins=(git battery)
+  plugins=(git)
 elif [[ "$unamestr" == "Darwin"* ]]; then
   plugins=(git osx battery)
 fi
@@ -31,7 +31,6 @@ export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/:~/bin:~/devtool
 #Functions
 export CLICOLOR=1
 export LSCOLORS=Hxgxfxfxcxdxdxhbadbxbx
-RPROMPT=$(battery_level_gauge)
 
 # Automatic options added
 setopt appendhistory autocd nomatch autopushd pushdignoredups promptsubst
@@ -47,3 +46,6 @@ autoload -U promptinit
 promptinit
 export LC_ALL=en_US.UTF-8
 eval "$(chef shell-init zsh)"
+setopt PROMPT_SUBST
+TMOUT=1
+TRAPALRM() { zle reset-prompt }
