@@ -49,5 +49,5 @@ if [[ "$OSTYPE" = darwin* ]] ; then
   eval "$(chef shell-init zsh)"
 fi
 setopt PROMPT_SUBST
-TMOUT=1
-TRAPALRM() { zle reset-prompt }
+# TMOUT=1
+# TRAPALRM() { zle reset-prompt }
