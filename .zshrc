@@ -26,7 +26,7 @@ source $ZSH/oh-my-zsh.sh
 DEFAULT_USER=`whoami`
 
 # Customize to your needs...
-export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/:~/bin:~/devtools/arcanist/bin
+export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/:~/bin:~/devtools/arcanist/bin:/Users/gsanchez/Downloads/android-sdk-macosx/platform-tools/:/Users/gsanchez/Downloads/android-sdk-macosx/tools
 
 #Functions
 export CLICOLOR=1
@@ -45,9 +45,6 @@ zstyle :compinstall filename '$HOME/.zshrc'
 autoload -U promptinit
 promptinit
 export LC_ALL=en_US.UTF-8
-if [[ "$OSTYPE" = darwin* ]] ; then
-  eval "$(chef shell-init zsh)"
-fi
 setopt PROMPT_SUBST
 # TMOUT=1
 # TRAPALRM() { zle reset-prompt }
