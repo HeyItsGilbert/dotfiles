@@ -27,20 +27,11 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 " Read man pages with :Man
 runtime ftplugin/man.vim
 
-" Settings for vim-powerline
-" " cd ~/.vim/bundle
-" " git clone git://github.com/Lokaltog/vim-powerline.git
+" Settings for powerline
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
 set laststatus=2
-let g:Powerline_symbols = 'fancy'
-
-
-" Settings for airline
-"git clone https://github.com/bling/vim-airline ~/.vim/bundle/vim-airline
-set laststatus=2
-let g:airline#extensions#tabline#enabled = 1
-"let g:airline_theme="solarized"
-let g:airline_powerline_fonts=1
-
 
 
 " }}}
