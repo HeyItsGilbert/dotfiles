@@ -28,9 +28,13 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 runtime ftplugin/man.vim
 
 " Settings for powerline
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
+let s:uname = system("uname -s")
+if s:uname == "Darwin"
+  " Do Mac stuff here
+  python from powerline.vim import setup as powerline_setup
+  python powerline_setup()
+  python del powerline_setup
+endif
 set laststatus=2
 
 
