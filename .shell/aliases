@@ -1,10 +1,3 @@
-# SSH Shortcuts
-alias dev="moshw ${DEVS}"
-alias devrs="moshw ${DEVRS}"
-alias bp1="moshw $AD_ADMIN@prn-borgprobe01.thefacebook.com"
-alias pk="moshw psychoklown.com"
-alias ghost="ssh -i ~/AWSGhost.pem ec2-user@ec2-54-213-102-218.us-west-2.compute.amazonaws.com"
-
 # Git
 alias gnew='git checkout origin/master -b '
 
@@ -26,7 +19,7 @@ alias rcopy='rsync -az --stats --progress --delete'
 # alias ..='cl ..'
 alias trim_whitespace="sed -i 's/[ \t]*$//' "
 alias http_headers='curl -svo /dev/null'
-alias alert="echo WORKSDONE;"
+alias alert="echo JOBSDONE;"
 
 # Devservers
 alias polgrep='grep -r -i --include \*.pol'
