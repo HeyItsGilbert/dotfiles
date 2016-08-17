@@ -10,3 +10,4 @@ git clone git://github.com/Lokaltog/vim-powerline.git
 git clone https://github.com/bling/vim-airline ~/.vim/bundle/vim-airline
 git clone https://github.com/kien/ctrlp.vim.git
 git clone git://github.com/altercation/vim-colors-solarized.git
+git clone https://github.com/PProvost/vim-ps1.git
