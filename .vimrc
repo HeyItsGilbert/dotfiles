@@ -19,7 +19,14 @@ filetype plugin indent on
 "let g:pydiction_location = '~/.vim/bundle/pydiction/complete-dict'
 syntax enable
 set runtimepath^=~/.vim/bundle/ctrlp.vim
-
+set t_Co=256
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+  endif
+let g:airline_symbols.space = "\ua0"
+set ambiwidth=single
+let g:airline_powerline_fonts = 1
+let g:bufferline_echo = 0
 " }}}
 
 " Plugin stuff {{{
@@ -36,8 +43,6 @@ if s:uname == "Darwin"
   python del powerline_setup
 endif
 set laststatus=2
-
-
 " }}}
 
 " Core behavioral settings {{{
@@ -329,27 +334,27 @@ set nofoldenable
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
-command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-        \ | wincmd p | diffthis
-
-" This doesn't work right....
-if &term == "screen" || &term == "xterm"
-  if &term == "screen"
-    set t_ts=k
-    set t_fs=\
-  endif
-  set title
-  let &titlestring = "vim " . pathshorten(expand("%:~:.:f"))
-  au BufEnter * let &titlestring = "vim " . pathshorten(expand("%:~:.:f"))
-endif
-
-" Resize my window to fit N columns of 81 columns with 4 gutter columns each
-" plus (n - 1) separator bars, and be max height
-function! SetCols(n)
-  let cols = a:n * 86 - 1
-  exec "set columns=" . cols . " lines=999"
-endfunction
-command! -count=1 Cols call SetCols(<count>)
+"command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+"        \ | wincmd p | diffthis
+"
+"" This doesn't work right....
+"if &term == "screen" || &term == "xterm"
+"  if &term == "screen"
+"    set t_ts=k
+"    set t_fs=\
+"  endif
+"  set title
+"  let &titlestring = "vim " . pathshorten(expand("%:~:.:f"))
+"  au BufEnter * let &titlestring = "vim " . pathshorten(expand("%:~:.:f"))
+"endif
+"
+"" Resize my window to fit N columns of 81 columns with 4 gutter columns each
+"" plus (n - 1) separator bars, and be max height
+"function! SetCols(n)
+"  let cols = a:n * 86 - 1
+"  exec "set columns=" . cols . " lines=999"
+"endfunction
+"command! -count=1 Cols call SetCols(<count>)
 
 augroup insert_trailingspace " {{{
   au!
