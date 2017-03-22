@@ -149,6 +149,9 @@ set selectmode=
 " things.
 set pastetoggle=<F2>
 
+" F3 will switch number on and off. Helpful for copy pasta.
+noremap <F3> :set invnumber<CR>
+inoremap <F3> <C-O>:set invnumber<CR>
 " }}}
 
 " Key bindings (noremaps) {{{
