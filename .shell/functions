@@ -39,3 +39,22 @@ function cl() {
   cd "$@" && la;
 }
 
+function notify {
+  echo -ne "local-notify($@)" && sleep 0.01 && echo -e '\r\033[K\033[1A'
+}
+
+function notify-success {
+  notify "Finished successfully!"
+}
+
+function notify-failure {
+  notify "Finished with errors"
+}
+
+function notify-result {
+  sleep 0.1;
+  if [ $? = 0 ]
+    then notify-success
+    else notify-failure
+  fi
+}
