@@ -26,7 +26,7 @@ source $ZSH/oh-my-zsh.sh
 DEFAULT_USER=`whoami`
 
 # Customize to your needs...
-export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/:~/bin:~/devtools/arcanist/bin:/Users/gsanchez/Downloads/android-sdk-macosx/platform-tools/:/Users/gsanchez/Downloads/android-sdk-macosx/tools
+export PATH="$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/:~/bin:~/devtools/arcanist/bin:/Users/gsanchez/Downloads/android-sdk-macosx/platform-tools/:/Users/gsanchez/Downloads/android-sdk-macosx/tools:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
 #Functions
 export CLICOLOR=1
