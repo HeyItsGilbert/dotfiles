@@ -1,5 +1,6 @@
 # Git
 alias gnew='git checkout origin/master -b '
+alias gca='git commit --amend -no-edit'
 
 # Filesystem
 alias ..='cd ..'            # Go up one directory
