@@ -19,7 +19,10 @@ belongs to someone else, please let me know so I can properly attribute them.
 - Menlo font: https://gist.github.com/qrush/1595572
 
 # Setup
+
+```
 git clone git@github.com:HeyItsGilbert/dotfiles.git
 mv dotfiles/*(DN) ~/
 chmod +x .shell/setup.sh
 . .shell/setup.sh
+```
