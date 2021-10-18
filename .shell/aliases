@@ -23,5 +23,4 @@ alias http_headers='curl -svo /dev/null'
 alias alert="echo JOBSDONE;"
 
 # Devservers
-alias polgrep='grep -r -i --include \*.pol'
-alias cdc='cd ~/opsfiles/netops/configlets/security/capirca/'
+alias rebaseall="hg rebase -d master -s 'roots(outgoing())'"
