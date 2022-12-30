@@ -21,6 +21,3 @@ alias rcopy='rsync -az --stats --progress --delete'
 alias trim_whitespace="sed -i 's/[ \t]*$//' "
 alias http_headers='curl -svo /dev/null'
 alias alert="echo JOBSDONE;"
-
-# Devservers
-alias rebaseall="hg rebase -d master -s 'roots(outgoing())'"
