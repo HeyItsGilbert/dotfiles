@@ -1,0 +1,35 @@
+format = """
+[\uE0B6](fg:#1C4961)[$directory](bg:#1C4961)[\uE0B0](fg:#1C4961 bg:#2F79A1)$git_branch[\uE0B0](fg:#2F79A1 bg:#3A95C7)$git_status[\uE0B0](#3A95C7 bg:#40A9E0)$time[\uE0B0](#40A9E0 bg:none) $all $character """
+
+add_newline = true
+
+[directory]
+style = "bg:#1C4961 fg:white"
+
+[git_branch]
+format = "[ $symbol$branch ]($style)"
+style = "bg:#2F79A1 fg:white"
+
+[git_status]
+format = "[ $all_status$ahead_behind ]($style)"
+style = "bg:#3A95C7 fg:white"
+
+[time]
+disabled = false
+format = "[ $time ]($style)"
+style = "bg:#40A9E0 fg:white"
+
+[username]
+disabled = true
+
+[ruby]
+disabled = true
+
+[shell]
+disabled = false
+powershell_indicator = '_'
+bash_indicator = '$_'
+zsh_indicator = '%_'
+cmd_indicator = '>'
+unknown_indicator = '?>'
+style = 'cyan bold'
