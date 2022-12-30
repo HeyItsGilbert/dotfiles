@@ -19,7 +19,7 @@ ZSH_THEME="agnoster"
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
   plugins=(git emoji)
 elif [[ "$unamestr" == "Darwin"* ]]; then
-  plugins=(git osx battery emoji)
+  plugins=(git macos battery emoji)
 fi
 
 source $ZSH/oh-my-zsh.sh
