@@ -1,5 +1,7 @@
 # Prompt
 Import-Module Posh-Git
+Import-Module Terminal-Icons
+Import-Module PSReadLine
 
 # Run once to load gitprompt setting
 Write-VcsStatus | Out-Null
@@ -14,8 +16,7 @@ if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administ
 function prompt {
   if (((Get-Item $pwd).parent.parent.name)) {
     $Path = '..\' + (Get-Item $pwd).parent.name + '\' + (Split-Path $pwd -Leaf)
-  }
-  else {
+  } else {
     $Path = $pwd.path
   }
 
@@ -25,11 +26,10 @@ function prompt {
   }
 
   if ($Script:IsAdmin) {
-    Write-Host "⚡" -ForegroundColor Black -BackgroundColor Green -NoNewline
+    Write-Host "$([char]0x26a1)" -ForegroundColor Black -BackgroundColor Green -NoNewline
     Write-Host "$([char]0xE0B0)$([char]0xE0B1)" -ForegroundColor Green -BackgroundColor DarkBlue -NoNewline
-  }
-  else {
-    Write-Host "👶🏽" -ForegroundColor Black -BackgroundColor Green -NoNewline
+  } else {
+    Write-Host "$([char]0x1f476)" -ForegroundColor Black -BackgroundColor Green -NoNewline
     Write-Host "$([char]0xE0B0)$([char]0xE0B1)" -ForegroundColor Green -BackgroundColor DarkBlue -NoNewline
   }
 
@@ -41,8 +41,7 @@ function prompt {
     Write-Host "$(Write-VcsStatus)" -BackgroundColor Magenta -NoNewline
     #& $GitPromptScriptBlock
     Write-Host "$([char]0xE0B0)$("$([char]0xE0B1)" * $NestedPromptLevel)" -ForegroundColor Magenta -NoNewline
-  }
-  else {
+  } else {
     Write-Host "$([char]0xE0B0)$("$([char]0xE0B1)" * $NestedPromptLevel)" -ForegroundColor Cyan -NoNewline
   }
   ' '
@@ -52,29 +51,70 @@ function prompt {
 function ll { Get-ChildItem -Force $args }
 function Get-GitCheckout { git checkout $args }
 Set-Alias -Name gco -Value Get-GitCheckout
+New-Alias -Name which -Value Get-Command
 
 # Readline options
 ## Tab completion
-Set-PSReadlineKeyHandler -Key Tab -Function Complete
-Set-PSReadlineOption -ShowToolTips
-Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineKeyHandler -Key Tab -Function Complete
+Set-PSReadLineOption -ShowToolTips
+if($PSVersionTable.PSEdition -eq 'Core'){
+  Set-PSReadLineOption -PredictionSource History
+}
 
 # Up/Down will do search if text already entered
-Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 
 ## Colours
-$colors = @{}
-$colors['Command'] = [System.ConsoleColor]::Blue
-$colors['Parameter'] = [System.ConsoleColor]::DarkBlue
-$colors['Comment'] = [System.ConsoleColor]::Green
-$colors['Operator'] = [System.ConsoleColor]::Gray
-$colors['Variable'] = [System.ConsoleColor]::Magenta
-$colors['Keyword'] = [System.ConsoleColor]::Magenta
-$colors['String'] = [System.ConsoleColor]::DarkGray
-$colors['Type'] = [System.ConsoleColor]::DarkCyan
+$colors = @{
+  'Command' = [System.ConsoleColor]::Blue
+  'Parameter' = [System.ConsoleColor]::DarkBlue
+  'Comment' = [System.ConsoleColor]::Green
+  'Operator' = [System.ConsoleColor]::Gray
+  'Variable' = [System.ConsoleColor]::Magenta
+  'Keyword' = [System.ConsoleColor]::Magenta
+  'String' = [System.ConsoleColor]::DarkGray
+  'Type' = [System.ConsoleColor]::DarkCyan
+}
 Set-PSReadLineOption -Colors $colors
 
 # AdvancedHistory
 Import-Module AdvancedHistory
 Enable-AdvancedHistory -Unique
+# Chocolatey profile
+$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+if (Test-Path($ChocolateyProfile)) {
+  Import-Module "$ChocolateyProfile"
+}
+
+function Send-Ping {
+  [alias("pingme")]
+  param ([String]$Message)
+  $msg = @{"m" = $Message } | ConvertTo-Json -Compress
+  $variables = $msg -replace '"', '\"'
+  $query = 'query($m: String!) { pingme(message: $m) }'
+  jf graphql --query $query --variables $variables
+}
+
+function Watch-Command {
+  [alias("watch")]
+  [CmdletBinding()]
+  param (
+      [Parameter()]
+      [ScriptBLock]
+      $Command,
+      [Parameter()]
+      [int]
+      $Delay = 2
+  )
+  while($true){
+    Clear-Host
+    Write-Host ("Every {1}s: {0} `n" -F $Command.toString(), $Delay)
+    $Command.Invoke()
+    Start-Sleep -Seconds $Delay
+  }
+}
+
+if (Get-Command 'starship'){
+  Invoke-Expression (&starship init powershell)
+}
