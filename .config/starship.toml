@@ -33,3 +33,6 @@ zsh_indicator = '%_'
 cmd_indicator = '>'
 unknown_indicator = '?>'
 style = 'cyan bold'
+
+[hostname]
+ssh_only = false
