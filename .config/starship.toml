@@ -1,3 +1,5 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
 format = """
 [\uE0B6](fg:#1C4961)[$directory](bg:#1C4961)[\uE0B0](fg:#1C4961 bg:#2F79A1)$git_branch[\uE0B0](fg:#2F79A1 bg:#3A95C7)$git_status[\uE0B0](#3A95C7 bg:#40A9E0)$time[\uE0B0](#40A9E0 bg:none) $all $character """
 
@@ -27,12 +29,22 @@ disabled = true
 
 [shell]
 disabled = false
-powershell_indicator = '_'
-bash_indicator = '$_'
+powershell_indicator = ''
+bash_indicator = ''
 zsh_indicator = '%_'
-cmd_indicator = '>'
-unknown_indicator = '?>'
+cmd_indicator = ''
+unknown_indicator = ''
 style = 'cyan bold'
+format ='[$indicator]($style)'
 
 [hostname]
 ssh_only = false
+
+[battery]
+full_symbol = "🔋"
+charging_symbol = "🔌"
+discharging_symbol = "⚡"
+
+[[battery.display]]
+threshold = 30
+style = "bold red"
