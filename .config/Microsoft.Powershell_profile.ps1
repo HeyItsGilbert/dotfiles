@@ -2,6 +2,7 @@
 Import-Module Posh-Git
 Import-Module Terminal-Icons
 Import-Module PSReadLine
+Import-Module AdvancedHistory
 
 # Run once to load gitprompt setting
 Write-VcsStatus | Out-Null
@@ -9,8 +10,10 @@ $GitPromptSettings.BeforeStatus.Text = ''
 $GitPromptSettings.AfterStatus.Text = ''
 
 # Check if admin
-$currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
-if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { $Script:IsAdmin = $true }
+if (-Not ($IsLinux -or $IsMacOS)) {
+  $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+  if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { $Script:IsAdmin = $true }
+}
 
 # Everything in the prompt will be executed on each new line, be smart!
 function prompt {
@@ -57,7 +60,7 @@ New-Alias -Name which -Value Get-Command
 ## Tab completion
 Set-PSReadLineKeyHandler -Key Tab -Function Complete
 Set-PSReadLineOption -ShowToolTips
-if($PSVersionTable.PSEdition -eq 'Core'){
+if ($PSVersionTable.PSEdition -eq 'Core') {
   Set-PSReadLineOption -PredictionSource History
 }
 
@@ -73,13 +76,12 @@ $colors = @{
   'Operator' = [System.ConsoleColor]::Gray
   'Variable' = [System.ConsoleColor]::Magenta
   'Keyword' = [System.ConsoleColor]::Magenta
-  'String' = [System.ConsoleColor]::DarkGray
+  #'String' = [System.ConsoleColor]::DarkGray
   'Type' = [System.ConsoleColor]::DarkCyan
 }
 Set-PSReadLineOption -Colors $colors
 
 # AdvancedHistory
-Import-Module AdvancedHistory
 Enable-AdvancedHistory -Unique
 # Chocolatey profile
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
@@ -88,26 +90,26 @@ if (Test-Path($ChocolateyProfile)) {
 }
 
 function Send-Ping {
-  [alias("pingme")]
+  [alias('pingme')]
   param ([String]$Message)
-  $msg = @{"m" = $Message } | ConvertTo-Json -Compress
+  $msg = @{'m' = $Message } | ConvertTo-Json -Compress
   $variables = $msg -replace '"', '\"'
   $query = 'query($m: String!) { pingme(message: $m) }'
   jf graphql --query $query --variables $variables
 }
 
 function Watch-Command {
-  [alias("watch")]
+  [alias('watch')]
   [CmdletBinding()]
   param (
-      [Parameter()]
-      [ScriptBLock]
-      $Command,
-      [Parameter()]
-      [int]
-      $Delay = 2
+    [Parameter()]
+    [ScriptBLock]
+    $Command,
+    [Parameter()]
+    [int]
+    $Delay = 2
   )
-  while($true){
+  while ($true) {
     Clear-Host
     Write-Host ("Every {1}s: {0} `n" -F $Command.toString(), $Delay)
     $Command.Invoke()
@@ -115,6 +117,6 @@ function Watch-Command {
   }
 }
 
-if (Get-Command 'starship'){
+if (Get-Command 'starship') {
   Invoke-Expression (&starship init powershell)
 }
