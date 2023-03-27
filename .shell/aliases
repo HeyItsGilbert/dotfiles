@@ -21,3 +21,8 @@ alias rcopy='rsync -az --stats --progress --delete'
 alias trim_whitespace="sed -i 's/[ \t]*$//' "
 alias http_headers='curl -svo /dev/null'
 alias alert="echo JOBSDONE;"
+
+# Docker
+if [ -f ~/.docker_bash_aliases ]; then
+    . ~/.docker_bash_aliases
+fi
