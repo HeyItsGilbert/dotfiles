@@ -50,7 +50,7 @@ $links | ForEach-Object {
     $current = Get-Item $_.dst
     if($current.LinkType -eq 'SymbolicLink' -And $current.Target -eq $_.src){
       Write-Host ("Symlink already setup for {0}" -F $_.dst)
-      continue
+      return
     }
     Write-Host ("File exists, let's rename prior to creating symlink: {0}" -f $_.dst)
     # If it exists, remove it
