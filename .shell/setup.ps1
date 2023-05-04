@@ -1,5 +1,6 @@
 # Choco packages
-choco install nerdfont-hack starship powershell-core vscode -y -s'https://chocolatey.org/api/v2/'
+# ToDo: Setup community repo if its not setup
+choco install nerdfont-hack starship powershell-core vscode -fy -s'https://chocolatey.org/api/v2/'
 
 # Install Modules
 $mods = @{
@@ -20,6 +21,13 @@ $mods = @{
     Install-Module $_ @mods
   }
 }
+
+# Setup .config in home folder.
+$dotConfig = "$HOME\.config"
+if(-Not (Test-Path $dotConfig)){
+  New-Item -ItemType Directory 
+}
+
 $links = @(
   # Create symbolic links for windows terminal settings
   @{
@@ -36,8 +44,6 @@ $links = @(
     'dst' = Resolve-Path "$HOME\.config\starship.toml"
   }
 )
-
-New-Item -ItemType Directory "$HOME\.config"
 $links | ForEach-Object {
   # Test path
   if(Test-Path $_.dst) {
