@@ -1,8 +1,9 @@
 # Choco packages
 # ToDo: Setup community repo if its not setup
-cinst powershell-core -fy
-cinst hackfont -fy
-cinst vscode -fy
+choco install nerdfont-hack -s'https://chocolatey.org/api/v2/'
+choco install starship -fy -s'https://chocolatey.org/api/v2/'
+choco install powershell-core -fy -s'https://chocolatey.org/api/v2/'
+choco install vscode -fy -s'https://chocolatey.org/api/v2/'
 
 # Install Modules
 $mods = @{
@@ -19,20 +20,21 @@ Install-Module Terminal-Icons @mods
 $links = @(
   # Create symbolic links for windows terminal settings
   @{
-    'src' = ".\.shell\WindowsTerminal\settings.json"
+    'src' = "$PSScriptRoot\WindowsTerminal\settings.json"
     'dst' = "$Env:LocalAppData\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
   },
   # Create symbolic links for windows terminal settings
   @{
-    'src' = ".\.config\Microsoft.Powershell_profile.ps1"
+    'src' = "$PSScriptRoot\..\.config\Microsoft.Powershell_profile.ps1"
     'dst' = $PROFILE
   }
   @{
-    'src' = ".\.config\starship.toml"
+    'src' = "$PSScriptRoot\..\.config\starship.toml"
     'dst' = "$HOME\.config\starship.toml"
   }
 )
 
+New-Item -ItemType Directory "$HOME\.config"
 $links | ForEach-Object {
   # Test path
   if(Test-Path $_.dst) {
