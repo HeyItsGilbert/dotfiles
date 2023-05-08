@@ -1,3 +1,6 @@
+#!/bin/bash
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+
 # Install oh-my-zsh
 curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 # Setup VIM
@@ -12,3 +15,17 @@ git clone https://github.com/vim-airline/vim-airline-themes
 git clone https://github.com/ctrlpvim/ctrlp.vim
 git clone https://github.com/altercation/vim-colors-solarized.git
 git clone https://github.com/PProvost/vim-ps1.git
+
+# Make the symlinks
+Links=(
+  .tmux.conf
+  .vimrc
+  .zlogin
+  .zprofile
+  .shell
+  .wezterm
+)
+for i in "${arr[@]}"
+do
+  ln -s $PWD/$i ~/$i
+done
