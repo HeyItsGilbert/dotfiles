@@ -10,12 +10,12 @@ $mods = @{
 }
 # ToDo: Allow additional parameters per module
 @(
+  'AdvancedHistory',
+  'DynamicTitle',
   'Pester',
   'Posh-Git',
   'PSReadLine',
-  'AdvancedHistory',
-  'Terminal-Icons',
-  'AnyPackage'
+  'Terminal-Icons'
 ) | ForEach-Object {
   if (-Not (Get-Module -ListAvailable -Name $_)) {
     Install-Module $_ @mods
@@ -24,31 +24,31 @@ $mods = @{
 
 # Setup .config in home folder.
 $dotConfig = "$HOME\.config"
-if(-Not (Test-Path $dotConfig)){
+if (-Not (Test-Path $dotConfig)) {
   New-Item -ItemType Directory 
 }
 
 $links = @(
   # Create symbolic links for windows terminal settings
   @{
-    'src' = Resolve-Path "$PSScriptRoot\WindowsTerminal\settings.json"
+    'src' = Resolve-Path "$PSScriptRoot\.shell\WindowsTerminal\settings.json"
     'dst' = Resolve-Path "$Env:LocalAppData\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
   },
   # Create symbolic links for windows terminal settings
   @{
-    'src' = Resolve-Path "$PSScriptRoot\..\.config\Microsoft.Powershell_profile.ps1"
+    'src' = Resolve-Path "$PSScriptRoot\.config\Microsoft.Powershell_profile.ps1"
     'dst' = Resolve-Path $PROFILE
   }
   @{
-    'src' = Resolve-Path "$PSScriptRoot\..\.config\starship.toml"
+    'src' = Resolve-Path "$PSScriptRoot\.config\starship.toml"
     'dst' = Resolve-Path "$HOME\.config\starship.toml"
   }
 )
 $links | ForEach-Object {
   # Test path
-  if(Test-Path $_.dst) {
+  if (Test-Path $_.dst) {
     $current = Get-Item $_.dst
-    if($current.LinkType -eq 'SymbolicLink' -And $current.Target -eq $_.src){
+    if ($current.LinkType -eq 'SymbolicLink' -And $current.Target -eq $_.src) {
       Write-Host ("Symlink already setup for {0}" -F $_.dst)
       return
     }
