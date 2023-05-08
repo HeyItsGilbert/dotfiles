@@ -43,6 +43,10 @@ $links = @(
     'src' = Resolve-Path "$PSScriptRoot\.config\starship.toml"
     'dst' = Resolve-Path "$HOME\.config\starship.toml"
   }
+  @{
+    'src' = Resolve-Path "$PSScriptRoot\.wezterm.lua"
+    'dst' = Resolve-Path "$HOME\.wezterm.lua"
+  }
 )
 $links | ForEach-Object {
   # Test path
