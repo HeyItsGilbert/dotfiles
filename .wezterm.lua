@@ -6,8 +6,10 @@ local launch_menu = {}
 local haswork,work = pcall(require,"work")
 
 --- Setup PowerShell options
---- Windows PowerShell First
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+  --- Set Pwsh as the default on Windows
+  config.default_prog = { 'pwsh.exe', '-NoLogo' }
+
   table.insert(launch_menu, {
     label = 'PowerShell',
     args = { 'powershell.exe', '-NoLogo' },
