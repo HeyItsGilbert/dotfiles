@@ -1,12 +1,11 @@
 # Choco packages
-# ToDo: Setup community repo if its not setup
-choco install nerdfont-hack starship powershell-core vscode -fy -s'https://chocolatey.org/api/v2/'
+choco install nerdfont-hack starship powershell-core vscode -y -s'https://chocolatey.org/api/v2/'
 
 # Install Modules
 $mods = @{
   'Scope' = 'CurrentUser'
   'Repository' = 'PSGallery'
-  'Force' = $True
+  #'Force' = $True
 }
 # ToDo: Allow additional parameters per module
 @(
@@ -47,7 +46,23 @@ $links = @(
     'src' = Resolve-Path "$PSScriptRoot\.wezterm.lua"
     'dst' = Resolve-Path "$HOME\.wezterm.lua"
   }
+  # Symlinks for Espanso
+  @{
+    'src' = Resolve-Path "$PSScriptRoot\espanso\config\default.yml"
+    'dst' = Resolve-Path "$env:APPDATA\espanso\config\default.yml"
+  }
 )
+
+# Add matcher files 
+$matchers = Get-ChildItem -Path "$PSScriptRoot\espanso\match"
+$matchers | ForEach-Object {
+  $file = $_.Name
+  $links += @{
+    'src' = Resolve-Path "$PSScriptRoot\espanso\match\$file"
+    'dst' = Resolve-Path "$env:APPDATA\espanso\match\$file"
+  }
+}
+
 $links | ForEach-Object {
   # Test path
   if (Test-Path $_.dst) {
