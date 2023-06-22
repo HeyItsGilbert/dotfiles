@@ -1,0 +1,42 @@
+matches:
+  - trigger: '`cc'
+    replace: |
+      // Start with the clipboard content
+      var result = TextExpander.pasteboardText;
+
+      // Replace all lines which start with "- " with "\t<li>"
+      result = result.replace(/^.*\uE0B0/gm, "$>");
+
+      // Strip time stamp from zsh
+      result = result.replace(/\s{10,}\[\d\d:\d\d:\d\d\]/gm, "\n");
+  - trigger: '`ctest'
+    replace: |-
+      1. Connect to jumphost and copy files with my edits from my local machine.
+      1. RDP to test box
+      1. Paste in a directory on desktop
+      1. `PS C:\Users\gsanchezadmin> cd Desktop\%filltext:name=package:width=20%`
+      1. Build package: `PS C:\Users\gsanchezadmin\Desktop\%filltext:name=package:width=20%> cpack .\%filltext:name=package:width=20%.nuspec`
+      1. Check if choco sees the local nupkg. ```
+      PS C:\Users\gsanchezadmin\Desktop\fbitdirectory> choco list -source $pwd
+      Chocolatey v0.10.15
+      %filltext:name=package:width=20% %filltext:name=version:width=20%
+      1 packages found.
+      ```
+      1. ```
+      PS C:\Users\gsanchezadmin\Desktop\%filltext:name=package:width=20%> choco install .\%filltext:name=package:width=20%.%filltext:name=version:width=20%.nupkg
+      ```
+  - trigger: '`ipmo'
+    replace: |-
+      * Run taste test server on `gsanchez.sb.facebook.com` via:
+        * `taste-tester --itchef test -y -s $host`
+      * RDP to the servers listed above.
+      * Setup and run taste test with the following commands:
+        * PS: `tt-me test`
+        * PS: `chefctl -ic -H`
+      * Verified changes on host.
+
+      Taste test results:
+      ```
+
+      ```
+
