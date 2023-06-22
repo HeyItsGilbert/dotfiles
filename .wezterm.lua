@@ -28,9 +28,9 @@ end
 --- Default config settings
 config.color_scheme = 'Solarized Dark (Gogh)'
 config.font = wezterm.font('Hack Nerd Font')
-config.font_size = 11
-config.line_height = 1.2
+config.font_size = 10
 config.launch_menu = launch_menu
+config.default_cursor_style = 'BlinkingBar'
 
 -- Allow overwriting for work stuff
 if haswork then
