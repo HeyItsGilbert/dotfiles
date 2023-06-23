@@ -107,7 +107,7 @@ set list listchars=tab:\ \ ,trail:\
 " Main color settings
 set guifont=Anonymous_Pro:h11
 set background=dark
-colors solarized
+" colors solarized-8
 
 " e: tab bar; g: show disabled menu items gray; m: use menubar
 set guioptions=egm
