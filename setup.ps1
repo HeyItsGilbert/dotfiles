@@ -11,6 +11,7 @@ $mods = @{
 @(
   'AdvancedHistory',
   'DynamicTitle',
+  'Microsoft.PowerShell.ConsoleGuiTools',
   'Pester',
   'Posh-Git',
   'PSReadLine',
