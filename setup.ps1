@@ -1,5 +1,8 @@
+$ErrorActionPreference = 'Stop'
 # Choco packages
-choco install nerdfont-hack starship powershell-core vscode -y -s'https://chocolatey.org/api/v2/'
+choco install espanso nerdfont-hack starship powershell-core vale vscode wezterm -y -s'https://chocolatey.org/api/v2/'
+winget install Microsoft.PowerToys --source winget
+  
 
 # Install Modules
 $mods = @{
@@ -32,25 +35,25 @@ $links = @(
   # Create symbolic links for windows terminal settings
   @{
     'src' = Resolve-Path "$PSScriptRoot\.shell\WindowsTerminal\settings.json"
-    'dst' = Resolve-Path "$Env:LocalAppData\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
+    'dst' = "$Env:LocalAppData\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
   },
   # Create symbolic links for windows terminal settings
   @{
     'src' = Resolve-Path "$PSScriptRoot\.config\Microsoft.Powershell_profile.ps1"
-    'dst' = Resolve-Path $PROFILE
+    'dst' = $PROFILE
   }
   @{
     'src' = Resolve-Path "$PSScriptRoot\.config\starship.toml"
-    'dst' = Resolve-Path "$HOME\.config\starship.toml"
+    'dst' = "$HOME\.config\starship.toml"
   }
   @{
     'src' = Resolve-Path "$PSScriptRoot\.wezterm.lua"
-    'dst' = Resolve-Path "$HOME\.wezterm.lua"
+    'dst' = "$HOME\.wezterm.lua"
   }
   # Symlinks for Espanso
   @{
     'src' = Resolve-Path "$PSScriptRoot\espanso\config\default.yml"
-    'dst' = Resolve-Path "$env:APPDATA\espanso\config\default.yml"
+    'dst' = "$env:APPDATA\espanso\config\default.yml"
   }
 )
 
@@ -60,7 +63,7 @@ $matchers | ForEach-Object {
   $file = $_.Name
   $links += @{
     'src' = Resolve-Path "$PSScriptRoot\espanso\match\$file"
-    'dst' = Resolve-Path "$env:APPDATA\espanso\match\$file"
+    'dst' = "$env:APPDATA\espanso\match\$file"
   }
 }
 
