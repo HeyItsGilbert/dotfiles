@@ -1,31 +1,41 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
+# Using ANSI colors
+# https://i.stack.imgur.com/KTSQa.png
 format = """
-[\uE0B6](fg:#1C4961)[$directory](bg:#1C4961)[\uE0B0](fg:#1C4961 bg:#2F79A1)$git_branch[\uE0B0](fg:#2F79A1 bg:#3A95C7)$git_status[\uE0B0](#3A95C7 bg:#40A9E0)$time[\uE0B0](#40A9E0 bg:none) $all $character """
+[\uE0B6](fg:purple)[$directory](bg:purple)\
+[\uE0B0](fg:purple bg:bright-black)$git_branch\
+[\uE0B0](fg:bright-black bg:green)$git_status\
+[\uE0B0](fg:green bg:12)$time\
+[\uE0B0](fg:12 bg:none) $all $character\
+"""
 
 add_newline = true
 
 [directory]
-style = "bg:#1C4961 fg:white"
+style = "bg:purple fg:white"
+read_only = " 󰌾"
 
 [git_branch]
+symbol = " "
 format = "[ $symbol$branch ]($style)"
-style = "bg:#2F79A1 fg:white"
+style = "bg:bright-black fg:white"
 
 [git_status]
 format = "[ $all_status$ahead_behind ]($style)"
-style = "bg:#3A95C7 fg:white"
+style = "bg:green"
 
 [time]
 disabled = false
 format = "[ $time ]($style)"
-style = "bg:#40A9E0 fg:white"
+style = "bg:12 fg:white"
 
 [username]
 disabled = true
 
 [ruby]
 disabled = true
+symbol = " "
 
 [shell]
 disabled = false
@@ -39,6 +49,7 @@ format ='[$indicator]($style)'
 
 [hostname]
 ssh_only = false
+ssh_symbol = " "
 
 [battery]
 full_symbol = "🔋"
@@ -48,3 +59,131 @@ discharging_symbol = "⚡"
 [[battery.display]]
 threshold = 30
 style = "bold red"
+
+[aws]
+symbol = "  "
+
+[buf]
+symbol = " "
+
+[c]
+symbol = " "
+
+[conda]
+symbol = " "
+
+[dart]
+symbol = " "
+
+[docker_context]
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[fossil_branch]
+symbol = " "
+
+[golang]
+symbol = " "
+
+[guix_shell]
+symbol = " "
+
+[haskell]
+symbol = " "
+
+[haxe]
+symbol = "⌘ "
+
+[hg_branch]
+symbol = " "
+
+[java]
+symbol = " "
+
+[julia]
+symbol = " "
+
+[lua]
+symbol = " "
+
+[memory_usage]
+symbol = "󰍛 "
+
+[meson]
+symbol = "󰔷 "
+
+[nim]
+symbol = "󰆥 "
+
+[nix_shell]
+symbol = " "
+
+[nodejs]
+symbol = " "
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Windows = "󰍲 "
+
+[package]
+symbol = "󰏗 "
+
+[pijul_channel]
+symbol = "🪺 "
+
+[python]
+symbol = " "
+
+[rlang]
+symbol = "󰟔 "
+
+[rust]
+symbol = " "
+
+[scala]
+symbol = " "
+
+[spack]
+symbol = "🅢 "

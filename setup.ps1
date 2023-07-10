@@ -1,6 +1,8 @@
 $ErrorActionPreference = 'Stop'
 # Choco packages
 choco install espanso nerdfont-hack starship powershell-core vale vscode wezterm -y -s'https://chocolatey.org/api/v2/'
+
+# Winget installs
 winget install Microsoft.PowerToys --source winget
   
 
