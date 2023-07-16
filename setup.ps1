@@ -20,6 +20,7 @@ $mods = @{
   'Pester',
   'Posh-Git',
   'PSReadLine',
+  'PSStyle',
   'Terminal-Icons'
 ) | ForEach-Object {
   if (-Not (Get-Module -ListAvailable -Name $_)) {

@@ -170,7 +170,7 @@ config.font = wezterm.font('Hack Nerd Font')
 config.font_size = 10
 config.launch_menu = launch_menu
 config.default_cursor_style = 'BlinkingBar'
---config.disable_default_key_bindings = true
+config.disable_default_key_bindings = true
 config.keys = keys
 
 -- Allow overwriting for work stuff

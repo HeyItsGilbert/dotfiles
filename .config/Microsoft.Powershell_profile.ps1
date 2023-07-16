@@ -44,8 +44,8 @@ function ocgv_history {
       [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
     } else {
       [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selection.Length)
-    }    
-  }      
+    }
+  }
 }
 
 # Aliases
@@ -83,6 +83,7 @@ function Initialize-Profile {
   Import-Module DynamicTitle
   Import-Module Posh-Git
   Import-Module PSReadLine
+  Import-Module PSStyle
   Import-Module Terminal-Icons
   # Chocolatey profile
   $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
@@ -128,14 +129,15 @@ function Initialize-Profile {
   }
 
   ## Colours
+  
   $colors = @{
-    'Command' = [System.ConsoleColor]::Blue
-    'Parameter' = [System.ConsoleColor]::DarkBlue
+    'Command' = [System.ConsoleColor]::DarkMagenta
+    'Parameter' = [System.ConsoleColor]::Magenta
     'Comment' = [System.ConsoleColor]::Green
     'Operator' = [System.ConsoleColor]::Gray
-    'Variable' = [System.ConsoleColor]::Magenta
+    'Variable' = [System.ConsoleColor]::White
     'Keyword' = [System.ConsoleColor]::Magenta
-    #'String' = [System.ConsoleColor]::DarkGray
+    'String' = [System.ConsoleColor]::DarkGray
     'Type' = [System.ConsoleColor]::DarkCyan
   }
   Set-PSReadLineOption -Colors $colors
@@ -151,10 +153,13 @@ function Initialize-Profile {
     }
 
     $initializationScript = {
-      param ($modulePath)
-      Import-Module $modulePath
-      $psVersion = 'PS' + $PSVersionTable.PSVersion.Major
-      $psVersion # For PSUseDeclaredVarsMoreThanAssignments false detection.
+      if ($PSVersionTable.PSVersion.Major -eq 7) {
+        $icon = "`u{ebc7}"
+      } else {
+        # 
+        $icon = ">"
+      }
+      $icon
     }
     $scriptBlock = {
       param($commandStartJob, $commandEndJob)
@@ -183,14 +188,13 @@ function Initialize-Profile {
         }
       }
 
-      '{0} {1} {2}' -f $status, $psVersion, $commandSegment
+      '{0} {1} {2}' -f $status, $icon, $commandSegment
     }
 
     $params = @{
       ScriptBlock = $scriptBlock
       ArgumentList = $commandStartJob, $commandEndJob
       InitializationScript = $initializationScript
-      InitializationArgumentList = $modulePath
     }
 
     Start-DTTitle @params
