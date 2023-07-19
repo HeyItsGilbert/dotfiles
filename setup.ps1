@@ -4,7 +4,6 @@ choco install espanso nerdfont-hack starship powershell-core vale vscode wezterm
 
 # Winget installs
 winget install Microsoft.PowerToys --source winget
-  
 
 # Install Modules
 $mods = @{
@@ -40,10 +39,14 @@ $links = @(
     'src' = Resolve-Path "$PSScriptRoot\.shell\WindowsTerminal\settings.json"
     'dst' = "$Env:LocalAppData\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
   },
-  # Create symbolic links for windows terminal settings
+  # Create symbolic links for PowerShell profile
   @{
     'src' = Resolve-Path "$PSScriptRoot\.config\Microsoft.Powershell_profile.ps1"
-    'dst' = $PROFILE
+    'dst' = $PROFILE.CurrentUserCurrentHost
+  }
+  @{
+    'src' = Resolve-Path "$PSScriptRoot\.config\ShellIntegration.ps1"
+    'dst' = (Join-Path (Split-Path $PROFILE.CurrentUserCurrentHost) 'ShellIntegration.ps1')
   }
   @{
     'src' = Resolve-Path "$PSScriptRoot\.config\starship.toml"

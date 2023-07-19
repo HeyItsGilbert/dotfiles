@@ -3,6 +3,7 @@ local mux = wezterm.mux
 local act = wezterm.action
 local config = {}
 local keys = {}
+local mouse_bindings = {}
 local launch_menu = {}
 local haswork,work = pcall(require,"work")
 
@@ -62,25 +63,32 @@ keys = {
   { key = '0', mods = 'CTRL', action = act.ResetFontSize },
   { key = '0', mods = 'SHIFT|CTRL', action = act.ResetFontSize },
   { key = '0', mods = 'SUPER', action = act.ResetFontSize },
-  { key = '1', mods = 'SHIFT|CTRL', action = act.ActivateTab(0) },
-  { key = '1', mods = 'SUPER', action = act.ActivateTab(0) },
-  { key = '2', mods = 'SHIFT|CTRL', action = act.ActivateTab(1) },
-  { key = '2', mods = 'SUPER', action = act.ActivateTab(1) },
-  { key = '3', mods = 'SHIFT|CTRL', action = act.ActivateTab(2) },
-  { key = '3', mods = 'SUPER', action = act.ActivateTab(2) },
-  { key = '4', mods = 'SHIFT|CTRL', action = act.ActivateTab(3) },
-  { key = '4', mods = 'SUPER', action = act.ActivateTab(3) },
-  { key = '5', mods = 'SHIFT|CTRL', action = act.ActivateTab(4) },
-  { key = '5', mods = 'SHIFT|ALT|CTRL', action = act.SplitHorizontal{ domain =  'CurrentPaneDomain' } },
-  { key = '5', mods = 'SUPER', action = act.ActivateTab(4) },
-  { key = '6', mods = 'SHIFT|CTRL', action = act.ActivateTab(5) },
-  { key = '6', mods = 'SUPER', action = act.ActivateTab(5) },
-  { key = '7', mods = 'SHIFT|CTRL', action = act.ActivateTab(6) },
-  { key = '7', mods = 'SUPER', action = act.ActivateTab(6) },
-  { key = '8', mods = 'SHIFT|CTRL', action = act.ActivateTab(7) },
-  { key = '8', mods = 'SUPER', action = act.ActivateTab(7) },
-  { key = '9', mods = 'SHIFT|CTRL', action = act.ActivateTab(-1) },
-  { key = '9', mods = 'SUPER', action = act.ActivateTab(-1) },
+  -- I use Ctrl + Number in all my other apps.
+  -- I also never have more the 5 tabs
+  { key = '1', mods = 'CTRL', action = act.ActivateTab(0) },
+  { key = '2', mods = 'CTRL', action = act.ActivateTab(1) },
+  { key = '3', mods = 'CTRL', action = act.ActivateTab(2) },
+  { key = '4', mods = 'CTRL', action = act.ActivateTab(3) },
+  { key = '5', mods = 'CTRL', action = act.ActivateTab(4) },
+  -- { key = '1', mods = 'SHIFT|CTRL', action = act.ActivateTab(0) },
+  -- { key = '1', mods = 'SUPER', action = act.ActivateTab(0) },
+  -- { key = '2', mods = 'SHIFT|CTRL', action = act.ActivateTab(1) },
+  -- { key = '2', mods = 'SUPER', action = act.ActivateTab(1) },
+  -- { key = '3', mods = 'SHIFT|CTRL', action = act.ActivateTab(2) },
+  -- { key = '3', mods = 'SUPER', action = act.ActivateTab(2) },
+  -- { key = '4', mods = 'SHIFT|CTRL', action = act.ActivateTab(3) },
+  -- { key = '4', mods = 'SUPER', action = act.ActivateTab(3) },
+  -- { key = '5', mods = 'SHIFT|CTRL', action = act.ActivateTab(4) },
+  -- { key = '5', mods = 'SHIFT|ALT|CTRL', action = act.SplitHorizontal-- { domain =  'CurrentPaneDomain' } },
+  -- { key = '5', mods = 'SUPER', action = act.ActivateTab(4) },
+  -- { key = '6', mods = 'SHIFT|CTRL', action = act.ActivateTab(5) },
+  -- { key = '6', mods = 'SUPER', action = act.ActivateTab(5) },
+  -- { key = '7', mods = 'SHIFT|CTRL', action = act.ActivateTab(6) },
+  -- { key = '7', mods = 'SUPER', action = act.ActivateTab(6) },
+  -- { key = '8', mods = 'SHIFT|CTRL', action = act.ActivateTab(7) },
+  -- { key = '8', mods = 'SUPER', action = act.ActivateTab(7) },
+  -- { key = '9', mods = 'SHIFT|CTRL', action = act.ActivateTab(-1) },
+  -- { key = '9', mods = 'SUPER', action = act.ActivateTab(-1) },
   { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
   { key = '=', mods = 'SHIFT|CTRL', action = act.IncreaseFontSize },
   { key = '=', mods = 'SUPER', action = act.IncreaseFontSize },
@@ -152,6 +160,10 @@ keys = {
   -- Turning these off so I can use pwsh keys
   -- { key = 'LeftArrow', mods = 'SHIFT|CTRL', action = act.ActivatePaneDirection 'Left' },
   -- { key = 'RightArrow', mods = 'SHIFT|CTRL', action = act.ActivatePaneDirection 'Right' },
+  -- Add these to allow quick moving between prompts
+  { key = 'UpArrow', mods = 'SHIFT', action = act.ScrollToPrompt(-1) },
+  { key = 'DownArrow', mods = 'SHIFT', action = act.ScrollToPrompt(1) },
+  --
   { key = 'RightArrow', mods = 'SHIFT|ALT|CTRL', action = act.AdjustPaneSize{ 'Right', 1 } },
   { key = 'UpArrow', mods = 'SHIFT|CTRL', action = act.ActivatePaneDirection 'Up' },
   { key = 'UpArrow', mods = 'SHIFT|ALT|CTRL', action = act.AdjustPaneSize{ 'Up', 1 } },
@@ -164,6 +176,15 @@ keys = {
   { key = 'Paste', mods = 'NONE', action = act.PasteFrom 'Clipboard' },
 }
 
+-- Mousing bindings
+mouse_bindings = {
+  {
+    event = { Down = { streak = 3, button = 'Left' } },
+    action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
+    mods = 'NONE',
+  },
+}
+
 --- Default config settings
 config.color_scheme = 'AdventureTime'
 config.font = wezterm.font('Hack Nerd Font')
@@ -172,6 +193,7 @@ config.launch_menu = launch_menu
 config.default_cursor_style = 'BlinkingBar'
 config.disable_default_key_bindings = true
 config.keys = keys
+config.mouse_bindings = mouse_bindings
 
 -- Allow overwriting for work stuff
 if haswork then
