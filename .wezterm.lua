@@ -9,6 +9,18 @@ local haswork,work = pcall(require,"work")
 
 --- Setup PowerShell options
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+  --- Grab the ver info for later use.
+  local success, stdout, stderr = wezterm.run_child_process { 'cmd.exe', 'ver' }
+  local major, minor, build, rev = stdout:match("Version ([0-9]+)%.([0-9]+)%.([0-9]+)%.([0-9]+)")
+  local is_windows_11 = tonumber(build) >= 22000
+  
+  --- Make it look cool.
+  if is_windows_11 then
+    wezterm.log_info "We're running Windows 11!"
+    config.window_background_opacity = 0.8
+    config.win32_system_backdrop = 'Tabbed'
+  end
+
   --- Set Pwsh as the default on Windows
   config.default_prog = { 'pwsh.exe', '-NoLogo' }
 
