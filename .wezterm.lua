@@ -17,8 +17,6 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
   --- Make it look cool.
   if is_windows_11 then
     wezterm.log_info "We're running Windows 11!"
-    config.window_background_opacity = 0.8
-    config.win32_system_backdrop = 'Tabbed'
   end
 
   --- Set Pwsh as the default on Windows
