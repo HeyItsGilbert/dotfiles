@@ -142,6 +142,18 @@ function Initialize-Profile {
   }
   Set-PSReadLineOption -Colors $colors
 
+  ## Import Shell Integration Script
+  $si = "$PSScriptRoot\ShellIntegration.ps1"
+  if (Test-Path $si -ErrorAction SilentlyContinue) {
+    $term_app = $env:TERM_PROGRAM
+    # Let's check if its Windows terminal thanks to...
+    # https://github.com/microsoft/terminal/issues/1040
+    if ($null -ne $env:WT_SESSION) {
+      $term_app = 'WindowsTerminal'
+    }
+    & $si -TerminalProgram $term_app
+  }
+
   if ($env:TERM_PROGRAM -eq 'WezTerm') {
     $commandStartJob = Start-DTJobCommandPreExecutionCallback -ScriptBlock {
       param($command)
@@ -256,11 +268,11 @@ function prompt {
 # Starship overwrite the prompt. Do this so its available on first open.
 # There is a cost for this but it should be minimal.
 if (Get-Command 'starship' -ErrorAction SilentlyContinue) {
-  Invoke-Expression (&starship init powershell)
   function Invoke-Starship-PreCommand {
     if ($global:profile_initialized -ne $true) {
       $global:profile_initialized = $true
       Initialize-Profile
     }
   }
+  Invoke-Expression (&starship init powershell)
 }
