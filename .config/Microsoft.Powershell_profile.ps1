@@ -90,6 +90,9 @@ function Initialize-Profile {
   if (Test-Path($ChocolateyProfile)) {
     Import-Module "$ChocolateyProfile"
   }
+
+  # Save all output, just in case! Thanks to @vexx32
+  $PSDefaultParameterValues['Out-Default:OutVariable'] = '__'
   
   # Readline options
   ## Tab completion
@@ -128,7 +131,7 @@ function Initialize-Profile {
     Set-PSReadLineKeyHandler @parameters
   }
 
-  ## Colours
+  ## Colors
   
   $colors = @{
     'Command' = [System.ConsoleColor]::DarkMagenta
@@ -193,14 +196,18 @@ function Initialize-Profile {
       $status = ''
       if ($commandDuration) {
         if ($commandDuration.TotalSeconds -gt 1) {
-          $commandSegment = "[{0}]-⏳{1}" -f $command, $commandDuration.ToString('mm\:ss')
+          $commandSegment = "[{0}]" -f $command
           if ($isCommandRunning) {
-            $status = '🏃‍♀️'
+            if ($PSVersionTable.PSVersion.Major -eq 7) {
+              $status = '🏃‍♀️'
+            } else {
+              $status = '%'
+            }
           }
         }
       }
 
-      '{0} {1} {2}' -f $status, $icon, $commandSegment
+      '{0} {1} {2} {3}' -f $status, $icon, $folder, $commandSegment
     }
 
     $params = @{

@@ -39,7 +39,6 @@ end
 
 --- Disable defaul keys and set some minimum ones for now.
 --- This helps with conflicting keys in pwsh
-local act = wezterm.action
 keys = {
   { key = 'Tab', mods = 'CTRL', action = act.ActivateTabRelative(1) },
   { key = 'Tab', mods = 'SHIFT|CTRL', action = act.ActivateTabRelative(-1) },
