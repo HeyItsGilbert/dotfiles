@@ -45,10 +45,10 @@ zsh_indicator = '%_'
 cmd_indicator = ''
 unknown_indicator = ''
 style = 'cyan bold'
-format ='[$indicator]($style)'
+format = '[$indicator]($style)'
 
 [hostname]
-ssh_only = false
+ssh_only = true
 ssh_symbol = " "
 
 [battery]
