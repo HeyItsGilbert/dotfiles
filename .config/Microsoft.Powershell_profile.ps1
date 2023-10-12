@@ -140,7 +140,7 @@ function Initialize-Profile {
     'Operator' = [System.ConsoleColor]::Gray
     'Variable' = [System.ConsoleColor]::White
     'Keyword' = [System.ConsoleColor]::Magenta
-    'String' = [System.ConsoleColor]::DarkGray
+    'String' = [System.ConsoleColor]::White
     'Type' = [System.ConsoleColor]::DarkCyan
   }
   Set-PSReadLineOption -Colors $colors
