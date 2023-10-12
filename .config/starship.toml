@@ -28,7 +28,7 @@ style = "bg:green"
 [time]
 disabled = false
 format = "[ $time ]($style)"
-style = "bg:12 fg:white"
+style = "bg:12 fg:bright-white"
 
 [username]
 disabled = true
