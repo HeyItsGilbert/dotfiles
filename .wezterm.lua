@@ -21,15 +21,6 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
 
   --- Set Pwsh as the default on Windows
   config.default_prog = { 'pwsh.exe', '-NoLogo' }
-
-  table.insert(launch_menu, {
-    label = 'PowerShell',
-    args = { 'powershell.exe', '-NoLogo' },
-  })
-  table.insert(launch_menu, {
-    label = 'PowerShell No Profile',
-    args = { 'powershell.exe', '-NoLogo', '-NoProfile' },
-  })
   table.insert(launch_menu, {
     label = 'Pwsh',
     args = { 'pwsh.exe', '-NoLogo' },
@@ -37,6 +28,14 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
   table.insert(launch_menu, {
     label = 'Pwsh No Profile',
     args = { 'pwsh.exe', '-NoLogo', '-NoProfile' },
+  })
+  table.insert(launch_menu, {
+    label = 'PowerShell',
+    args = { 'powershell.exe', '-NoLogo' },
+  })
+  table.insert(launch_menu, {
+    label = 'PowerShell No Profile',
+    args = { 'powershell.exe', '-NoLogo', '-NoProfile' },
   })
 else
   --- Non-Windows Machine
@@ -130,8 +129,8 @@ keys = {
   { key = 'P', mods = 'CTRL', action = act.ActivateCommandPalette },
   { key = 'R', mods = 'CTRL', action = act.ReloadConfiguration },
   { key = 'R', mods = 'SHIFT|CTRL', action = act.ReloadConfiguration },
-  { key = 'T', mods = 'CTRL', action = act.SpawnTab 'CurrentPaneDomain' },
-  { key = 'T', mods = 'SHIFT|CTRL', action = act.SpawnTab 'CurrentPaneDomain' },
+  { key = 'T', mods = 'CTRL', action = act.ShowLauncher },
+  { key = 'T', mods = 'SHIFT|CTRL', action = act.ShowLauncher },
   { key = 'U', mods = 'CTRL', action = act.CharSelect{ copy_on_select = true, copy_to =  'ClipboardAndPrimarySelection' } },
   { key = 'U', mods = 'SHIFT|CTRL', action = act.CharSelect{ copy_on_select = true, copy_to =  'ClipboardAndPrimarySelection' } },
   { key = 'V', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
@@ -159,8 +158,8 @@ keys = {
   { key = 'n', mods = 'SUPER', action = act.SpawnWindow },
   { key = 'r', mods = 'SHIFT|CTRL', action = act.ReloadConfiguration },
   { key = 'r', mods = 'SUPER', action = act.ReloadConfiguration },
-  { key = 't', mods = 'SHIFT|CTRL', action = act.SpawnTab 'CurrentPaneDomain' },
-  { key = 't', mods = 'SUPER', action = act.SpawnTab 'CurrentPaneDomain' },
+  { key = 't', mods = 'SHIFT|CTRL', action = act.ShowLauncher },
+  { key = 't', mods = 'SUPER', action = act.ShowLauncher },
   { key = 'u', mods = 'SHIFT|CTRL', action = act.CharSelect{ copy_on_select = true, copy_to =  'ClipboardAndPrimarySelection' } },
   { key = 'v', mods = 'SUPER', action = act.PasteFrom 'Clipboard' },
   { key = 'w', mods = 'SHIFT|CTRL', action = act.CloseCurrentTab{ confirm = true } },
