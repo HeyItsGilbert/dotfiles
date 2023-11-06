@@ -207,6 +207,7 @@ mouse_bindings = {
 }
 
 --- Default config settings
+config.scrollback_lines = 7000
 config.hide_tab_bar_if_only_one_tab = true
 config.color_scheme = 'Flexoki Dark'
 --- config.color_scheme = 'AdventureTime'
