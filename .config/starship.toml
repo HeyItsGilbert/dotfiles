@@ -12,6 +12,13 @@ format = """
 
 add_newline = true
 
+[profiles]
+short = """
+[\uE0B6](fg:purple)[$directory](bg:purple)\
+[\uE0B0](fg:purple bg:12)$time\
+[\uE0B0](fg:12 bg:none) $character
+"""
+
 [directory]
 style = "bg:purple fg:white"
 read_only = " 󰌾"
@@ -39,7 +46,8 @@ symbol = " "
 
 [shell]
 disabled = false
-powershell_indicator = ''
+powershell_indicator = ''
+pwsh_indicator = ''
 bash_indicator = ''
 zsh_indicator = '%_'
 cmd_indicator = ''
