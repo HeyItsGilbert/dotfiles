@@ -211,8 +211,15 @@ config.scrollback_lines = 7000
 config.hide_tab_bar_if_only_one_tab = true
 config.color_scheme = 'Flexoki Dark'
 --- config.color_scheme = 'AdventureTime'
-config.font = wezterm.font('Hack Nerd Font')
-config.font_size = 10
+config.font = wezterm.font_with_fallback {
+  {
+    family = 'FiraCode Nerd Font'
+  },
+  {
+    family = 'Hack Nerd Font',
+  }
+}
+config.font_size = 9
 config.launch_menu = launch_menu
 config.default_cursor_style = 'BlinkingBar'
 config.disable_default_key_bindings = true
