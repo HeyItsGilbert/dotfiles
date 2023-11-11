@@ -104,14 +104,14 @@ function Initialize-Profile {
   Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 
   # Register OnIdle event to redraw prompt so time on prompt is accurate
-  Register-EngineEvent -SourceIdentifier PowerShell.OnIdle { Write-Host "$([char]27)[2A$([char]27)[0G$(prompt)" -NoNewline }
+  #Register-EngineEvent -SourceIdentifier PowerShell.OnIdle { Write-Host "$([char]27)[2A$([char]27)[0G$(prompt)" -NoNewline }
 
   # Update previous prompt with simpler prompt 
   function Invoke-Starship-TransientFunction {
     &starship prompt --profile short
   }
 
-  Enable-TransientPrompt
+  #Enable-TransientPrompt
 
   ## This is for Core only stuff
   if ($PSVersionTable.PSEdition -eq 'Core') {
