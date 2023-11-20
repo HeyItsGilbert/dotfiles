@@ -26,12 +26,12 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
     args = { 'pwsh.exe', '-NoLogo' },
   })
   table.insert(launch_menu, {
-    label = 'Pwsh No Profile',
-    args = { 'pwsh.exe', '-NoLogo', '-NoProfile' },
-  })
-  table.insert(launch_menu, {
     label = 'PowerShell',
     args = { 'powershell.exe', '-NoLogo' },
+  })
+  table.insert(launch_menu, {
+    label = 'Pwsh No Profile',
+    args = { 'pwsh.exe', '-NoLogo', '-NoProfile' },
   })
   table.insert(launch_menu, {
     label = 'PowerShell No Profile',
@@ -208,12 +208,16 @@ mouse_bindings = {
 
 --- Default config settings
 config.scrollback_lines = 7000
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
 config.hide_tab_bar_if_only_one_tab = true
 config.color_scheme = 'Flexoki Dark'
 --- config.color_scheme = 'AdventureTime'
 config.font = wezterm.font_with_fallback {
   {
-    family = 'FiraCode Nerd Font'
+    family = 'FiraMono Nerd Font'
+  },
+  {
+    family = 'IosevkaTerm NFM'
   },
   {
     family = 'Hack Nerd Font',

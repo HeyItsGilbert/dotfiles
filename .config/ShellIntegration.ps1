@@ -66,7 +66,7 @@ $function:global:Prompt = {
     'WindowsTerminal' { $setWorkingDirectory = "$([char]27)]9;9;`"$currentLocation`"$([char]7)" }
     'ITerm2' { $setWorkingDirectory = "$([char]27)]1337;CurrentDir=$currentLocation$([char]7)" }
     'WezTerm' {
-      $provider_path = $current_location.ProviderPath -replace "\\", "/"
+      $provider_path = $currentLocation.ProviderPath -replace "\\", "/"
       $setWorkingDirectory = "$([char]27)]7;file://${env:COMPUTERNAME}/${provider_path}$([char]27)\"
     }
   }
