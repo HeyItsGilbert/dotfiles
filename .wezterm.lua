@@ -199,6 +199,20 @@ keys = {
 
 -- Mousing bindings
 mouse_bindings = {
+  -- Change the default click behavior so that it only selects
+  -- text and doesn't open hyperlinks
+  {
+    event = { Up = { streak = 1, button = 'Left' } },
+    mods = 'NONE',
+    action = act.CompleteSelection 'ClipboardAndPrimarySelection',
+  },
+
+  -- and make CTRL-Click open hyperlinks
+  {
+    event = { Up = { streak = 1, button = 'Left' } },
+    mods = 'CTRL',
+    action = act.OpenLinkAtMouseCursor,
+  },
   {
     event = { Down = { streak = 3, button = 'Left' } },
     action = wezterm.action.SelectTextAtMouseCursor 'SemanticZone',
