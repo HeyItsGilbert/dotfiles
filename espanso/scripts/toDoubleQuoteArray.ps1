@@ -1,0 +1,1 @@
+Get-Clipboard | ? { -Not [string]::IsNullOrEmpty($_) } | % { $_.Trim() -replace "^[`'`"]", '"' -replace "[`'`"]$", '",' }

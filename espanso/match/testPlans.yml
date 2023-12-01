@@ -39,4 +39,23 @@ matches:
       ```
 
       ```
-
+  - trigger: 'double_list'
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: script
+        params:
+          args:
+            - pwsh
+            - -File
+            - "%CONFIG%/scripts/toDoubleQuoteArray.ps1"
+  - trigger: 'single_list'
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: script
+        params:
+          args:
+            - pwsh
+            - -File
+            - "%CONFIG%/scripts/toSingleQuoteArray.ps1"
