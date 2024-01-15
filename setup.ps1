@@ -23,14 +23,14 @@ $mods = @{
   'Terminal-Icons'
 ) | ForEach-Object {
   if (-Not (Get-Module -ListAvailable -Name $_)) {
-    Install-Module $_ @mods
+    Install-Module $_ @mods -Confirm:$False -Force
   }
 }
 
 # Setup .config in home folder.
 $dotConfig = "$HOME\.config"
 if (-Not (Test-Path $dotConfig)) {
-  New-Item -ItemType Directory 
+  New-Item -ItemType Directory $dotConfig
 }
 
 $links = @(
