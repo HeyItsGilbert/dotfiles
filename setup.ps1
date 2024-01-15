@@ -74,7 +74,13 @@ $matchers | ForEach-Object {
 }
 
 $links | ForEach-Object {
-  # Test path
+  # Test if source file exists (sometimes app isn't configured)
+  if (-Not(Test-Path $_.src)){
+    Write-Host "Skipping $($_.src) because it doesn't exist"
+    return
+  }
+
+  # Test if destination file exists
   if (Test-Path $_.dst) {
     $current = Get-Item $_.dst
     if ($current.LinkType -eq 'SymbolicLink' -And $current.Target -eq $_.src) {
