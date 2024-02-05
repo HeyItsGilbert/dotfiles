@@ -1,5 +1,7 @@
 README.md
 LICENSE
+install.sh
+install.ps1
 {{- if eq .chezmoi.os "windows" }}
 .tmux.conf
 .vimrc
