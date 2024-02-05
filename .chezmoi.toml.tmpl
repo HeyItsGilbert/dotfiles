@@ -1,0 +1,17 @@
+{{ $email := promptString "email" -}}
+follow = true # follow symlinks, so we can symlink ~\Documents to ~\OneDrive\Documents
+[data]
+  email = {{ $email | quote }}
+  shell = "PowerShell"
+  shellexe = "pwsh.exe"
+[merge]
+  command = "code"
+  args = "--wait $MERGED"
+[cd]
+  command = "pwsh"
+  args = ["-NoProfile", "-NoLogo"]
+[diff]
+  pager = "delta"
+[interpreters.ps1]
+  command = "pwsh"
+  args = ["-NoLogo", "-NoProfile"]

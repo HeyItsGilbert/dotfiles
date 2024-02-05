@@ -1,0 +1,9 @@
+README.md
+LICENSE
+{{- if eq .chezmoi.os "windows" }}
+.tmux.conf
+.vimrc
+.zlogin
+.zprofile
+.zshrc
+{{- end }}
