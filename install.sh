@@ -12,7 +12,7 @@ fi
 if [ -d ~/.oh-my-zsh ]; then
 	echo "oh-my-zsh is installed"
 else
- 	echo "Installing oh-my-zsh"
+  echo "Installing oh-my-zsh"
   curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
 fi
 
@@ -48,21 +48,5 @@ do
   echo "git clone https://github.com/$plugin - ${vimplugins[$sound]}"
 done
 
-# Make the symlinks
-Links=(
-  .tmux.conf
-  .vimrc
-  .zlogin
-  .zprofile
-  .shell
-  .wezterm
-)
-for i in "${Links[@]}"
-do
-  if [ -h $i ]; then
-    echo "$i is configured"
-  else
-    echo "Linking $i"
-    ln -s $PWD/$i ~/$i
-  fi
-done
+# Install Chezmoi
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply $GITHUB_USERNAME
