@@ -3,6 +3,7 @@ LICENSE
 install.sh
 install.ps1
 {{- if eq .chezmoi.os "windows" }}
+run_once_install_packages.sh
 .tmux.conf
 .vimrc
 .zlogin

@@ -1,9 +1,28 @@
-{{ $email := promptString "email" -}}
+{{- $codespaces := env "CODESPACES" | not | not -}}
+{{- $powershellPath := lookPath "powershell" -}}
+{{- $pwshPath := lookPath "pwsh" -}}
 follow = true # follow symlinks, so we can symlink ~\Documents to ~\OneDrive\Documents
 [data]
-  email = {{ $email | quote }}
-  shell = "PowerShell"
-  shellexe = "pwsh.exe"
+  name = "Gilbert Sanchez"
+  codespaces = {{ $codespaces }}
+  {{- if $codespaces }}{{/* Codespaces dotfiles setup is non-interactive, so set an email address */}}
+      email = "your@email.com"
+  {{- else }}{{/* Interactive setup, so prompt for an email address */}}
+      email = {{ promptString "email" | quote }}
+  {{- end }}
+  {{ if $powershellPath  }}
+  powershellPath = {{ $powershellPath | quote }}
+  hasPowerShell = true
+  {{ end }}
+  {{ if $pwshPath  }}
+  pwshPath = {{ $pwshPath | quote }}
+  hasPwsh = true
+  {{ end }}
+  {{ if $pwshPath }}
+  shellexe = {{ $pwshPath | quote }}
+  {{ else }}
+  shellexe = {{ $powershellPath | quote }}
+  {{ end }}
 [merge]
   command = "code"
   args = "--wait $MERGED"

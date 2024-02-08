@@ -1,6 +1,7 @@
 $ErrorActionPreference = 'Stop'
 # Choco packages
-choco install chezmoi espanso nerdfont-hack starship powertoys powershell-core vale vscode wezterm -y -s'https://chocolatey.org/api/v2/'
+
+choco install 1password-cli chezmoi espanso nerdfont-hack starship powertoys powershell-core vale vscode wezterm -y -s'https://chocolatey.org/api/v2/'
 choco install ditto --pre -y -s'https://chocolatey.org/api/v2/'
 
 # Install via Store
