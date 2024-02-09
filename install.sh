@@ -1,52 +1,30 @@
-#!/bin/bash
+#!/bin/sh
 
-parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+# -e: exit on error
+# -u: exit on unset variables
+set -eu
 
-# Check for zsh
-if [[ `which zsh &>/dev/null && $?` != 0 ]]
-then
-  echo "ZSH is not installed! Install it and try again."
+if ! chezmoi="$(command -v chezmoi)"; then
+        bin_dir="${HOME}/.local/bin"
+        chezmoi="${bin_dir}/chezmoi"
+        echo "Installing chezmoi to '${chezmoi}'" >&2
+        if command -v curl >/dev/null; then
+                chezmoi_install_script="$(curl -fsSL get.chezmoi.io)"
+        elif command -v wget >/dev/null; then
+                chezmoi_install_script="$(wget -qO- get.chezmoi.io)"
+        else
+                echo "To install chezmoi, you must have curl or wget installed." >&2
+                exit 1
+        fi
+        sh -c "${chezmoi_install_script}" -- -b "${bin_dir}"
+        unset chezmoi_install_script bin_dir
 fi
 
-# Install oh-my-zsh
-if [ -d ~/.oh-my-zsh ]; then
-	echo "oh-my-zsh is installed"
-else
-  echo "Installing oh-my-zsh"
-  curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
-fi
+# POSIX way to get script's dir: https://stackoverflow.com/a/29834779/12156188
+script_dir="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" && pwd -P)"
 
-# Check for Tmux and Setup
-if [[ `which tmux &>/dev/null && $?` != 0 ]]
-then
-  echo "Tmux is not installed! Install it and try again."
-fi
-# Setup TPM
-if [ -d "~/.tmux/plugins/tpm" ]
-then
-  echo "TPM is already installed."
-else
-  echo "Installing TPM"
-  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-fi
+set -- init --apply --source="${script_dir}"
 
-# Setup VIM
-mkdir -p ~/.vim/swaps ~/.vim/autoload ~/.vim/bundle
-curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-
-# VIM Plugins
-declare -A vimplugins
-vimplugins=(
-  ["bling/vim-airline"]="vim-airline"
-  ["vim-airline/vim-airline-themes"]="vim-airline-themes"
-  ["ctrlpvim/ctrlp.vim"]="ctrlp.vim"
-  ["altercation/vim-colors-solarized.git"]="vim-colors-solarized"
-  ["/PProvost/vim-ps1.git"]="vim-ps1"
-)
-for plugin in "${!vimplugins[@]}";
-do
-  echo "git clone https://github.com/$plugin - ${vimplugins[$sound]}"
-done
-
-# Install Chezmoi
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply $GITHUB_USERNAME
+echo "Running 'chezmoi $*'" >&2
+# exec: replace current process with chezmoi
+exec "$chezmoi" "$@"
