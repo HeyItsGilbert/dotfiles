@@ -1,0 +1,28 @@
+{
+  "packages": {
+    "chocolatey": [
+      "1password-cli",
+      "chezmoi",
+      "espanso",
+      "nerdfont-hack",
+      "starship",
+      "powertoys",
+      "powershell-core",
+      "vale",
+      "vscode",
+      "wezterm"
+    ],
+    "ps_modules": {
+      "AdvancedHistory": {},
+      "DynamicTitle": {},
+      "Microsoft.PowerShell.ConsoleGuiTools": {},
+      "Pester": {
+        "Prerelease": true
+      },
+      "Posh-Git": {},
+      "PSReadLine": {},
+      "PSStyle": {},
+      "Terminal-Icons": {}
+    }
+  }
+}
