@@ -13,19 +13,20 @@ if ($Env:OneDrive) {
 $Dest += '\Documents'
 
 $FilesToCopy = @{
-  'profile.ps1' = @(
+  'profile.ps1'                  = @(
     "$Dest\PowerShell\Microsoft.dotnet-interactive_profile.ps1",
     $Profile.CurrentUserAllHosts
   )
-  'powershell.config.json' = @(
+  'powershell.config.json'       = @(
     "$Dest\PowerShell\powershell.config.json"
   )
-  'GitTools.ps1' = @()
-  'ShellIntegration.ps1' = @()
+  'GitTools.ps1'                 = @()
+  'ShellIntegration.ps1'         = @()
+  'Microsoft.VSCode_profile.ps1' = @()
 }
 
 # If this is windows, append WindowsPowerShell options
-@('profile.ps1', 'GitTools.ps1', 'ShellIntegration.ps1') | ForEach-Object {
+@('profile.ps1', 'GitTools.ps1', 'ShellIntegration.ps1', 'Microsoft.VSCode_profile.ps1') | ForEach-Object {
   $FilesToCopy.$_ += "$Dest\WindowsPowerShell\$_"
   $FilesToCopy.$_ += "$Dest\PowerShell\$_"
 }
@@ -33,6 +34,9 @@ $FilesToCopy = @{
 # Now we copy to all the destinations.
 $FilesToCopy.Keys | ForEach-Object {
   foreach ($dest in $FilesToCopy.Item($_)) {
-    Copy-Item $_ $dest
+
+    $src = Resolve-Path (Join-Path $Env:USERPROFILE '.config' 'powershell' $_)
+    New-Item -ItemType Directory $(Split-Path $dest) -Force
+    Copy-Item $src $dest
   }
 }
