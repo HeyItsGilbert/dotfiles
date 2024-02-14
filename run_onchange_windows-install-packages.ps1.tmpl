@@ -1,0 +1,14 @@
+#!/usr/bin/env pwsh
+
+$json = @"
+{{.packages | toPrettyJson}}
+"@
+$packageInfo = $json | ConvertFrom-Json -AsHashtable
+
+{{ if eq .chezmoi.os "windows" -}}
+# Choco packages
+choco upgrade {{ range .packages.chocolatey -}} {{.}} {{ end }} -y -s'https://chocolatey.org/api/v2/'
+{{ end -}}  
+
+# Install Modules
+Install-PSResource -Scope CurrentUser -RequiredResource $packageInfo['ps_modules'] -Confirm:$False -TrustRepository
