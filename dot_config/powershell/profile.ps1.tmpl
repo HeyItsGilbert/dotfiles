@@ -3,7 +3,7 @@ $global:profile_initialized = $false
 
 if ($env:TERM_PROGRAM -eq "VSCODE") {
   # Don't load anything else in VSCode. It slows and breaks stuff.
-  Write-Host "Not loading profile in VScode!"
+  Write-Host "Not loading standard profile in VScode."
   return
 }
 
