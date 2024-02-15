@@ -4,13 +4,15 @@
       "1password-cli",
       "chezmoi",
       "espanso",
+      "fzf",
       "nerdfont-hack",
       "starship",
       "powertoys",
       "powershell-core",
       "vale",
       "vscode",
-      "wezterm"
+      "wezterm",
+      "zoxide"
     ],
     "ps_modules": {
       "AdvancedHistory": {},

@@ -1,6 +1,15 @@
 [user]
 	name = {{ .name }}
 	email = {{ .email }}
+[alias]
+	# Grabbed a few of these from github.com/jessfraz/dotfiles
+	# Short clean status
+	s = status -s
+
+	# View abbreviated SHA, description, and history graph of the latest 20 commits
+	l = log --pretty=oneline -n 20 --graph --abbrev-commit
+
+	lg = log --color --decorate --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an (%G?)>%Creset' --abbrev-commit
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
@@ -9,8 +18,11 @@
 
 [push]
 	default = current
+	autoSetupRemote = true
+
 [pull]
 	rebase = true
+
 [core]
 	editor = code --wait
 	sshCommand = \"C:/Windows/System32/OpenSSH/ssh.exe\"
@@ -18,12 +30,12 @@
 
 [delta]
 	true-color = "always"
-#   24-bit-color = "always"
+	#24-bit-color = "always"
 	features = unobtrusive-line-numbers darkly
 	syntax-theme = OneHalfDark
-#	hyperlinks = true
-#	hyperlinks-file-link-format = 'file://{path}'
-#	navigate = true
+	#	hyperlinks = true
+	#	hyperlinks-file-link-format = 'file://{path}'
+	#	navigate = true
 
 [delta "unobtrusive-line-numbers"]
 	line-numbers = true
@@ -58,15 +70,26 @@
 	diffFilter = delta --color-only
 [merge]
 	tool = vscode
+
 [mergetool "vscode"]
 	cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+
 [diff]
 	tool = vscode
 	colorMoved = default
+
 [difftool "vscode"]
 	cmd = code-insiders --wait --diff $REMOTE $LOCAL
+
 [init]
 	defaultBranch = main
 
 [advice]
 	skippedCherryPicks = false
+	
+[rerere]
+	enabled = true
+
+[help]
+	# Automatically correct and execute mistyped commands
+	autocorrect = 1

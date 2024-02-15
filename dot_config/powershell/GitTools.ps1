@@ -193,9 +193,9 @@ function Show-RepoData {
   process {
     if ($organization) {
       $global:git_repos.keys |
-      ForEach-Object { $global:git_repos[$_] |
-        Where-Object organization -EQ $organization
-      }
+        ForEach-Object { $global:git_repos[$_] |
+            Where-Object organization -EQ $organization
+          }
     } else {
       if ($reponame -eq '') {
         $gitStatus = Get-GitStatus
@@ -415,7 +415,7 @@ function Sync-AllRepos {
     "Processing repos in $reporoot"
     if (Test-Path $reporoot) {
       $reposlist = Get-ChildItem $reporoot -dir -Hidden .git -rec -Depth 2 |
-      Select-Object -exp parent | Select-Object -exp fullname
+        Select-Object -exp parent | Select-Object -exp fullname
       if ($reposlist) {
         $reposlist | ForEach-Object {
           Push-Location $_
@@ -555,22 +555,22 @@ function Get-BranchStatus {
   )
   Write-Host ''
   $global:git_repos.keys |
-  Where-Object { $global:git_repos[$_].path -like "$GitLocation*" } |
-  ForEach-Object {
-    Push-Location $global:git_repos[$_].path
-    if ((Get-GitStatus).Branch -eq $global:git_repos[$_].default_branch) {
-      $default = 'default'
-      $fgcolor = [consolecolor]::Cyan
-    } else {
-      $default = 'working'
-      $fgcolor = [consolecolor]::Red
+    Where-Object { $global:git_repos[$_].path -like "$GitLocation*" } |
+    ForEach-Object {
+      Push-Location $global:git_repos[$_].path
+      if ((Get-GitStatus).Branch -eq $global:git_repos[$_].default_branch) {
+        $default = 'default'
+        $fgcolor = [consolecolor]::Cyan
+      } else {
+        $default = 'working'
+        $fgcolor = [consolecolor]::Red
+      }
+      Write-Host "$_ (" -NoNewline
+      Write-Host $default -ForegroundColor $fgcolor -NoNewline
+      Write-Host ')' -NoNewline
+      Write-VcsStatus
+      Pop-Location
     }
-    Write-Host "$_ (" -NoNewline
-    Write-Host $default -ForegroundColor $fgcolor -NoNewline
-    Write-Host ')' -NoNewline
-    Write-VcsStatus
-    Pop-Location
-  }
   Write-Host ''
 }
 #-------------------------------------------------------
@@ -662,7 +662,7 @@ function Import-GitHubLabels {
     Write-Verbose $method
     Write-Verbose $body
     Invoke-RestMethod -Uri $uri -Method $method -Body $body -Headers $hdr |
-    Select-Object name, color, description
+      Select-Object name, color, description
   }
 }
 #-------------------------------------------------------
@@ -748,7 +748,7 @@ function Get-Issue {
   $apiurl = "https://api.github.com/repos/$RepoName/issues/$IssueNum/comments"
   Write-Verbose "Getting $apiurl"
   $comments = (Invoke-RestMethod $apiurl -Headers $hdr) |
-  Select-Object -ExpandProperty body
+    Select-Object -ExpandProperty body
   [pscustomobject]@{
     title = $issue.title
     url = $issue.html_url
@@ -879,7 +879,7 @@ Register-ArgumentCompleter -ParameterName GitLocation -ScriptBlock $sbGitLocatio
 $sbRepoList = {
   param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
   $git_repos.keys | ForEach-Object { $git_repos[$_] } |
-  Where-Object id -Like "*$wordToComplete*" | Sort-Object Id | Select-Object -ExpandProperty Id
+    Where-Object id -Like "*$wordToComplete*" | Sort-Object Id | Select-Object -ExpandProperty Id
 }
 $cmdList = 'Get-Issue', 'Get-IssueList', 'Get-RepoStatus', 'Open-Repo', 'Import-GitHubLabels',
 'Get-GitHubLabels', 'Get-PrMerger', 'Show-RepoData', 'Update-DevOpsWorkItem', 'New-IssueBranch'
@@ -888,8 +888,8 @@ Register-ArgumentCompleter -ParameterName RepoName -ScriptBlock $sbRepoList -Com
 $sbIterationPathList = {
   param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
   (GetIterationPaths).path |
-  Where-Object { $_ -like "*$wordToComplete*" } |
-  ForEach-Object { "'$_'" }
+    Where-Object { $_ -like "*$wordToComplete*" } |
+    ForEach-Object { "'$_'" }
 }
 $cmdList = 'Import-GHIssueToDevOps', 'New-DevOpsWorkItem', 'Update-DevOpsWorkItem'
 Register-ArgumentCompleter -ParameterName IterationPath -ScriptBlock $sbIterationPathList -CommandName $cmdlist
@@ -897,8 +897,8 @@ Register-ArgumentCompleter -ParameterName IterationPath -ScriptBlock $sbIteratio
 $sbAreaPathList = {
   param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
   GetAreaPaths |
-  Where-Object { $_ -like "*$wordToComplete*" } |
-  ForEach-Object { "'$_'" }
+    Where-Object { $_ -like "*$wordToComplete*" } |
+    ForEach-Object { "'$_'" }
 }
 $cmdlist = 'Import-GHIssueToDevOps', 'New-DevOpsWorkItem', 'Update-DevOpsWorkItem'
 Register-ArgumentCompleter -ParameterName AreaPath -ScriptBlock $sbAreaPathList -CommandName $cmdList
