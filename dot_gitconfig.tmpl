@@ -2,6 +2,7 @@
 	name = {{ .name }}
 	email = {{ .email }}
 [alias]
+  cam = commit -am
 	# Grabbed a few of these from github.com/jessfraz/dotfiles
 	# Short clean status
 	s = status -s
@@ -30,12 +31,11 @@
 
 [delta]
 	true-color = "always"
-	#24-bit-color = "always"
 	features = unobtrusive-line-numbers darkly
 	syntax-theme = OneHalfDark
-	#	hyperlinks = true
-	#	hyperlinks-file-link-format = 'file://{path}'
-	#	navigate = true
+	hyperlinks = true
+	hyperlinks-file-link-format = "vscode://file/{path}:{line}"
+	navigate = true
 
 [delta "unobtrusive-line-numbers"]
 	line-numbers = true
@@ -56,8 +56,8 @@
 [delta "darkly"]
 	commit-decoration-style = box ul "#34fd50"
 	dark = true
-	file-decoration-style = none
-	file-style = omit
+	#file-decoration-style = none
+	#file-style = omit
 	hunk-header-decoration-style = "#00b494" ul
 	hunk-header-line-number-style = "#03a4ff"
 	hunk-header-style = line-number syntax
