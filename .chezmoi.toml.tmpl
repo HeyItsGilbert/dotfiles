@@ -34,3 +34,7 @@ follow = true # follow symlinks, so we can symlink ~\Documents to ~\OneDrive\Doc
 [interpreters.ps1]
   command = "pwsh"
   args = ["-NoLogo", "-NoProfile"]
+{{- if pwshPath }}
+[hooks.read-source-state.pre]
+  command = ".local/share/chezmoi/.install-on-init.ps1"
+{{- end }}
