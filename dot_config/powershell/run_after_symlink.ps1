@@ -13,15 +13,15 @@ if ($Env:OneDrive) {
 $Dest += '\Documents'
 
 $FilesToCopy = @{
-  'profile.ps1'                  = @(
+  'profile.ps1' = @(
     "$Dest\PowerShell\Microsoft.dotnet-interactive_profile.ps1",
     $Profile.CurrentUserAllHosts
   )
-  'powershell.config.json'       = @(
+  'powershell.config.json' = @(
     "$Dest\PowerShell\powershell.config.json"
   )
-  'GitTools.ps1'                 = @()
-  'ShellIntegration.ps1'         = @()
+  'GitTools.ps1' = @()
+  'ShellIntegration.ps1' = @()
   'Microsoft.VSCode_profile.ps1' = @()
 }
 
@@ -36,7 +36,10 @@ $FilesToCopy.Keys | ForEach-Object {
   foreach ($dest in $FilesToCopy.Item($_)) {
 
     $src = Resolve-Path (Join-Path $Env:USERPROFILE '.config' 'powershell' $_)
-    New-Item -ItemType Directory $(Split-Path $dest) -Force
+    $parent = Split-Path $dest
+    if (-Not (Test-Path $parent)) {
+      New-Item -ItemType Directory $() -Force | Select-Object -Property FullName
+    }
     Copy-Item $src $dest
   }
 }
