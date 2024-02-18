@@ -1,6 +1,7 @@
 [user]
 	name = {{ .name }}
 	email = {{ .email }}
+
 [alias]
   cam = commit -am
 	fpush = push --force-with-lease
@@ -13,6 +14,7 @@
 	l = log --pretty=oneline -n 20 --graph --abbrev-commit
 
 	lg = log --color --decorate --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an (%G?)>%Creset' --abbrev-commit
+
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
@@ -70,6 +72,7 @@
 
 [interactive]
 	diffFilter = delta --color-only
+
 [merge]
 	tool = vscode
 
@@ -86,12 +89,24 @@
 [init]
 	defaultBranch = main
 
+[branch]
+	sort = -committerdate
+
 [advice]
 	skippedCherryPicks = false
-	
+
 [rerere]
 	enabled = true
 
 [help]
 	# Automatically correct and execute mistyped commands
 	autocorrect = 1
+
+# Add conditional settings for OSS/work
+[includeIf "gitdir:{{ .git_oss }}"]
+	path = ~/.gitconfig-oss
+
+{{ if .git_work }}
+[includeIf "gitdir:{{ .git_work }}"]
+	path = ~/.gitconfig-work
+{{- end }}
