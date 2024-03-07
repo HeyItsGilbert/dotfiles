@@ -10,8 +10,18 @@ installed.
 
 ## Setup
 
+> [!NOTE]
+> All the scripts run with Pwsh so you need that in place first.
+
+### For Windows
+Install Chocolatey then install pre-requisites.
 ```shell
-chezmoi init --apply --verbose https://github.com/$GITHUB_USERNAME/dotfiles.git
+choco install chezmoi delta git pwsh
+```
+
+### For all
+```shell
+chezmoi init --apply --verbose https://github.com/HeyItsGilbert/dotfiles.git
 ```
 
 > [!NOTE]
