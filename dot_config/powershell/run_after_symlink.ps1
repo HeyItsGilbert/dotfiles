@@ -26,19 +26,27 @@ $FilesToCopy = @{
 }
 
 # If this is windows, append WindowsPowerShell options
-@('profile.ps1', 'GitTools.ps1', 'ShellIntegration.ps1', 'Microsoft.VSCode_profile.ps1') | ForEach-Object {
-  $FilesToCopy.$_ += "$Dest\WindowsPowerShell\$_"
-  $FilesToCopy.$_ += "$Dest\PowerShell\$_"
+if (-not $IsLinux) {
+  @('profile.ps1', 'GitTools.ps1', 'ShellIntegration.ps1', 'Microsoft.VSCode_profile.ps1') | ForEach-Object {
+    $FilesToCopy.$_ += "$Dest\WindowsPowerShell\$_"
+    $FilesToCopy.$_ += "$Dest\PowerShell\$_"
+  }
+}
+
+$ConfigHome = if ($ENV:XDG_CONFIG_HOME) {
+    $ENV:XDG_CONFIG_HOME
+} else {
+    [IO.Path]::Combine($HOME, ".config")
 }
 
 # Now we copy to all the destinations.
 $FilesToCopy.Keys | ForEach-Object {
   foreach ($dest in $FilesToCopy.Item($_)) {
 
-    $src = Resolve-Path (Join-Path $Env:USERPROFILE '.config' 'powershell' $_)
+    $src = Join-Path $ConfigHome 'powershell' $_
     $parent = Split-Path $dest
     if (-Not (Test-Path $parent)) {
-      New-Item -ItemType Directory $() -Force | Select-Object -Property FullName
+      New-Item -ItemType Directory $parent -Force | Select-Object -Property FullName
     }
     Copy-Item $src $dest
   }
