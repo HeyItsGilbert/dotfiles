@@ -1,37 +1,42 @@
 {{- if eq .chezmoi.os "windows" }}
-
+["./AppData/Local/nvim"]
+    type = "git-repo"
+    url = "https://github.com/HeyItsGilbert/nvim"
 {{- else }}
+[".config/nvim"]
+    type = "git-repo"
+    url = "https://github.com/HeyItsGilbert/nvim"
 [".oh-my-zsh"]
     type = "archive"
     url = "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"
-["~/.tmux/plugins/tpm"]
+[".tmux/plugins/tpm"]
     type = "git-repo"
     url = "https://github.com/tmux-plugins/tpm"
     refreshPeriod = "168h"
-["~/.vim/autoload/pathogen.vim"]
+[".vim/autoload/pathogen.vim"]
     type = "file"
     url = "https://tpo.pe/pathogen.vim"
     refreshPeriod = "168h"
-["~/.vim/bundle/vim-airline"]
+[".vim/bundle/vim-airline"]
     type = "git-repo"
     url = "bling/vim-airline"
     refreshPeriod = "168h"
-["~/.vim/bundle/vim-airline-themes"]
+[".vim/bundle/vim-airline-themes"]
     type = "git-repo"
     url = "vim-airline/vim-airline-themes"
     refreshPeriod = "168h"
-["~/.vim/bundle/ctrlp.vim"]
+[".vim/bundle/ctrlp.vim"]
     type = "git-repo"
     url = "ctrlpvim/ctrlp.vim"
     refreshPeriod = "168h"
-["~/.vim/bundle/vim-colors-solarized"]
+[".vim/bundle/vim-colors-solarized"]
     type = "git-repo"
     url = "altercation/vim-colors-solarized.git"
     refreshPeriod = "168h"
-["~/.vim/bundle/vim-ps1"]
+[".vim/bundle/vim-ps1"]
     type = "git-repo"
     url = "/PProvost/vim-ps1.git"
     refreshPeriod = "168h"
