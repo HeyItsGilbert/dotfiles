@@ -5,43 +5,61 @@ palette = "flexoki_dark"
 # https://i.stack.imgur.com/KTSQa.png
 format = """
 [\uE0B6](fg:purple)${env_var.is_elevated_session}[$directory](bg:purple)\
-[\uE0B0](fg:purple bg:bright-black)$git_branch\
-[\uE0B0](fg:bright-black bg:green)$git_status$git_state\
-[\uE0B0](fg:green bg:12)$time\
-[\uE0B0](fg:12 bg:none) $all $character\
+[\uE0B0](bg:bright-black fg:purple)[$git_branch](bg:bright-black)[\uE0B0](fg:bright-black bg:none)\
+$git_status$git_state\
+$fill $all $time $line_break\
+$shell $character\
 """
 
 # add_newline = true
 
 [env_var.is_elevated_session]
 variable = "ISELEVATEDSESSION"
-symbol = '⚡'
+symbol = "⚡"
 format = "[$symbol](bg:purple)"
 
 [profiles]
 short = """
 [\uE0B6](fg:purple)[$directory](bg:purple)\
-[\uE0B0](fg:purple bg:12)$time\
-[\uE0B0](fg:12 bg:none) 
+[\uE0B0](bg:12 fg:purple)[ $time](bg:12)\
+[\uE0B4](fg:12 bg:none) \
 """
+
+[fill]
+symbol = ' '
 
 [directory]
 style = "bg:purple fg:white"
+format = "[$path]($style)[$read_only]($read_only_style) "
 read_only = " 󰌾"
 
 [git_branch]
+always_show_remote = true
+format = "[ $branch $symbol$remote_name/$remote_branch ]($style)"
 symbol = " "
-format = "[ $symbol$branch ]($style)"
+#format = "[ $symbol$branch ]($style)"
 style = "bg:bright-black fg:white"
 
 [git_status]
-format = "[ $all_status$ahead_behind ]($style)"
+# Show the info relative to the upstream first: how many commits ahead/behind/diverged/conflicted
+# Show the info for current working set after: deleted, staged, renamed, modified, untracked.
+format = "[$ahead$behind$diverged$conflicted$deleted$staged$renamed$modified$untracked]($style)"
 style = "bg:green"
+conflicted = "[ ≠$count](fg:purple)"
+ahead = "[ ⇡$count](bold fg:purple)"
+behind = "[ ⇣$count](bold fg:purple)"
+diverged = "[ ⇕$count](bold fg:purple)"
+untracked = "[ +$count](bold fg:bright-green)"
+modified = "[ ~$count](bold fg:cyan)"
+staged = "[ ++$count](bold fg:green)"
+renamed = "[ »$count](bold fg:white)"
+deleted = "[ ✘$count](bold fg:red)"
+
 
 [time]
 disabled = false
-format = "[ $time ]($style)"
-style = "bg:12 fg:bright-white"
+format = "$time"
+style = "fg:bright-white"
 
 [username]
 disabled = true
@@ -76,48 +94,62 @@ style = "bold red"
 
 [aws]
 symbol = "  "
+format = "[$symbol($version )]($style)"
 
 [buf]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [c]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [conda]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [dart]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [docker_context]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [elixir]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [elm]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [fossil_branch]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [golang]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [guix_shell]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [haskell]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [haxe]
 symbol = "⌘ "
+format = "[$symbol($version )]($style)"
 
 [hg_branch]
 symbol = " "
 
 [java]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [julia]
 symbol = " "
@@ -130,15 +162,18 @@ symbol = "󰍛 "
 
 [meson]
 symbol = "󰔷 "
+format = "[$symbol($version )]($style)"
 
 [nim]
 symbol = "󰆥 "
+format = "[$symbol($version )]($style)"
 
 [nix_shell]
 symbol = " "
 
 [nodejs]
 symbol = " "
+format = "[$symbol($version )]($style)"
 
 [os.symbols]
 Alpaquita = " "
