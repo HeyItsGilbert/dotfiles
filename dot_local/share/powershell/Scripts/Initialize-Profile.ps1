@@ -31,14 +31,14 @@ function Initialize-Profile {
   $psOption['ShowToolTips'] = $True
   ## Colors
   $psOption['Colors'] = @{
-    'Command'   = [System.ConsoleColor]::DarkMagenta
+    'Command' = [System.ConsoleColor]::DarkMagenta
     'Parameter' = [System.ConsoleColor]::Magenta
-    'Comment'   = [System.ConsoleColor]::Green
-    'Operator'  = [System.ConsoleColor]::Gray
-    'Variable'  = [System.ConsoleColor]::White
-    'Keyword'   = [System.ConsoleColor]::Magenta
-    'String'    = [System.ConsoleColor]::White
-    'Type'      = [System.ConsoleColor]::DarkCyan
+    'Comment' = [System.ConsoleColor]::Green
+    'Operator' = [System.ConsoleColor]::Gray
+    'Variable' = [System.ConsoleColor]::White
+    'Keyword' = [System.ConsoleColor]::Magenta
+    'String' = [System.ConsoleColor]::White
+    'Type' = [System.ConsoleColor]::DarkCyan
   }
   ## VI Edit Mode
   $psOption['EditMode'] = 'Vi'
@@ -46,9 +46,9 @@ function Initialize-Profile {
 
   ## Tab completion
   $keymap = @{
-    Complete              = 'Tab'
+    Complete = 'Tab'
     HistorySearchBackward = 'UpArrow'
-    HistorySearchForward  = 'DownArrow'
+    HistorySearchForward = 'DownArrow'
     ValidateAndAcceptLine = 'Enter'
   }
   foreach ($key in $keymap.Keys) {
@@ -62,10 +62,10 @@ function Initialize-Profile {
     # AdvancedHistory
     # When F7 is pressed, show the local command line history in OCGV
     $parameters = @{
-      Key              = 'F7'
+      Key = 'F7'
       BriefDescription = 'Show Matching History'
-      LongDescription  = 'Show Matching History using Out-ConsoleGridView'
-      ScriptBlock      = {
+      LongDescription = 'Show Matching History using Out-ConsoleGridView'
+      ScriptBlock = {
         ocgv_history -Global $false 
       }
     }
@@ -73,10 +73,10 @@ function Initialize-Profile {
 
     # When Shift-F7 is pressed, show the local command line history in OCGV
     $parameters = @{
-      Key              = 'Shift-F7'
+      Key = 'Shift-F7'
       BriefDescription = 'Show Matching Global History'
-      LongDescription  = 'Show Matching History for all PowerShell instances using Out-ConsoleGridView'
-      ScriptBlock      = {
+      LongDescription = 'Show Matching History for all PowerShell instances using Out-ConsoleGridView'
+      ScriptBlock = {
         ocgv_history -Global $true
       }
     }
@@ -100,4 +100,11 @@ function Initialize-Profile {
 
   # Add z for file navigation
   Invoke-Expression (& { ( zoxide init powershell | Out-String ) })
+
+  # Completion for gh cli
+  Invoke-Expression (& { ( gh completion -s powershell | Out-String) })
+
+  if (Test-Administrator) {
+    $Env:ISELEVATEDSESSION = $true
+  }
 }
