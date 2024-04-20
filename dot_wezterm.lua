@@ -194,8 +194,9 @@ keys = {
 	-- { key = 'LeftArrow', mods = 'SHIFT|CTRL', action = act.ActivatePaneDirection 'Left' },
 	-- { key = 'RightArrow', mods = 'SHIFT|CTRL', action = act.ActivatePaneDirection 'Right' },
 	-- Add these to allow quick moving between prompts
-	{ key = "UpArrow", mods = "SHIFT", action = act.ScrollToPrompt(-1) },
-	{ key = "DownArrow", mods = "SHIFT", action = act.ScrollToPrompt(1) },
+	-- Use ctrl up/down to match vscode. Shift didn't feel natural
+	{ key = "UpArrow", mods = "CTRL", action = act.ScrollToPrompt(-1) },
+	{ key = "DownArrow", mods = "CTRL", action = act.ScrollToPrompt(1) },
 	--
 	{ key = "RightArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Right", 1 }) },
 	{ key = "UpArrow", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Up") },
