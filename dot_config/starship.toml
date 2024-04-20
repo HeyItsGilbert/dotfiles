@@ -4,14 +4,19 @@ palette = "flexoki_dark"
 # Using ANSI colors
 # https://i.stack.imgur.com/KTSQa.png
 format = """
-[\uE0B6](fg:purple)[$directory](bg:purple)\
+[\uE0B6](fg:purple)${env_var.is_elevated_session}[$directory](bg:purple)\
 [\uE0B0](fg:purple bg:bright-black)$git_branch\
-[\uE0B0](fg:bright-black bg:green)$git_status\
+[\uE0B0](fg:bright-black bg:green)$git_status$git_state\
 [\uE0B0](fg:green bg:12)$time\
 [\uE0B0](fg:12 bg:none) $all $character\
 """
 
 # add_newline = true
+
+[env_var.is_elevated_session]
+variable = "ISELEVATEDSESSION"
+symbol = '⚡'
+format = "[$symbol](bg:purple)"
 
 [profiles]
 short = """
@@ -48,7 +53,7 @@ symbol = " "
 [shell]
 disabled = false
 powershell_indicator = ''
-# pwsh_indicator = ''
+pwsh_indicator = ''
 bash_indicator = ''
 zsh_indicator = '%_'
 cmd_indicator = ''
@@ -198,19 +203,19 @@ symbol = " "
 symbol = "🅢 "
 
 [palettes.flexoki_dark]
-  black = "#100f0f"
-  red = "#af3029"
-  green = "#66800b"
-  yellow = "#ad8301"
-  blue = "#205ea6"
-  purple = "#5e409d"
-  cyan = "#24837b"
-  white = "#cecdc3"
-  bright-black = "#575653"
-  bright-red = "#d14d41"
-  bright-green = "#879a39"
-  bright-yellow = "#d0a215"
-  bright-blue = "#4385be"
-  bright-purple = "#8b7ec8"
-  bright-cyan = "#3aa99f"
-  bright-white = "#fffcf0"
+black = "#100f0f"
+red = "#af3029"
+green = "#66800b"
+yellow = "#ad8301"
+blue = "#205ea6"
+purple = "#5e409d"
+cyan = "#24837b"
+white = "#cecdc3"
+bright-black = "#575653"
+bright-red = "#d14d41"
+bright-green = "#879a39"
+bright-yellow = "#d0a215"
+bright-blue = "#4385be"
+bright-purple = "#8b7ec8"
+bright-cyan = "#3aa99f"
+bright-white = "#fffcf0"

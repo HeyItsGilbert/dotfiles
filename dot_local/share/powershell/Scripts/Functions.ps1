@@ -34,6 +34,12 @@ function ocgv_history {
   }
 }
 
+function Test-Administrator {
+  $CurrentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
+  $AdministratorRole = [Security.Principal.WindowsBuiltInRole] "Administrator"
+    ([Security.Principal.WindowsPrincipal]$CurrentUser).IsInRole($AdministratorRole)
+}
+
 # Aliases
 # Use function because it's faster to load
 function ll { Get-ChildItem -Force $args }
