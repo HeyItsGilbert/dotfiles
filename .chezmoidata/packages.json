@@ -16,21 +16,42 @@
       "zoxide"
     ],
     "ps_modules": {
-      "DynamicTitle": {},
+      "DynamicTitle": {
+        "Repository": "PSGallery",
+        "Version": "[0.0.0,]"
+      },
+      "CompletionPredictor": {
+        "Repository": "PSGallery",
+        "Version": "[0.0.0,]"
+      },
       "EditorServicesCommandSuite": {
         "Prerelease": true,
         "Version": "1.0.0-beta4"
       },
-      "Microsoft.PowerShell.ConsoleGuiTools": {},
-      "Pester": {
-        "Prerelease": true
+      "Microsoft.PowerShell.ConsoleGuiTools": {
+        "Repository": "PSGallery",
+        "Version": "[0.0.0,]"
       },
-      "Posh-Git": {},
+      "Pester": {
+        "Prerelease": true,
+        "Repository": "PSGallery",
+        "Version": "[0.0.0,]"
+      },
+      "Posh-Git": {
+        "Repository": "PSGallery",
+        "Version": "[0.0.0,]"
+      },
       "PSReadLine": {
         "Prerelease": true
       },
-      "PSStyle": {},
-      "Terminal-Icons": {}
+      "PSStyle": {
+        "Repository": "PSGallery",
+        "Version": "[0.0.0,]"
+      },
+      "Terminal-Icons": {
+        "Repository": "PSGallery",
+        "Version": "[0.0.0,]"
+      }
     }
   }
 }

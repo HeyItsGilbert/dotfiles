@@ -7,6 +7,7 @@ function Initialize-Profile {
   Import-Module DynamicTitle
   Import-Module Posh-Git
   Import-Module PSReadLine
+  Import-Module CompletionPredictor
   if ($PSVersionTable.PSEdition -ne 'Core') {
     Import-Module PSStyle
   }
@@ -27,7 +28,12 @@ function Initialize-Profile {
   
   # Setup PSReadLineOption Splat
   $psOption = @{}
-  $psOption['PredictionSource'] = 'History'
+  if($PSVersionTable.PSEdition -ne 'Core'){
+    $psOption['PredictionSource'] = 'History'
+  } else {
+    $psOption['PredictionSource'] = 'HistoryAndPlugin'
+  }
+  $psOption['PredictionViewStyle'] = 'ListView'
   $psOption['ShowToolTips'] = $True
   ## Colors
   $psOption['Colors'] = @{

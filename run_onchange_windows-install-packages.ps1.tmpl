@@ -1,14 +1,55 @@
 #!/usr/bin/env pwsh
 
-$json = @"
-{{.packages | toPrettyJson}}
-"@
-$packageInfo = $json | ConvertFrom-Json -AsHashtable
-
 {{ if eq .chezmoi.os "windows" -}}
 # Choco packages
 choco upgrade {{ range .packages.chocolatey -}} {{.}} {{ end }} -y -s'https://chocolatey.org/api/v2/'
-{{ end -}}  
+{{ end -}}
 
 # Install Modules
-Install-PSResource -Scope CurrentUser -RequiredResource $packageInfo['ps_modules'] -Confirm:$False -TrustRepository
+$installModules = {
+  if(-not (Get-Module Microsoft.PowerShell.PSResourceGet -ListAvailable)){
+    Install-Module Microsoft.PowerShell.PSResourceGet -Repository PSGallery -Force
+  }
+  $json = @"
+{{.packages.ps_modules | toPrettyJson}}
+"@
+  $installPSResourceSplat = @{
+    Scope = "CurrentUser"
+    RequiredResource = $json
+    Confirm = $False
+    TrustRepository = $True
+  }
+
+  Install-PSResource @installPSResourceSplat
+
+  # Ghetto hash for Windows PS
+  $hash = @{}
+  foreach ($property in $($json | ConvertFrom-Json).PSObject.Properties) {
+    $hash[$property.Name] = $property.Value
+  }
+  $i = 0
+  $total = $hash.Count
+  $hash.GetEnumerator() | ForEach-Object {
+    $updateSplat = @{
+      Name = $_.Key
+      Confirm = $True
+    }
+    if($_.Repository){
+      $updateSplat['Repository'] = $_.Repository
+      $updateSplat['TrustRepository'] = $True
+    }
+    if($_.Prerelease){
+      $updateSplat['Prerelease'] = $True
+    }
+    #Update-PSResource @updateSplat
+  }
+  Update-PSResource -TrustRepository -Confirm:$false
+}
+
+# Installing Modules in Pwsh
+Invoke-Command $installModules
+
+# Installing Modules in Windows PowerShell
+{{ if eq .chezmoi.os "windows" -}}
+powershell.exe -NoProfile -Command $installModules
+{{ end -}}
