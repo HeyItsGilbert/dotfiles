@@ -4,7 +4,7 @@
 function Set-ShellIntegration {
   param
   (
-    [ValidateSet('WindowsTerminal', 'ITerm2', 'WezTerm','vscode')]
+    [ValidateSet('WindowsTerminal', 'ITerm2', 'WezTerm', 'vscode')]
     [String]$TerminalProgram = $env:TERM_PROGRAM
   )
 
