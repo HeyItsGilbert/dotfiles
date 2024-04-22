@@ -13,11 +13,6 @@ $shell $character\
 
 # add_newline = true
 
-[env_var.is_elevated_session]
-variable = "ISELEVATEDSESSION"
-symbol = "⚡"
-format = "[$symbol](bg:purple)"
-
 [profiles]
 short = """
 [\uE0B6](fg:purple)[$directory](bg:purple)\
@@ -25,8 +20,10 @@ short = """
 [\uE0B4](fg:12 bg:none) \
 """
 
-[fill]
-symbol = ' '
+[env_var.is_elevated_session]
+variable = "ISELEVATEDSESSION"
+symbol = "⚡"
+format = "[$symbol](bg:purple)"
 
 [directory]
 style = "bg:purple fg:white"
@@ -55,6 +52,11 @@ staged = "[ ++$count](bold fg:green)"
 renamed = "[ »$count](bold fg:white)"
 deleted = "[ ✘$count](bold fg:red)"
 
+[fill]
+symbol = ' '
+
+[cmd_duration]
+show_milliseconds = true
 
 [time]
 disabled = false
