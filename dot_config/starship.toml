@@ -7,7 +7,7 @@ format = """
 [\uE0B6](fg:purple)${env_var.is_elevated_session}[$directory](bg:purple)\
 [\uE0B0](bg:bright-black fg:purple)[$git_branch](bg:bright-black)[\uE0B0](fg:bright-black bg:none)\
 $git_status$git_state\
-$fill $all $time $line_break\
+$fill $all ${env_var.next_meeting} $time $line_break\
 $shell $character\
 """
 
@@ -19,6 +19,12 @@ short = """
 [\uE0B0](bg:12 fg:purple)[ $time](bg:12)\
 [\uE0B4](fg:12 bg:none) \
 """
+
+[env_var.next_meeting]
+variable = "NextMeeting"
+symbol = "📆"
+format = "[$symbol $env_value]($style)"
+style = "fg:red"
 
 [env_var.is_elevated_session]
 variable = "ISELEVATEDSESSION"
