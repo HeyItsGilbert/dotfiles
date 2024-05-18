@@ -30,8 +30,10 @@
 
 [core]
 	editor = code --wait
-	sshCommand = \"C:/Windows/System32/OpenSSH/ssh.exe\"
 	pager = delta
+{{ if eq .chezmoi.os "windows" -}}
+	sshCommand = \"C:/Windows/System32/OpenSSH/ssh.exe\"
+{{ end -}}
 
 [delta]
 	true-color = "always"
