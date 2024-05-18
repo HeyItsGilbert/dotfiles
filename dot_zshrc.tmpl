@@ -26,7 +26,7 @@ source $ZSH/oh-my-zsh.sh
 DEFAULT_USER=`whoami`
 
 # Customize to your needs...
-export PATH="$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/:~/bin:~/devtools/arcanist/bin:/Users/gsanchez/Downloads/android-sdk-macosx/platform-tools/:/Users/gsanchez/Downloads/android-sdk-macosx/tools:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+export PATH="$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/:{{ joinPath .chezmoi.homeDir "bin" }}:{{ joinPath .chezmoi.homeDir ".local" "bin" }}"
 
 #Functions
 export CLICOLOR=1
@@ -56,27 +56,27 @@ strlen () {
 }
 
 # show right prompt with date ONLY when command is executed
-preexec () {
-    DATE=$( date +"[%H:%M:%S]" )
-    local len_right=$( strlen "$DATE" )
-    len_right=$(( $len_right+1 ))
-    local right_start=$(($COLUMNS - $len_right))
-
-    local len_cmd=$( strlen "$@" )
-    local len_prompt=$(strlen "$PROMPT" )
-    local len_left=$(($len_cmd+$len_prompt))
-
-    RDATE="\033[${right_start}C ${DATE}"
-
-    if [ $len_left -lt $right_start ]; then
-        # command does not overwrite right prompt
-        # ok to move up one line
-        echo -e "\033[1A${RDATE}"
-    else
-        echo -e "${RDATE}"
-    fi
-
-}
+# preexec () {
+#     DATE=$( date +"[%H:%M:%S]" )
+#     local len_right=$( strlen "$DATE" )
+#     len_right=$(( $len_right+1 ))
+#     local right_start=$(($COLUMNS - $len_right))
+# 
+#     local len_cmd=$( strlen "$@" )
+#     local len_prompt=$(strlen "$PROMPT" )
+#     local len_left=$(($len_cmd+$len_prompt))
+# 
+#     RDATE="\033[${right_start}C ${DATE}"
+# 
+#     if [ $len_left -lt $right_start ]; then
+#         # command does not overwrite right prompt
+#         # ok to move up one line
+#         echo -e "\033[1A${RDATE}"
+#     else
+#         echo -e "${RDATE}"
+#     fi
+# 
+# }
 # Colorized Man Pages
 man() {
   env \
@@ -89,6 +89,5 @@ man() {
     LESS_TERMCAP_us=$(printf "\e[1;32m") \
       man "$@"
 }
-export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=1
-test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
+eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
