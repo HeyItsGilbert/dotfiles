@@ -2,6 +2,7 @@ README.md
 LICENSE
 install.sh
 install.ps1
+.oh-my-zsh/cache
 {{- if eq .chezmoi.os "windows" }}
 .tmux.conf
 .vimrc
