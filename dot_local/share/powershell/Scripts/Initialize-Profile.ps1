@@ -28,7 +28,7 @@ function Initialize-Profile {
   
   # Setup PSReadLineOption Splat
   $psOption = @{}
-  if($PSVersionTable.PSEdition -ne 'Core'){
+  if ($PSVersionTable.PSEdition -ne 'Core') {
     $psOption['PredictionSource'] = 'History'
   } else {
     $psOption['PredictionSource'] = 'HistoryAndPlugin'
@@ -113,4 +113,15 @@ function Initialize-Profile {
   if (Test-Administrator) {
     $Env:ISELEVATEDSESSION = $true
   }
+
+  # Setup MOTD
+  function Get-MessageOfTheDay {
+    $outdatedPackages = choco outdated -r
+    if ($outdatedPackages) {
+      Write-Host "Chocolate Packages To Update"
+      $outdatedPackages
+    }
+  }
+  $env:MotdCadence = 'EverySession'
+  Import-Module PSMotd
 }
