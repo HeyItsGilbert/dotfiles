@@ -24,14 +24,17 @@ function Initialize-Profile
     }
     "PSMOTD" = @{}
   }
-  foreach ($module in $modules.Keys) {
-    if($modules.Item($module).ContainsKey("if") -and -not $modules.Item($module).Item("if")) {
-        continue
+  foreach ($module in $modules.Keys)
+  {
+    if($modules.Item($module).ContainsKey("if") -and -not $modules.Item($module).Item("if"))
+    {
+      continue
     }
-    try {
+    try
+    {
       Import-Module $module
-    }
-    catch {
+    } catch
+    {
       Write-Host "Failed to import: $module. $_"
     }
   }
@@ -139,6 +142,5 @@ function Initialize-Profile
     $Env:ISELEVATEDSESSION = $true
   }
 
-  # Get MOTD
-  Get-MOTD
+  Get-Motd
 }
