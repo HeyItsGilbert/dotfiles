@@ -1,41 +1,21 @@
+# yaml-language-server: $schema=https://www.ajm.codes/Espanso_Matches_File_Schema.json
 matches:
-  - trigger: '`badtest'
-    replace: |-
-      https://fburl.com/bad_test_plan
-      bad_test_plan
-  - trigger: '`helpdesk'
-    replace: |-
-      https://fburl.com/helpdesk
-
-      As a reminder, you can also get technical support while working remotely through the following channels:
-      - Helpdesk on Workplace: 24/7 Self-service support articles to resolve issues without any wait time and the ability to submit a case through guided workflows.
-      - Helpdesk Chat: Live support option which allows you to connect with a technician through Workplace Chat.
-      - Voicemail: 24/7 monitored support, if all other support channels are inaccessible
-  - trigger: '`qq'
+  - trigger: "`qq"
     replace: I am highly leveraged in multiple activities and otherwise engaged so we need to extend the cycle time until my resources free up
-  - trigger: '`qs'
+  - trigger: "`qs"
     replace: Let me know if you need anything else or if you have any questions or concerns.
-  - trigger: '`share'
+  - trigger: "`SPAR"
     replace: |-
-      Access has been granted to %filltext:name=share%. %snippet:`qs%
-
-      Instructions for how to mount the share can be found here: http://fburl.com/fileshares
-  - trigger: '`spar'
-    replace: "Situation: \nProblem: \nAction: \nResolution: "
-  - trigger: '`ty'
+      Situation:
+      Problem:
+      Action:
+      Resolution:
+  - trigger: "#SPAR"
     replace: |-
-      set quotelist to {"Cheers!", "Thank you!", "Best,"}
+      ## Situation
 
-      set _out to item (random number from 1 to count quotelist) of quotelist
-      set _out to _out & "
-      Gilbert Sanchez"
+      ## Problem
 
-      return _out
-  - trigger: ddate
-    replace: '%B %e, %Y'
-  - trigger: tfb.com
-    replace: thefacebook.com
-  - trigger: ttime
-    replace: '%1I:%M %p'
-  - trigger: usersdf
-    replace: u̶s̶e̶r̶
+      ## Action
+
+      ## Resolution
