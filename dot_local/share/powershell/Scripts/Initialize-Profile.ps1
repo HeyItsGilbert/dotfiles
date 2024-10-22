@@ -10,35 +10,28 @@ function Initialize-Profile
   $modules = @{
     "AdvancedHistory" = @{}
     "DynamicTitle" = @{}
-
     "Posh-Git" = @{}
     "PSReadLine" = @{
-      if = ($env:TERM_PROGRAM -ne 'vscode')
+      if = $($env:TERM_PROGRAM -ne 'vscode')
     }
     "CompletionPredictor" = @{}
     "PSStyle" = @{
-      if = ($PSVersionTable.PSEdition -ne 'Core')
+      if = $($PSVersionTable.PSEdition -ne 'Core')
     }
     "Terminal-Icons" = @{}
     "$ChocolateyProfile" = @{
-      if = (Test-Path($ChocolateyProfile))
+      if = $(Test-Path($ChocolateyProfile))
     }
     "PSMOTD" = @{}
   }
-  foreach ($module in $modules.Keys)
-  {
-    if($modules.Item($module).ContainsKey("if"))
-    {
-      if($modules.Item($module).Item("if"))
-      {
+  foreach ($module in $modules.Keys) {
+    if($modules.Item($module).ContainsKey("if") -and -not $modules.Item($module).Item("if")) {
         continue
-      }
     }
-    try
-    {
+    try {
       Import-Module $module
-    } catch
-    {
+    }
+    catch {
       Write-Host "Failed to import: $module. $_"
     }
   }
