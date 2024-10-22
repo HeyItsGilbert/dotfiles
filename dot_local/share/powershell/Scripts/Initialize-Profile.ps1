@@ -32,7 +32,13 @@ function Initialize-Profile
         continue
       }
     }
-    Import-Module $module
+    try
+    {
+      Import-Module $module
+    } catch
+    {
+      Write-Host "Failed to import: $module. $_"
+    }
   }
 
   # Save all output, just in case! Thanks to @vexx32
