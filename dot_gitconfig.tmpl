@@ -104,6 +104,10 @@
 	# Automatically correct and execute mistyped commands
 	autocorrect = 1
 
+# Keep some local stuff out of template
+[include]
+	path = ~/.gitconfig-local
+
 # Add conditional settings for OSS/work
 [includeIf "gitdir:{{ .git_oss }}"]
 	path = ~/.gitconfig-oss
