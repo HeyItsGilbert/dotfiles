@@ -1,8 +1,8 @@
 prSections:
-- title: My Pull Requests
-  filters: is:open author:@me
 - title: Needs My Review
   filters: is:open review-requested:@me
+- title: My Pull Requests
+  filters: is:open author:@me
 - title: Involved
   filters: is:open involves:@me -author:@me
 issuesSections:
@@ -50,7 +50,8 @@ keybindings:
   issues: []
   prs: []
 repoPaths:
-  :owner/:repo: ~/repos
+  :owner/:repo: ~/repos/:repo #
+  VMWA/*: ~/repos/* #
 theme:
   ui:
     table:
