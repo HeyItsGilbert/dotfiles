@@ -40,13 +40,13 @@ window_effects:
     # ** Exclusive to Windows 11 due to API limitations.
     border:
       enabled: true
-      color: '#8dbcff'
+      color: '#5E409D'
 
   # Visual effects to apply to non-focused windows.
   other_windows:
     border:
       enabled: true
-      color: '#a1a1a1'
+      color: '#CECDC3'
 
 window_behavior:
   # New windows are created in this state whenever possible.
@@ -102,8 +102,12 @@ workspaces:
 window_rules:
   - commands: ["move --workspace 3"]
     match:
-      # Move browsers to workspace 1.
-      - window_process: { regex: "outlook" }
+      # Move browsers to workspace 3.
+      - window_process: { regex: "outlook|olk" }
+  - commands: ["move --workspace 2"]
+    match:
+      # Move browsers to workspace 2.
+      - window_process: { regex: "Mattermost" }
   - commands: ['ignore']
     match:
       # Ignores any Zebar windows.
@@ -115,6 +119,9 @@ window_rules:
 
       # Ignore rules for various 3rd-party apps.
       - window_process: { equals: 'PowerToys.PowerAccent' }
+      - window_process: { equals: '1Password' }
+      - window_process: { equals: 'RoyalTS' }
+      - window_process: { equals: 'Taskmgr' }
       - window_process: { equals: 'Lively' }
         window_class: { regex: 'HwndWrapper*' }
 
