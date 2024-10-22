@@ -18,7 +18,7 @@ $ConfigHome = if ($ENV:XDG_CONFIG_HOME) {
     [IO.Path]::Combine($HOME, ".config")
 }
 
-$Interactive = Convert-Path "$DataHome/powershell/Scripts/Initialize-Interactive.ps1"
+$Interactive = Convert-Path "$DataHome/powershell/Scripts/Initialize-Profile.ps1"
 if ($Host.UI.RawUI.KeyAvailable) {
     $Controlled = $false
     while ($Host.UI.RawUI.KeyAvailable -and ($key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown,IncludeKeyUp"))) {
