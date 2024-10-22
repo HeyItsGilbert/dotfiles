@@ -1,7 +1,7 @@
 local wezterm = require("wezterm")
 local mux = wezterm.mux
 local act = wezterm.action
-local config = {}
+local config = wezterm.config_builder()
 local keys = {}
 local mouse_bindings = {}
 local launch_menu = {}
@@ -17,6 +17,18 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	--- Make it look cool.
 	if is_windows_11 then
 		wezterm.log_info("We're running Windows 11!")
+		config.window_background_opacity = 0.5
+		-- config.win32_system_backdrop = "Acrylic"
+		config.win32_acrylic_accent_color = "rgb(94, 64, 157)"
+		config.webgpu_power_preference = "HighPerformance"
+		config.front_end = "OpenGL"
+		config.prefer_egl = true
+		config.window_padding = {
+			left = 5,
+			right = 5,
+			top = 5,
+			bottom = 5,
+		}
 	end
 
 	--- Set Pwsh as the default on Windows
@@ -52,6 +64,11 @@ end
 --- Disable defaul keys and set some minimum ones for now.
 --- This helps with conflicting keys in pwsh
 keys = {
+	{
+		key = "E",
+		mods = "CTRL|SHIFT|ALT",
+		action = wezterm.action.EmitEvent("toggle-colorscheme"),
+	},
 	{ key = "Tab", mods = "CTRL", action = act.ActivateTabRelative(1) },
 	{ key = "Tab", mods = "SHIFT|CTRL", action = act.ActivateTabRelative(-1) },
 	{ key = "Enter", mods = "ALT", action = act.ToggleFullScreen },
@@ -237,7 +254,7 @@ mouse_bindings = {
 config.scrollback_lines = 7000
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
 config.hide_tab_bar_if_only_one_tab = true
-config.color_scheme = "flexoki-dark"
+-- config.color_scheme = "flexoki-dark"
 config.font = wezterm.font_with_fallback({
 	{
 		family = "FiraCode Nerd Font",
@@ -258,7 +275,20 @@ config.default_cursor_style = "BlinkingBar"
 config.disable_default_key_bindings = true
 config.keys = keys
 config.mouse_bindings = mouse_bindings
+config.use_fancy_tab_bar = true
+config.tab_bar_at_bottom = true
+config.window_decorations = "NONE | RESIZE"
+config.cell_width = 0.9
 
+wezterm.on("toggle-colorscheme", function(window, pane)
+	local overrides = window:get_config_overrides() or {}
+	if overrides.color_scheme == "Flexoki Dark" then
+		overrides.color_scheme = "Adventure Time (Gogh)"
+	else
+		overrides.color_scheme = "Flexoki Dark"
+	end
+	window:set_config_overrides(overrides)
+end)
 -- Allow overwriting for work stuff
 if haswork then
 	work.apply_to_config(config)

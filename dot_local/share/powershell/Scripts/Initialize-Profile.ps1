@@ -1,21 +1,38 @@
-function Initialize-Profile {
-  trap { Write-Warning ($_.ScriptStackTrace | Out-String) }
+function Initialize-Profile
+{
+  trap
+  { Write-Warning ($_.ScriptStackTrace | Out-String) 
+  }
 
   Write-Host "Initializing profile..." -ForegroundColor Cyan
   # Prompt
-  Import-Module AdvancedHistory
-  Import-Module DynamicTitle
-  Import-Module Posh-Git
-  Import-Module PSReadLine
-  Import-Module CompletionPredictor
-  if ($PSVersionTable.PSEdition -ne 'Core') {
-    Import-Module PSStyle
-  }
-  Import-Module Terminal-Icons
-  # Chocolatey profile
   $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
-  if (Test-Path($ChocolateyProfile)) {
-    Import-Module "$ChocolateyProfile"
+  $modules = @{
+    "AdvancedHistory" = @{}
+    "DynamicTitle" = @{}
+
+    "Posh-Git" = @{}
+    "PSReadLine" = @{}
+    "CompletionPredictor" = @{}
+    "PSStyle" = @{
+      if = ($PSVersionTable.PSEdition -ne 'Core')
+    }
+    "Terminal-Icons" = @{}
+    "$ChocolateyProfile" = @{
+      if = (Test-Path($ChocolateyProfile))
+    }
+    "PSMOTD" = @{}
+  }
+  foreach ($module in $modules.Keys)
+  {
+    if($modules.Item($module).ContainsKey("if"))
+    {
+      if($modules.Item($module).Item("if"))
+      {
+        continue
+      }
+    }
+    Import-Module $module
   }
 
   # Save all output, just in case! Thanks to @vexx32
@@ -25,12 +42,14 @@ function Initialize-Profile {
   # Register-EngineEvent -SourceIdentifier PowerShell.OnIdle { Write-Host "$([char]27)[2A$([char]27)[0G$(prompt)" -NoNewline }
 
   # region PSReadline options
-  
+
   # Setup PSReadLineOption Splat
   $psOption = @{}
-  if ($PSVersionTable.PSEdition -ne 'Core') {
+  if ($PSVersionTable.PSEdition -ne 'Core')
+  {
     $psOption['PredictionSource'] = 'History'
-  } else {
+  } else
+  {
     $psOption['PredictionSource'] = 'HistoryAndPlugin'
   }
   $psOption['PredictionViewStyle'] = 'ListView'
@@ -57,14 +76,17 @@ function Initialize-Profile {
     HistorySearchForward = 'DownArrow'
     ValidateAndAcceptLine = 'Enter'
   }
-  foreach ($key in $keymap.Keys) {
-    foreach ($chord in $keymap[$key]) {
+  foreach ($key in $keymap.Keys)
+  {
+    foreach ($chord in $keymap[$key])
+    {
       Set-PSReadLineKeyHandler -Function $key -Chord $chord
     }
   }
 
   ## This is for Core only stuff
-  if ($PSVersionTable.PSEdition -eq 'Core') {
+  if ($PSVersionTable.PSEdition -eq 'Core')
+  {
     # AdvancedHistory
     # When F7 is pressed, show the local command line history in OCGV
     $parameters = @{
@@ -72,7 +94,7 @@ function Initialize-Profile {
       BriefDescription = 'Show Matching History'
       LongDescription = 'Show Matching History using Out-ConsoleGridView'
       ScriptBlock = {
-        ocgv_history -Global $false 
+        ocgv_history -Global $false
       }
     }
     Set-PSReadLineKeyHandler @parameters
@@ -96,10 +118,11 @@ function Initialize-Profile {
   $term_app = $env:TERM_PROGRAM
   # Let's check if its Windows terminal thanks to...
   # https://github.com/microsoft/terminal/issues/1040
-  if ($null -ne $env:WT_SESSION) {
+  if ($null -ne $env:WT_SESSION)
+  {
     $term_app = 'WindowsTerminal'
   }
-  Set-ShellIntegration -TerminalProgram $term_app
+  #Set-ShellIntegration -TerminalProgram $term_app
 
   # Add chezmoi auto complete
   Invoke-Expression (& { ( chezmoi completion powershell | Out-String ) })
@@ -110,18 +133,11 @@ function Initialize-Profile {
   # Completion for gh cli
   Invoke-Expression (& { ( gh completion -s powershell | Out-String) })
 
-  if (Test-Administrator) {
+  if (Test-Administrator)
+  {
     $Env:ISELEVATEDSESSION = $true
   }
 
-  # Setup MOTD
-  function Get-MessageOfTheDay {
-    $outdatedPackages = choco outdated -r
-    if ($outdatedPackages) {
-      Write-Host "Chocolate Packages To Update"
-      $outdatedPackages
-    }
-  }
-  $env:MotdCadence = 'EverySession'
-  Import-Module PSMotd
+  # Get MOTD
+  Get-MOTD
 }
