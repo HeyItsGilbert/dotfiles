@@ -225,6 +225,20 @@ keys = {
 	{ key = "F11", mods = "NONE", action = act.ToggleFullScreen },
 	{ key = "Copy", mods = "NONE", action = act.CopyTo("Clipboard") },
 	{ key = "Paste", mods = "NONE", action = act.PasteFrom("Clipboard") },
+	{
+		key = "O",
+		mods = "CTRL|ALT",
+		-- toggling opacity
+		action = wezterm.action_callback(function(window, _)
+			local overrides = window:get_config_overrides() or {}
+			if overrides.window_background_opacity == 1.0 then
+				overrides.window_background_opacity = 0.5
+			else
+				overrides.window_background_opacity = 1.0
+			end
+			window:set_config_overrides(overrides)
+		end),
+	},
 }
 
 -- Mousing bindings
