@@ -12,7 +12,9 @@ function Initialize-Profile
     "DynamicTitle" = @{}
 
     "Posh-Git" = @{}
-    "PSReadLine" = @{}
+    "PSReadLine" = @{
+      if = ($env:TERM_PROGRAM -ne 'vscode')
+    }
     "CompletionPredictor" = @{}
     "PSStyle" = @{
       if = ($PSVersionTable.PSEdition -ne 'Core')
