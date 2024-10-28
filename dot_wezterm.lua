@@ -290,9 +290,63 @@ config.disable_default_key_bindings = true
 config.keys = keys
 config.mouse_bindings = mouse_bindings
 config.use_fancy_tab_bar = true
-config.tab_bar_at_bottom = true
+config.tab_bar_at_bottom = false
 config.window_decorations = "NONE | RESIZE"
 config.cell_width = 0.9
+config.window_frame = {
+	-- The overall background color of the tab bar when
+	-- the window is focused
+	active_titlebar_bg = "transparent",
+
+	-- The overall background color of the tab bar when
+	-- the window is not focused
+	inactive_titlebar_bg = "#333333",
+}
+
+function tab_title(tab_info)
+	local title = tab_info.tab_title
+	-- if the tab title is explicitly set, take that
+	if title and #title > 0 then
+		return title
+	end
+	-- Otherwise, use the title from the active pane
+	-- in that tab
+	return tab_info.active_pane.title
+end
+
+wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+	local edge_background = "#FF0000"
+	local background = "#2b2042"
+	local foreground = "#878580"
+
+	if tab.is_active then
+		background = "#5E409D"
+		foreground = "#B7B5AC"
+	elseif hover then
+		background = "#3b3052"
+		foreground = "#909090"
+	end
+
+	local edge_foreground = background
+
+	local title = tab_title(tab)
+
+	-- ensure that the titles fit in the available space,
+	-- and that we have room for the edges.
+	title = wezterm.truncate_right(title, max_width)
+
+	return {
+		{ Background = { Color = edge_background } },
+		{ Foreground = { Color = edge_foreground } },
+		--{ Text = SOLID_LEFT_ARROW },
+		{ Background = { Color = background } },
+		{ Foreground = { Color = foreground } },
+		{ Text = title },
+		{ Background = { Color = edge_background } },
+		{ Foreground = { Color = edge_foreground } },
+		--{ Text = SOLID_RIGHT_ARROW },
+	}
+end)
 
 wezterm.on("toggle-colorscheme", function(window, pane)
 	local overrides = window:get_config_overrides() or {}

@@ -2,8 +2,8 @@ general:
   # Commands to run when the WM has started (e.g. to run a script or launch
   # another application). Here we are running a batch script to start Zebar.
   startup_commands: [
-    'shell-exec C:\Program Files\glzr.io\Zebar\resources\start.bat',
-    'shell-exec C:\Users\gilbsanchez\bin\gat-gwm.exe'
+    'shell-exec zebar',
+    'shell-exec gat-gwm.exe'
   ]
 
   # Whether to automatically focus windows underneath the cursor.
@@ -24,14 +24,14 @@ general:
 
 gaps:
   # Gap between adjacent windows.
-  inner_gap: '10px'
+  inner_gap: '5px'
 
   # Gap between windows and the screen edge.
   outer_gap:
     top: '50px'
-    right: '10px'
-    bottom: '10px'
-    left: '10px'
+    right: '5p'
+    bottom: '5px'
+    left: '5px'
 
 window_effects:
   # Visual effects to apply to the focused window.
@@ -74,19 +74,21 @@ window_behavior:
 
 workspaces:
   - name: '1'
-    display_name: "Work"
+    display_name: " Work"
     bind_to_monitor: 0
     keep_alive: true
   - name: '2'
-    display_name: "Comms"
+    display_name: "󰙯 Chat"
     bind_to_monitor: 0
     keep_alive: true
   - name: '3'
-    display_name: "Outlook"
+    display_name: "󰇮 Mail"
     bind_to_monitor: 0
   - name: '4'
+    display_name: "󰽐 "
     bind_to_monitor: 0
   - name: '5'
+    display_name: "󰍔 "
     bind_to_monitor: 0
   - name: '6'
     bind_to_monitor: 1
@@ -100,14 +102,20 @@ workspaces:
     bind_to_monitor: 1
 
 window_rules:
-  - commands: ["move --workspace 3"]
-    match:
-      # Move browsers to workspace 3.
-      - window_process: { regex: "outlook|olk" }
   - commands: ["move --workspace 2"]
     match:
       # Move browsers to workspace 2.
       - window_process: { regex: "Mattermost" }
+      - window_process: { regex: "Discord" }
+  - commands: ["move --workspace 3"]
+    match:
+      # Move browsers to workspace 3.
+      - window_process: { regex: "outlook|olk" }
+      - window_title: { regex: "Gmail" }
+  - commands: ["move --workspace 5"]
+    match:
+      # Move browsers to workspace 3.
+      - window_process: { regex: "Obsidian" }
   - commands: ['ignore']
     match:
       # Ignores any Zebar windows.
@@ -124,6 +132,7 @@ window_rules:
       - window_process: { equals: 'Taskmgr' }
       - window_process: { equals: 'Lively' }
         window_class: { regex: 'HwndWrapper*' }
+      - window_title: { equals: "Bitwarden" }
 
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.
