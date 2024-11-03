@@ -97,8 +97,7 @@ workspaces:
   - name: '8'
     bind_to_monitor: 1
   - name: '9'
-    bind_to_monitor: 1
-  - name: '0'
+    display_name: " Social"
     bind_to_monitor: 1
 
 window_rules:
