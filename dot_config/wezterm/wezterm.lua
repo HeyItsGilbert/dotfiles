@@ -52,7 +52,6 @@ end
 --- Default config settings
 config.scrollback_lines = 7000
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
--- config.color_scheme = "flexoki-dark"
 config.launch_menu = launch_menu
 -- Allow overwriting for work stuff
 if haswork then
