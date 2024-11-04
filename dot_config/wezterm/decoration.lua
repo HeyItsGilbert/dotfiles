@@ -21,7 +21,7 @@ wezterm.on("format-tab-title", function(tab, _, _, _, hover, max_width)
 
 	-- ensure that the titles fit in the available space,
 	-- and that we have room for the edges.
-	title = wezterm.truncate_right(title, max_width)
+	-- title = wezterm.truncate_right(title, max_width)
 
 	return {
 		{ Background = { Color = edge_background } },
@@ -35,6 +35,17 @@ wezterm.on("format-tab-title", function(tab, _, _, _, hover, max_width)
 		--{ Text = SOLID_RIGHT_ARROW },
 	}
 end)
+
+function tab_title(tab_info)
+	local title = tab_info.tab_title
+	-- if the tab title is explicitly set, take that
+	if title and #title > 0 then
+		return title
+	end
+	-- Otherwise, use the title from the active pane
+	-- in that tab
+	return tab_info.active_pane.title
+end
 
 function M.setup(config, isWindows11)
 	if isWindows11 then
@@ -66,17 +77,6 @@ function M.setup(config, isWindows11)
 		-- the window is not focused
 		inactive_titlebar_bg = "#333333",
 	}
-
-	function tab_title(tab_info)
-		local title = tab_info.tab_title
-		-- if the tab title is explicitly set, take that
-		if title and #title > 0 then
-			return title
-		end
-		-- Otherwise, use the title from the active pane
-		-- in that tab
-		return tab_info.active_pane.title
-	end
 end
 
 return M
