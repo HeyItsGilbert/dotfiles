@@ -1,7 +1,6 @@
-function Initialize-Profile
-{
-  trap
-  { Write-Warning ($_.ScriptStackTrace | Out-String) 
+function Initialize-Profile {
+  trap {
+    Write-Warning ($_.ScriptStackTrace | Out-String) 
   }
 
   Write-Host "Initializing profile..." -ForegroundColor Cyan
@@ -24,17 +23,13 @@ function Initialize-Profile
     }
     "PSMOTD" = @{}
   }
-  foreach ($module in $modules.Keys)
-  {
-    if($modules.Item($module).ContainsKey("if") -and -not $modules.Item($module).Item("if"))
-    {
+  foreach ($module in $modules.Keys) {
+    if($modules.Item($module).ContainsKey("if") -and -not $modules.Item($module).Item("if")) {
       continue
     }
-    try
-    {
+    try {
       Import-Module $module
-    } catch
-    {
+    } catch {
       Write-Host "Failed to import: $module. $_"
     }
   }
@@ -49,11 +44,9 @@ function Initialize-Profile
 
   # Setup PSReadLineOption Splat
   $psOption = @{}
-  if ($PSVersionTable.PSEdition -ne 'Core')
-  {
+  if ($PSVersionTable.PSEdition -ne 'Core') {
     $psOption['PredictionSource'] = 'History'
-  } else
-  {
+  } else {
     $psOption['PredictionSource'] = 'HistoryAndPlugin'
   }
   $psOption['PredictionViewStyle'] = 'ListView'
@@ -80,17 +73,14 @@ function Initialize-Profile
     HistorySearchForward = 'DownArrow'
     ValidateAndAcceptLine = 'Enter'
   }
-  foreach ($key in $keymap.Keys)
-  {
-    foreach ($chord in $keymap[$key])
-    {
+  foreach ($key in $keymap.Keys) {
+    foreach ($chord in $keymap[$key]) {
       Set-PSReadLineKeyHandler -Function $key -Chord $chord
     }
   }
 
   ## This is for Core only stuff
-  if ($PSVersionTable.PSEdition -eq 'Core')
-  {
+  if ($PSVersionTable.PSEdition -eq 'Core') {
     # AdvancedHistory
     # When F7 is pressed, show the local command line history in OCGV
     $parameters = @{
@@ -122,23 +112,32 @@ function Initialize-Profile
   $term_app = $env:TERM_PROGRAM
   # Let's check if its Windows terminal thanks to...
   # https://github.com/microsoft/terminal/issues/1040
-  if ($null -ne $env:WT_SESSION)
-  {
+  if ($null -ne $env:WT_SESSION) {
     $term_app = 'WindowsTerminal'
   }
   #Set-ShellIntegration -TerminalProgram $term_app
 
   # Add chezmoi auto complete
-  Invoke-Expression (& { ( chezmoi completion powershell | Out-String ) })
+  if (Get-Command chezmoi -ErrorAction 'SilentlyContinue') {
+    Invoke-Expression (& { ( chezmoi completion powershell | Out-String ) })
+  }
 
   # Add z for file navigation
-  Invoke-Expression (& { ( zoxide init powershell | Out-String ) })
+  if (Get-Command zoxide -ErrorAction 'SilentlyContinue') {
+    Invoke-Expression (& { ( zoxide init powershell | Out-String ) })
+  }
 
   # Completion for gh cli
-  Invoke-Expression (& { ( gh completion -s powershell | Out-String) })
+  if (Get-Command gh -ErrorAction 'SilentlyContinue') {
+    Invoke-Expression (& { ( gh completion -s powershell | Out-String) })
+  }
 
-  if (Test-Administrator)
-  {
+
+  if (Get-Command fnm -ErrorAction 'SilentlyContinue') {
+    fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
+  }
+
+  if (Test-Administrator) {
     $Env:ISELEVATEDSESSION = $true
   }
 
