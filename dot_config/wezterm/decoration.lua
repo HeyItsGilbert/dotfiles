@@ -49,6 +49,7 @@ end
 
 function M.setup(config, isWindows11)
 	if isWindows11 then
+		wezterm.log_info("Windows 11 decorations")
 		config.window_background_opacity = 0.5
 		-- config.win32_system_backdrop = "Acrylic"
 		config.win32_acrylic_accent_color = "rgb(94, 64, 157)"

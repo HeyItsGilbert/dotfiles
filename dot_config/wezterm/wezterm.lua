@@ -7,12 +7,14 @@ local haswork, work = pcall(require, "work")
 local config = wezterm.config_builder()
 local launch_menu = {}
 
+local is_windows_11 = false
+
 --- Setup PowerShell options
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 	--- Grab the ver info for later use.
 	local _, stdout, _ = wezterm.run_child_process({ "cmd.exe", "ver" })
 	local _, _, build, _ = stdout:match("Version ([0-9]+)%.([0-9]+)%.([0-9]+)%.([0-9]+)")
-	local is_windows_11 = tonumber(build) >= 22000
+	is_windows_11 = tonumber(build) >= 22000
 
 	--- Make it look cool.
 	if is_windows_11 then
@@ -60,6 +62,6 @@ end
 
 fonts.setup(config)
 keys.setup(config)
-decoration.setup(config, isWindows11)
+decoration.setup(config, is_windows_11)
 
 return config
