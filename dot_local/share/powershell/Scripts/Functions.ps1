@@ -91,3 +91,43 @@ function Get-MessageOfTheDay {
   [void]$output.Append($dash)
   Write-Host $output -NoNewline
 }
+
+function Set-LocationButBetter {
+    param (
+        [Parameter(
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName
+        )]
+        $Path
+    )
+
+    process {
+        if($MyInvocation.BoundParameters.Count -eq 0){
+          $Path = $MyInvocation.InvocationName
+        }
+        # If this contains 3 or more period, that means move up additional levels.
+        if($Path -match '^\.{2,}$'){
+            $depth = $Path.Length
+            $path = Get-Location
+            # Start at 1 to treat the initial '..' as 1 parent.
+            for ($i = 1; $i -lt $depth; $i++) {
+                $path = (Split-Path $path -Parent)
+            }
+        }
+        if ($Path -eq '-'){
+            Pop-location
+        } else {
+            if ([System.IO.File]::Exists($Path)) {
+                Push-Location (Split-Path $Path -Parent)
+            }
+            else {
+                Push-Location $Path
+            }
+        }
+    }
+}
+
+Remove-Item alias:cd
+Set-Alias -Name cd -Value Set-LocationButBetter
+Set-Alias -Name .. -Value Set-LocationButBetter
+Set-Alias -Name ... -Value Set-LocationButBetter
