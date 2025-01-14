@@ -3,7 +3,7 @@ general:
   # another application). Here we are running a batch script to start Zebar.
   startup_commands: [
     'shell-exec zebar',
-    'shell-exec gat-gwm.exe'
+    'shell-exec gat-gwm'
   ]
 
   # Whether to automatically focus windows underneath the cursor.
@@ -132,6 +132,7 @@ window_rules:
       - window_process: { equals: 'Lively' }
         window_class: { regex: 'HwndWrapper*' }
       - window_title: { equals: "Bitwarden" }
+      - window_process: { equals: "mstsc" }
 
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.
@@ -190,8 +191,8 @@ keybindings:
   # As an alternative to the resize keybindings above, resize mode enables
   # resizing via arrow keys or HJKL. The binding mode is defined above with
   # the name 'resize'.
-  - commands: ['wm-enable-binding-mode --name resize']
-    bindings: ['alt+r']
+  # - commands: ['wm-enable-binding-mode --name resize']
+  #   bindings: ['alt+r']
 
   # Disables all keybindings until alt+shift+p is pressed again.
   - commands: ['wm-enable-binding-mode --name pause']
@@ -219,16 +220,16 @@ keybindings:
     bindings: ['alt+f']
 
   # Minimize focused window.
-  - commands: ['toggle-minimized']
-    bindings: ['alt+m']
+  # - commands: ['toggle-minimized']
+  #   bindings: ['alt+m']
 
   # Close focused window.
-  - commands: ['close']
-    bindings: ['alt+shift+q']
+  # - commands: ['close']
+  #   bindings: ['alt+shift+q']
 
   # Kill GlazeWM process safely.
-  - commands: ['wm-exit']
-    bindings: ['alt+shift+e']
+  # - commands: ['wm-exit']
+  #   bindings: ['alt+shift+e']
 
   # Re-evaluate configuration file.
   - commands: ['wm-reload-config']
@@ -241,18 +242,18 @@ keybindings:
   # Launch CMD terminal. Alternatively, use `shell-exec wt` or
   # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
   # Terminal and Git Bash respectively.
-  - commands: ['shell-exec wt']
+  - commands: ['shell-exec %ProgramFiles%/WezTerm/wezterm.exe']
     bindings: ['alt+enter']
 
   # Focus the next/previous workspace defined in `workspaces` config.
-  - commands: ['focus --next-workspace']
-    bindings: ['alt+s']
-  - commands: ['focus --prev-workspace']
-    bindings: ['alt+a']
+  # - commands: ['focus --next-workspace']
+  #   bindings: ['alt+s']
+  # - commands: ['focus --prev-workspace']
+  #   bindings: ['alt+a']
 
   # Focus the workspace that last had focus.
-  - commands: ['focus --recent-workspace']
-    bindings: ['alt+d']
+  # - commands: ['focus --recent-workspace']
+  #   bindings: ['alt+d']
 
   # Change focus to a workspace defined in `workspaces` config.
   - commands: ['focus --workspace 1']
@@ -276,14 +277,14 @@ keybindings:
 
   # Move the focused window's parent workspace to a monitor in a given
   # direction.
-  - commands: ['move-workspace --direction left']
-    bindings: ['alt+shift+a']
-  - commands: ['move-workspace --direction right']
-    bindings: ['alt+shift+f']
-  - commands: ['move-workspace --direction up']
-    bindings: ['alt+shift+d']
-  - commands: ['move-workspace --direction down']
-    bindings: ['alt+shift+s']
+  # - commands: ['move-workspace --direction left']
+  #   bindings: ['alt+shift+a']
+  # - commands: ['move-workspace --direction right']
+  #   bindings: ['alt+shift+f']
+  # - commands: ['move-workspace --direction up']
+  #   bindings: ['alt+shift+d']
+  # - commands: ['move-workspace --direction down']
+  #   bindings: ['alt+shift+s']
 
   # Move focused window to a workspace defined in `workspaces` config.
   - commands: ['move --workspace 1', 'focus --workspace 1']
