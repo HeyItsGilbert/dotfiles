@@ -133,6 +133,11 @@ window_rules:
         window_class: { regex: 'HwndWrapper*' }
       - window_title: { equals: "Bitwarden" }
       - window_process: { equals: "mstsc" }
+      - window_process: { equals: "Switchbar" }
+      - window_process: { equals: "PhoneLink" }
+      - window_process: { equals: "PhoneExperience" }
+      - window_process: { equals: "YourPhoneAppProxy" }
+      - window_title: { equals: "Command Palette" }
 
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.

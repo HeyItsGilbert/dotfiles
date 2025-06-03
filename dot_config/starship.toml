@@ -7,7 +7,7 @@ format = """
 [\uE0B6](fg:purple)${env_var.is_elevated_session}[$directory](bg:purple)\
 [\uE0B0](bg:bright-black fg:purple)[$git_branch](bg:bright-black)[\uE0B0](fg:bright-black bg:none)\
 $git_status$git_state\
-$fill $all ${env_var.next_meeting} $time $line_break\
+$all ${env_var.next_meeting} $time $line_break\
 $shell $character\
 """
 

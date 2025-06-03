@@ -88,6 +88,12 @@ function Get-MessageOfTheDay {
     [void]$output.AppendLine("Chocolatey Packages To Update")
     [void]$output.AppendLine($outdatedPackages)
   }
+  $chezmoiStatus = (chezmoi status) -join "`n"
+  if (-not [string]::IsNullOrEmpty($chezmoiStatus)) {
+    [void]$output.AppendLine($dash)
+    [void]$output.AppendLine("Chezmoi Status")
+    [void]$output.AppendLine($chezmoiStatus)
+  }
   [void]$output.Append($dash)
   Write-Host $output -NoNewline
 }
