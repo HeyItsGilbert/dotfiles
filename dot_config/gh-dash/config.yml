@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://dlvhdr.github.io/gh-dash/configuration/gh-dash/schema.json
 prSections:
 - title: Needs My Review
   filters: is:open review-requested:@me
@@ -5,6 +6,8 @@ prSections:
   filters: is:open author:@me
 - title: Involved
   filters: is:open involves:@me -author:@me
+- title: Open PR under VMWA
+  filters: is:open is:pr archived:false user:VMWA draft:false 
 issuesSections:
 - title: My Issues
   filters: is:open author:@me
@@ -15,7 +18,7 @@ issuesSections:
 defaults:
   preview:
     open: true
-    width: 50
+    width: 100
   prsLimit: 20
   issuesLimit: 20
   view: prs
@@ -56,5 +59,19 @@ theme:
   ui:
     table:
       showSeparator: true
+  colors:
+    text:
+      primary: "#E2E1ED"
+      secondary: "#666CA6"
+      inverted: "#242347"
+      faint: "#B0B3BF"
+      warning: "#E0AF68"
+      success: "#3DF294"
+    background:
+      selected: "#1B1B33"
+    border:
+      primary: "#383B5B"
+      secondary: "#39386B"
+      faint: "#2B2B40"
 pager:
   diff: delta

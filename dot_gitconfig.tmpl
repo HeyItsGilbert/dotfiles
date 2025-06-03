@@ -1,6 +1,8 @@
+{{ if not .git_work }}
 [user]
 	name = {{ .name }}
 	email = {{ .email }}
+{{- end -}}
 
 [alias]
 	cam = commit -am
