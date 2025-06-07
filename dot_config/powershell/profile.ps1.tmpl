@@ -99,17 +99,11 @@ if (Get-Command 'starship' -ErrorAction SilentlyContinue) {
   Invoke-Expression (&starship init powershell)
   $global:Prompts.Starship = $function:prompt
   Switch-Prompt -Prompt 'Starship'
-  function Invoke-Starship-PreCommand {
-    if ($global:profile_initialized -ne $true) {
-      $global:profile_initialized = $true
-      Initialize-Profile
-    }
-  }
   # Update previous prompt with simpler prompt
-  function Invoke-Starship-TransientFunction {
-    &starship prompt --profile short
-  }
-  Enable-TransientPrompt
+  #function Invoke-Starship-TransientFunction {
+  #  &starship prompt --profile short
+  #}
+  #Enable-TransientPrompt
 } else {
   Write-Host "Preparing interactive session for first use..." -ForegroundColor Cyan
   Switch-Prompt -Prompt 'OldPrompt'

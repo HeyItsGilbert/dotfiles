@@ -5,12 +5,13 @@ function Set-ShellIntegration {
   param
   (
     [ValidateSet('WindowsTerminal', 'ITerm2', 'WezTerm', 'vscode')]
-    [String]$TerminalProgram = $env:TERM_PROGRAM
+    [String]$TerminalProgram = $global:term_app,
+    [switch]$NoOriginalReset
   )
 
   Write-Host "Setting up shell integration..."
   # Restore hooked functions in case this script is executed accidentally twice
-  if ($global:shellIntegrationGlobals) {
+  if ($global:shellIntegrationGlobals -and -not $NoOriginalReset) {
     $function:global:PSConsoleHostReadLine = $global:shellIntegrationGlobals.originalPSConsoleHostReadLine
     $function:global:Prompt = $global:shellIntegrationGlobals.originalPrompt
   }
