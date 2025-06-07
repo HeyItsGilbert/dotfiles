@@ -37,7 +37,7 @@ function ocgv_history {
 function Test-Administrator {
   $CurrentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
   $AdministratorRole = [Security.Principal.WindowsBuiltInRole] "Administrator"
-    ([Security.Principal.WindowsPrincipal]$CurrentUser).IsInRole($AdministratorRole)
+  ([Security.Principal.WindowsPrincipal]$CurrentUser).IsInRole($AdministratorRole)
 }
 
 # Aliases
@@ -67,7 +67,7 @@ function Watch-Command {
   )
   while ($true) {
     Clear-Host
-    Write-Host ("Every {1}s: {0} `n" -F $Command.toString(), $Delay)
+    Write-Host ("Every {1}s: {0} `n" -f $Command.toString(), $Delay)
     $Command.Invoke()
     Start-Sleep -Seconds $Delay
   }
@@ -99,41 +99,77 @@ function Get-MessageOfTheDay {
 }
 
 function Set-LocationButBetter {
-    param (
-        [Parameter(
-            ValueFromPipeline,
-            ValueFromPipelineByPropertyName
-        )]
-        $Path
-    )
+  param (
+    [Parameter(
+      ValueFromPipeline,
+      ValueFromPipelineByPropertyName
+    )]
+    $Path
+  )
 
-    process {
-        if($MyInvocation.BoundParameters.Count -eq 0){
-          $Path = $MyInvocation.InvocationName
-        }
-        # If this contains 3 or more period, that means move up additional levels.
-        if($Path -match '^\.{2,}$'){
-            $depth = $Path.Length
-            $path = Get-Location
-            # Start at 1 to treat the initial '..' as 1 parent.
-            for ($i = 1; $i -lt $depth; $i++) {
-                $path = (Split-Path $path -Parent)
-            }
-        }
-        if ($Path -eq '-'){
-            Pop-location
-        } else {
-            if ([System.IO.File]::Exists($Path)) {
-                Push-Location (Split-Path $Path -Parent)
-            }
-            else {
-                Push-Location $Path
-            }
-        }
+  process {
+    if ($MyInvocation.BoundParameters.Count -eq 0) {
+      $Path = $MyInvocation.InvocationName
     }
+    # If this contains 3 or more period, that means move up additional levels.
+    if ($Path -match '^\.{2,}$') {
+      $depth = $Path.Length
+      $path = Get-Location
+      # Start at 1 to treat the initial '..' as 1 parent.
+      for ($i = 1; $i -lt $depth; $i++) {
+        $path = (Split-Path $path -Parent)
+      }
+    }
+    if ($Path -eq '-') {
+      Pop-Location
+    } else {
+      if ([System.IO.File]::Exists($Path)) {
+        Push-Location (Split-Path $Path -Parent)
+      } else {
+        Push-Location $Path
+      }
+    }
+  }
 }
 
 Remove-Item alias:cd
 Set-Alias -Name cd -Value Set-LocationButBetter
 Set-Alias -Name .. -Value Set-LocationButBetter
 Set-Alias -Name ... -Value Set-LocationButBetter
+
+function Switch-Prompt {
+  param(
+    [Parameter(Position = 0)]
+    [ValidateSet('Simple', 'Starship', 'Original', 'OldPrompt')]
+    [string]$Prompt,
+    [switch]
+    $NoShellIntegration
+  )
+  $current = $global:Prompts.Current
+  if ([string]::IsNullOrEmpty($Prompt)) {
+    # Skip over the key 'Current' in the global:Prompts.Keys
+    [array]$keys = $global:Prompts.Keys | Where-Object { $_ -ne 'Current' }
+    # Get the current prompt index and increment it
+    try {
+      $currentIndex = $keys.IndexOf($current)
+    } catch {
+      Write-Debug "Current prompt '$($current)' not found in keys. Defaulting to 'Simple'."
+      $currentIndex = 0
+    }
+    Write-Debug "Current Prompt: $($current) at index $currentIndex"
+    $next = $currentIndex + 1
+    # If we are at the end of the list, wrap around to the start
+    if ($next -ge $keys.Count) {
+      Write-Debug "Wrapping around to the first prompt"
+      $next = 0
+    }
+    $Prompt = $keys[$next]
+  }
+  # Add the shell integration
+  if (-not $NoShellIntegration) {
+    Set-ShellIntegration -TerminalProgram $global:term_app
+  }
+  Write-Verbose "Switching prompt from '$($current)' to '$Prompt'"
+  $global:Prompts.Current = $Prompt
+  $function:prompt = $global:Prompts.$Prompt
+}

@@ -1,6 +1,6 @@
 $global:profile_initialized = $false
 
-# region Copied from Jaykul
+#region Copied from Jaykul
 trap { Write-Warning ($_.ScriptStackTrace | Out-String) }
 # $InformationPreference = "Continue"
 # I wish $Profile was in $Home, but since it's not:
@@ -8,35 +8,42 @@ $ProfileDir = $PSScriptRoot
 
 # The XDG standard says use the variable and tells us how to calculate a fallback
 $DataHome = if ($ENV:XDG_CONFIG_HOME) {
-    $ENV:XDG_DATA_HOME
+  $ENV:XDG_DATA_HOME
 } else {
-    [IO.Path]::Combine($HOME, ".local", "share")
+  [IO.Path]::Combine($HOME, ".local", "share")
 }
 $ConfigHome = if ($ENV:XDG_CONFIG_HOME) {
-    $ENV:XDG_CONFIG_HOME
+  $ENV:XDG_CONFIG_HOME
 } else {
-    [IO.Path]::Combine($HOME, ".config")
+  [IO.Path]::Combine($HOME, ".config")
+}
+
+$global:Prompts = @{
+  Current = 'Simple'
+  Original = $function:prompt
+  Simple = {
+    "$([char]27)[36m$($MyInvocation.HistoryId)" +
+    "$([char]27)[37m $pwd$([char]27)[0m`n$([char]0x276f) "
+  }
+  Starship = {} # Filled in later
+  OldPrompt = { . (Convert-Path "$DataHome/powershell/Scripts/OldPrompt") }
 }
 
 $Interactive = Convert-Path "$DataHome/powershell/Scripts/Initialize-Profile.ps1"
 if ($Host.UI.RawUI.KeyAvailable) {
-    $Controlled = $false
-    while ($Host.UI.RawUI.KeyAvailable -and ($key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown,IncludeKeyUp"))) {
-        if (!$Controlled -and $key.ControlKeyState -match "LeftCtrlPressed") {
-            $Controlled = $true
-        }
+  $Controlled = $false
+  while ($Host.UI.RawUI.KeyAvailable -and ($key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown,IncludeKeyUp"))) {
+    if (!$Controlled -and $key.ControlKeyState -match "LeftCtrlPressed") {
+      $Controlled = $true
     }
-    if ($Controlled) {
-        Write-Host "Skipping Interactive Config. To complete, run:`n. `"$Interactive`"`nInitialize-Profile" -ForegroundColor Yellow
-        if ($PSVersionTable.PSVersion.Major -gt 5) {
-            function prompt { "`e[36m$($MyInvocation.HistoryId)`e[37m $pwd`e[0m`n❯" }
-        } else {
-            function prompt { "$([char]27)[36m$($MyInvocation.HistoryId)$([char]27)[37m $pwd$([char]27)[0m`n$([char]0x276f)" }
-        }
-        return
-    }
+  }
+  if ($Controlled) {
+    Write-Host "Skipping Interactive Config. To complete, run:`n. `"$Interactive`"`nInitialize-Profile" -ForegroundColor Yellow
+    $function:prompt = $global:Prompts.Simple
+    return
+  }
 }
-# regionend
+#endregion
 
 # Load extra functions
 @(
@@ -51,28 +58,61 @@ if ($Host.UI.RawUI.KeyAvailable) {
   }
 }
 
+#region Add auto completers
+## Import Shell Integration Script
+$global:term_app = $env:TERM_PROGRAM
+# Let's check if its Windows terminal thanks to...
+# https://github.com/microsoft/terminal/issues/1040
+if ($null -ne $env:WT_SESSION) {
+  $global:term_app = 'WindowsTerminal'
+}
+#Set-ShellIntegration -TerminalProgram $term_app
+
+# Add chezmoi auto complete
+if (Get-Command chezmoi -ErrorAction 'SilentlyContinue') {
+  chezmoi completion powershell | Out-String | Invoke-Expression
+}
+
+# Add z for file navigation
+if (Get-Command zoxide -ErrorAction 'SilentlyContinue') {
+  zoxide init powershell | Out-String | Invoke-Expression
+}
+
+# Completion for gh cli
+if (Get-Command gh -ErrorAction 'SilentlyContinue') {
+  gh completion -s powershell | Out-String | Invoke-Expression
+}
+
+
+if (Get-Command fnm -ErrorAction 'SilentlyContinue') {
+  fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
+}
+#endregion
+
+if (Test-Administrator) {
+  $Env:ISELEVATEDSESSION = $true
+}
+
 # Starship overwrite the prompt. Do this so its available on first open.
 # There is a cost for this but it should be minimal.
 if (Get-Command 'starship' -ErrorAction SilentlyContinue) {
   Invoke-Expression (&starship init powershell)
+  $global:Prompts.Starship = $function:prompt
+  Switch-Prompt -Prompt 'Starship'
   function Invoke-Starship-PreCommand {
     if ($global:profile_initialized -ne $true) {
       $global:profile_initialized = $true
       Initialize-Profile
     }
   }
-  # Update previous prompt with simpler prompt 
+  # Update previous prompt with simpler prompt
   function Invoke-Starship-TransientFunction {
     &starship prompt --profile short
   }
   Enable-TransientPrompt
 } else {
   Write-Host "Preparing interactive session for first use..." -ForegroundColor Cyan
-  function prompt {
-      . (Convert-Path "$DataHome/powershell/Scripts/OldPrompt")
-      if ($global:profile_initialized -ne $true) {
-        $global:profile_initialized = $true
-        Initialize-Profile
-      }
-  }
+  Switch-Prompt -Prompt 'OldPrompt'
 }
+
+Get-MOTD

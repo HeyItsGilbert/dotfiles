@@ -64,4 +64,8 @@ fonts.setup(config)
 keys.setup(config)
 decoration.setup(config, is_windows_11)
 
+wezterm.on("user-var-changed", function(window, pane, name, value)
+	wezterm.log_info("var", name, value)
+end)
+
 return config

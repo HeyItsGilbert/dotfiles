@@ -1,10 +1,15 @@
+if ($global:profile_initialized -ne $true) {
+  $global:profile_initialized = $true
+  Initialize-Profile
+}
+
 # Run once to load gitprompt setting
 Write-VcsStatus | Out-Null
 $GitPromptSettings.BeforeStatus.Text = ''
 $GitPromptSettings.AfterStatus.Text = ''
 
 # Check if admin
-if (-Not ($IsLinux -or $IsMacOS)) {
+if (-not ($IsLinux -or $IsMacOS)) {
   $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
   if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { $Script:IsAdmin = $true }
 }

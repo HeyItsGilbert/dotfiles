@@ -50,7 +50,7 @@ end
 function M.setup(config, isWindows11)
 	if isWindows11 then
 		wezterm.log_info("Windows 11 decorations")
-		config.window_background_opacity = 0.5
+		-- config.window_background_opacity = 0.5
 		-- config.win32_system_backdrop = "Acrylic"
 		config.win32_acrylic_accent_color = "rgb(94, 64, 157)"
 		config.webgpu_power_preference = "HighPerformance"
@@ -78,6 +78,43 @@ function M.setup(config, isWindows11)
 		-- the window is not focused
 		inactive_titlebar_bg = "#333333",
 	}
+	config.background = {
+		-- {
+		-- 	source = { File = "C:/Users/me/OneDrive/Pictures/heyitsgilbert logo.png" },
+		-- 	-- source = { File = "C:/Users/me/OneDrive/Pictures/goodenough.png" },
+		-- 	repeat_x = "NoRepeat",
+		-- 	repeat_y = "NoRepeat",
+		-- 	vertical_align = "Bottom",
+		-- 	horizontal_align = "Right",
+		-- 	horizontal_offset = "-10cell",
+		-- 	vertical_offset = "-2cell",
+		-- 	opacity = 0.5,
+		-- 	width = 249,
+		-- 	height = 249,
+		-- },
+		{
+			source = { Color = "black" },
+			width = "100%",
+			height = "100%",
+			opacity = 0.5,
+		},
+	}
+
+	wezterm.on("user-var-changed", function(window, pane, name, value)
+		wezterm.log_info("var", name, value)
+		local overrides = window:get_config_overrides() or {}
+		if
+			overrides.background ~= nil
+			and overrides.background[1] ~= nil
+			and name == "LastCommand"
+			and value == "Error"
+		then
+			overrides.background[1].source = { File = "C:/Users/me/OneDrive/Pictures/goodenough.png" }
+		else
+			overrides.background[1].source = { File = "C:/Users/me/OneDrive/Pictures/heyitsgilbert logo.png" }
+		end
+		window:set_config_overrides(overrides)
+	end)
 end
 
 return M
