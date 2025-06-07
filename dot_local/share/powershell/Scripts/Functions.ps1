@@ -145,6 +145,10 @@ function Switch-Prompt {
     [switch]
     $NoShellIntegration
   )
+  if ($global:profile_initialized -ne $true) {
+    $global:profile_initialized = $true
+    Initialize-Profile
+  }
   $current = $global:Prompts.Current
   if ([string]::IsNullOrEmpty($Prompt)) {
     # Skip over the key 'Current' in the global:Prompts.Keys
@@ -165,11 +169,11 @@ function Switch-Prompt {
     }
     $Prompt = $keys[$next]
   }
-  # Add the shell integration
-  if (-not $NoShellIntegration) {
-    Set-ShellIntegration -TerminalProgram $global:term_app
-  }
-  Write-Verbose "Switching prompt from '$($current)' to '$Prompt'"
+  Write-Host "Switching prompt from '$($current)' to '$Prompt'"
   $global:Prompts.Current = $Prompt
   $function:prompt = $global:Prompts.$Prompt
+  # Add the shell integration
+  if (-not $NoShellIntegration) {
+    Set-ShellIntegration -TerminalProgram $global:term_app -NoOriginalReset
+  }
 }

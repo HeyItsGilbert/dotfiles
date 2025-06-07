@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-# profile hash: {{ include "profile.ps1" | sha256sum }}
+# profile hash: {{ include "dot_config/powershell/profile.ps1.tmpl" | sha256sum }}
 $ErrorView = 'DetailedView'
 # This could resolve to a linux directory
 $Dest = $HOME

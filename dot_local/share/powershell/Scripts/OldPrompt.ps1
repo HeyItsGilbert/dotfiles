@@ -1,8 +1,3 @@
-if ($global:profile_initialized -ne $true) {
-  $global:profile_initialized = $true
-  Initialize-Profile
-}
-
 # Run once to load gitprompt setting
 Write-VcsStatus | Out-Null
 $GitPromptSettings.BeforeStatus.Text = ''
