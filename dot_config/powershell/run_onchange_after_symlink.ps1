@@ -34,9 +34,9 @@ if (-not $IsLinux) {
 }
 
 $ConfigHome = if ($ENV:XDG_CONFIG_HOME) {
-    $ENV:XDG_CONFIG_HOME
+  $ENV:XDG_CONFIG_HOME
 } else {
-    [IO.Path]::Combine($HOME, ".config")
+  [IO.Path]::Combine($HOME, ".config")
 }
 
 # Now we copy to all the destinations.
@@ -45,7 +45,7 @@ $FilesToCopy.Keys | ForEach-Object {
 
     $src = Join-Path $ConfigHome 'powershell' $_
     $parent = Split-Path $dest
-    if (-Not (Test-Path $parent)) {
+    if (-not (Test-Path $parent)) {
       New-Item -ItemType Directory $parent -Force | Select-Object -Property FullName
     }
     Copy-Item $src $dest
