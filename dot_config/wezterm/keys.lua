@@ -1,6 +1,12 @@
 local wezterm = require("wezterm")
+local bg = require("background")
 local act = wezterm.action
 local M = {}
+
+--- Custom callbacks
+local swap_background = wezterm.action_callback(bg.swapBgImage)
+local swap_opacity = wezterm.action_callback(bg.swapBgOpacity)
+---
 
 wezterm.on("toggle-colorscheme", function(window, pane)
 	local overrides = window:get_config_overrides() or {}
@@ -179,18 +185,17 @@ function M.setup(config)
 		{ key = "Copy", mods = "NONE", action = act.CopyTo("Clipboard") },
 		{ key = "Paste", mods = "NONE", action = act.PasteFrom("Clipboard") },
 		{
-			key = "O",
-			mods = "CTRL|ALT",
+			key = "o",
+			mods = "CTRL|SHIFT",
+			-- mods = "CTRL|ALT|SHIFT",
 			-- toggling opacity
-			action = wezterm.action_callback(function(window, _)
-				local overrides = window:get_config_overrides() or {}
-				if overrides.window_background_opacity == 1.0 then
-					overrides.window_background_opacity = 0.5
-				else
-					overrides.window_background_opacity = 1.0
-				end
-				window:set_config_overrides(overrides)
-			end),
+			action = swap_background,
+		},
+		{
+			key = "o",
+			mods = "CTRL|ALT|SHIFT",
+			-- toggling opacity
+			action = swap_opacity,
 		},
 	}
 

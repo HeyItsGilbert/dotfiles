@@ -41,8 +41,6 @@ function Set-ShellIntegration {
   }
 
   $function:global:PSConsoleHostReadLine = {
-    
-
     $commandExecuted = "$([char]27)]133;C$([char]7)"
     $command = $global:shellIntegrationGlobals.originalPSConsoleHostReadLine.Invoke()
 

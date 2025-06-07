@@ -1,9 +1,9 @@
-{{ if not .git_work }}
+{{ if not .git_work -}}
 [user]
 	name = {{ .name }}
 	email = {{ .email }}
-{{- end -}}
 
+{{ end -}}
 [alias]
 	cam = commit -am
 	fpush = push --force-with-lease
