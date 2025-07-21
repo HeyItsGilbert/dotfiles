@@ -1,5 +1,5 @@
 trap {
-  Write-Warning ($_.ScriptStackTrace | Out-String) 
+  Write-Warning ($_.ScriptStackTrace | Out-String)
 }
 
 function Initialize-Profile {

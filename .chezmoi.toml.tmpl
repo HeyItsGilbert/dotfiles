@@ -23,8 +23,8 @@ follow = true # follow symlinks, so we can symlink ~\Documents to ~\OneDrive\Doc
   {{ else }}
   shellexe = {{ $powershellPath | quote }}
   {{ end }}
-  git_oss = {{ promptString "oss git dir" | quote }}
-  git_work = {{ promptString "work git dir" | quote }}
+  git_oss = {{ promptString "oss git dir (must end with '/')" | quote }}
+  git_work = {{ promptString "work git dir (must end with '/')" | quote }}
 [merge]
   command = "code"
   args = "--wait $MERGED"
