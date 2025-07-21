@@ -17,6 +17,12 @@ wezterm.on("toggle-colorscheme", function(window, pane)
 	end
 	window:set_config_overrides(overrides)
 end)
+wezterm.on("toggle-opacity", function(window, pane)
+	wezterm.action_callback(bg.swapBgOpacity(window, pane))
+end)
+wezterm.on("toggle-background", function(window, pane)
+	wezterm.action_callback(bg.swapBgImage(window, pane))
+end)
 
 function M.setup(config)
 	--- Disable defaul keys and set some minimum ones for now.
@@ -189,13 +195,13 @@ function M.setup(config)
 			mods = "CTRL|SHIFT",
 			-- mods = "CTRL|ALT|SHIFT",
 			-- toggling opacity
-			action = swap_background,
+			action = wezterm.action.EmitEvent("toggle-background"),
 		},
 		{
 			key = "o",
 			mods = "CTRL|ALT|SHIFT",
 			-- toggling opacity
-			action = swap_opacity,
+			action = wezterm.action.EmitEvent("toggle-opacity"),
 		},
 	}
 

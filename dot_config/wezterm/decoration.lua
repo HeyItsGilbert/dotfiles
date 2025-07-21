@@ -63,7 +63,7 @@ function M.setup(config, isWindows11)
 			bottom = 5,
 		}
 	end
-	config.hide_tab_bar_if_only_one_tab = true
+	config.hide_tab_bar_if_only_one_tab = false
 	config.default_cursor_style = "BlinkingBar"
 	config.use_fancy_tab_bar = true
 	config.tab_bar_at_bottom = false

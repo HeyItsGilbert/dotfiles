@@ -3,7 +3,11 @@ general:
   # another application). Here we are running a batch script to start Zebar.
   startup_commands: [
     'shell-exec zebar',
-    'shell-exec gat-gwm'
+    'shell-exec gat-gwm.exe'
+  ]
+  shutdown_commands: [
+    'shell-exec taskkill /IM zebar.exe /F',
+    'shell-exec taskkill /IM gat-gwm.exe /F'
   ]
 
   # Whether to automatically focus windows underneath the cursor.
