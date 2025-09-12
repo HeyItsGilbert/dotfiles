@@ -48,10 +48,10 @@ function Initialize-Profile {
 
   # Setup PSReadLineOption Splat
   $psOption = @{}
-  if ($PSVersionTable.PSEdition -ne 'Core') {
-    $psOption['PredictionSource'] = 'History'
-  } else {
+  if ([enum]::GetValues('Microsoft.PowerShell.PredictionSource') -contains 'HistoryAndPlugin') {
     $psOption['PredictionSource'] = 'HistoryAndPlugin'
+  } else {
+    $psOption['PredictionSource'] = 'History'
   }
   $psOption['PredictionViewStyle'] = 'InlineView'
   $psOption['ShowToolTips'] = $True
