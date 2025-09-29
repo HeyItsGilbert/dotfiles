@@ -3,11 +3,6 @@ local bg = require("background")
 local act = wezterm.action
 local M = {}
 
---- Custom callbacks
-local swap_background = wezterm.action_callback(bg.swapBgImage)
-local swap_opacity = wezterm.action_callback(bg.swapBgOpacity)
----
-
 wezterm.on("toggle-colorscheme", function(window, pane)
 	local overrides = window:get_config_overrides() or {}
 	if overrides.color_scheme == "Flexoki Dark" then
@@ -17,11 +12,21 @@ wezterm.on("toggle-colorscheme", function(window, pane)
 	end
 	window:set_config_overrides(overrides)
 end)
+
 wezterm.on("toggle-opacity", function(window, pane)
-	wezterm.action_callback(bg.swapBgOpacity(window, pane))
+	wezterm.log_info("Toggling opacity")
+	bg.swapBgOpacity(window, pane)
+	wezterm.log_info("Opacity toggled")
 end)
+
 wezterm.on("toggle-background", function(window, pane)
-	wezterm.action_callback(bg.swapBgImage(window, pane))
+	wezterm.log_info("Toggling background")
+	bg.swapBgImage(window, pane)
+	wezterm.log_info("Background toggled")
+end)
+
+wezterm.on("reset-background", function(window, pane)
+	bg.resetBackground(window, pane)
 end)
 
 function M.setup(config)
