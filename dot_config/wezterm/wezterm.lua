@@ -2,6 +2,7 @@ local wezterm = require("wezterm")
 local keys = require("keys")
 local fonts = require("fonts")
 local decoration = require("decoration")
+local background = require("background")
 local haswork, work = pcall(require, "work")
 
 local config = wezterm.config_builder()
