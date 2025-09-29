@@ -28,6 +28,7 @@ function M.setup(config)
 	--- Disable defaul keys and set some minimum ones for now.
 	--- This helps with conflicting keys in pwsh
 	config.disable_default_key_bindings = true
+	config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 	config.keys = {
 		{
 			key = "E",
@@ -39,19 +40,19 @@ function M.setup(config)
 		{ key = "Enter", mods = "ALT", action = act.ToggleFullScreen },
 		{ key = "!", mods = "CTRL", action = act.ActivateTab(0) },
 		{ key = "!", mods = "SHIFT|CTRL", action = act.ActivateTab(0) },
-		{ key = '"', mods = "ALT|CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
-		{ key = '"', mods = "SHIFT|ALT|CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+		--- { key = '"', mods = "ALT|CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+		--- { key = '"', mods = "SHIFT|ALT|CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
 		{ key = "#", mods = "CTRL", action = act.ActivateTab(2) },
 		{ key = "#", mods = "SHIFT|CTRL", action = act.ActivateTab(2) },
 		{ key = "$", mods = "CTRL", action = act.ActivateTab(3) },
 		{ key = "$", mods = "SHIFT|CTRL", action = act.ActivateTab(3) },
 		{ key = "%", mods = "CTRL", action = act.ActivateTab(4) },
 		{ key = "%", mods = "SHIFT|CTRL", action = act.ActivateTab(4) },
-		{ key = "%", mods = "ALT|CTRL", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
-		{ key = "%", mods = "SHIFT|ALT|CTRL", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+		--- { key = "%", mods = "ALT|CTRL", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+		--- { key = "%", mods = "SHIFT|ALT|CTRL", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 		{ key = "&", mods = "CTRL", action = act.ActivateTab(6) },
 		{ key = "&", mods = "SHIFT|CTRL", action = act.ActivateTab(6) },
-		{ key = "'", mods = "SHIFT|ALT|CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+		--- { key = "'", mods = "SHIFT|ALT|CTRL", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
 		{ key = "(", mods = "CTRL", action = act.ActivateTab(-1) },
 		{ key = "(", mods = "SHIFT|CTRL", action = act.ActivateTab(-1) },
 		{ key = ")", mods = "CTRL", action = act.ResetFontSize },
@@ -171,20 +172,31 @@ function M.setup(config)
 		{ key = "PageDown", mods = "SHIFT", action = act.ScrollByPage(1) },
 		{ key = "PageDown", mods = "CTRL", action = act.ActivateTabRelative(1) },
 		{ key = "PageDown", mods = "SHIFT|CTRL", action = act.MoveTabRelative(1) },
-		{ key = "LeftArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Left", 1 }) },
-		-- Turning these off so I can use pwsh keys
-		-- { key = 'LeftArrow', mods = 'SHIFT|CTRL', action = act.ActivatePaneDirection 'Left' },
-		-- { key = 'RightArrow', mods = 'SHIFT|CTRL', action = act.ActivatePaneDirection 'Right' },
-		-- Add these to allow quick moving between prompts
-		-- Use ctrl up/down to match vscode. Shift didn't feel natural
-		{ key = "UpArrow", mods = "CTRL", action = act.ScrollToPrompt(-1) },
-		{ key = "DownArrow", mods = "CTRL", action = act.ScrollToPrompt(1) },
-		--
-		{ key = "RightArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Right", 1 }) },
-		{ key = "UpArrow", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Up") },
-		{ key = "UpArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Up", 1 }) },
-		{ key = "DownArrow", mods = "SHIFT|CTRL", action = act.ActivatePaneDirection("Down") },
-		{ key = "DownArrow", mods = "SHIFT|ALT|CTRL", action = act.AdjustPaneSize({ "Down", 1 }) },
+		{ key = "UpArrow", mods = "SHIFT|CTRL", action = act.ScrollToPrompt(-1) },
+		{ key = "DownArrow", mods = "SHIFT|CTRL", action = act.ScrollToPrompt(1) },
+
+		--- Pane management ---
+		---   Movement  ---
+		{ key = "LeftArrow", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
+		{ key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
+		{ key = "RightArrow", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
+		{ key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
+		{ key = "UpArrow", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
+		{ key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
+		{ key = "DownArrow", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
+		{ key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
+		--- Resize ---
+		{ key = "H", mods = "LEADER", action = act.AdjustPaneSize({ "Left", 3 }) },
+		{ key = "L", mods = "LEADER", action = act.AdjustPaneSize({ "Right", 3 }) },
+		{ key = "K", mods = "LEADER", action = act.AdjustPaneSize({ "Up", 3 }) },
+		{ key = "J", mods = "LEADER", action = act.AdjustPaneSize({ "Down", 3 }) },
+		--- Splits ---
+		{ key = "\\", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+		{ key = "-", mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+		{ key = "c", mods = "LEADER", action = act.SpawnTab("CurrentPaneDomain") },
+		{ key = "q", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) },
+		---
+
 		{ key = "Insert", mods = "SHIFT", action = act.PasteFrom("PrimarySelection") },
 		{ key = "Insert", mods = "CTRL", action = act.CopyTo("PrimarySelection") },
 		{ key = "F11", mods = "NONE", action = act.ToggleFullScreen },
@@ -202,6 +214,19 @@ function M.setup(config)
 			mods = "CTRL|ALT|SHIFT",
 			-- toggling opacity
 			action = wezterm.action.EmitEvent("toggle-opacity"),
+		},
+		-- Rename current tab
+		{
+			key = "E",
+			mods = "CMD|SHIFT",
+			action = wezterm.action.PromptInputLine({
+				description = "Enter new name for tab",
+				action = wezterm.action_callback(function(window, _, line)
+					if line then
+						window:active_tab():set_title(line)
+					end
+				end),
+			}),
 		},
 	}
 

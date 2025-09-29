@@ -26,6 +26,7 @@ $global:Prompts = @{
     "$([char]27)[37m $pwd$([char]27)[0m`n$([char]0x276f) "
   }
   Starship = {} # Filled in later
+  StarshipShort = {}
   OldPrompt = { . (Convert-Path "$DataHome/powershell/Scripts/OldPrompt") }
 }
 
@@ -98,11 +99,12 @@ if (Test-Administrator) {
 if (Get-Command 'starship' -ErrorAction SilentlyContinue) {
   Invoke-Expression (&starship init powershell)
   $global:Prompts.Starship = $function:prompt
+  $global:Prompts.StarshipShort = { &starship prompt --profile short }
   Switch-Prompt -Prompt 'Starship'
   # Update previous prompt with simpler prompt
-  #function Invoke-Starship-TransientFunction {
-  #  &starship prompt --profile short
-  #}
+  function Invoke-Starship-TransientFunction {
+    $global:Prompts.StarshipShort.Invoke()
+  }
   #Enable-TransientPrompt
 } else {
   Write-Host "Preparing interactive session for first use..." -ForegroundColor Cyan

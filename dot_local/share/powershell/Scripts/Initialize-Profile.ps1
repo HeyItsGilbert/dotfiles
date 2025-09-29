@@ -4,7 +4,7 @@ trap {
 
 function Initialize-Profile {
   Write-Host "Initializing profile..." -ForegroundColor Cyan
-  [Console]::OutputEncoding = [Console]::InputEncoding = $OutputEncoding = [System.Text.UTF8Encoding]::new()
+  [Console]::OutputEncoding = [Console]::InputEncoding = $global:OutputEncoding = [System.Text.UTF8Encoding]::new()
   # Prompt
   $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
   $modules = @{

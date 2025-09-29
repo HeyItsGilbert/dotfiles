@@ -68,4 +68,17 @@ wezterm.on("user-var-changed", function(window, pane, name, value)
 	wezterm.log_info("var", name, value)
 end)
 
+config.ssh_domains = {
+	{
+		name = "nuc",
+		remote_address = "192.168.1.6",
+		username = "gilbert",
+	},
+	{
+		name = "docker",
+		remote_address = "docker.lan",
+		username = "root",
+	},
+}
+
 return config
