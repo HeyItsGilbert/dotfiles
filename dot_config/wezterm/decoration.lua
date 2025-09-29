@@ -99,24 +99,23 @@ function M.setup(config, isWindows11)
 		},
 	}
 	config.background = {
-		-- {
-		-- 	source = { File = "C:/Users/me/OneDrive/Pictures/heyitsgilbert logo.png" },
-		-- 	-- source = { File = "C:/Users/me/OneDrive/Pictures/goodenough.png" },
-		-- 	repeat_x = "NoRepeat",
-		-- 	repeat_y = "NoRepeat",
-		-- 	vertical_align = "Bottom",
-		-- 	horizontal_align = "Right",
-		-- 	horizontal_offset = "-10cell",
-		-- 	vertical_offset = "-2cell",
-		-- 	opacity = 0.5,
-		-- 	width = 249,
-		-- 	height = 249,
-		-- },
 		{
-			source = { Color = "black" },
+			source = { Color = "#100F0F" },
 			width = "100%",
 			height = "100%",
 			opacity = 0.5,
+		},
+		{
+			source = { File = "C:/Users/me/OneDrive/Pictures/heyitsgilbert logo.png" },
+			repeat_x = "NoRepeat",
+			repeat_y = "NoRepeat",
+			vertical_align = "Bottom",
+			horizontal_align = "Right",
+			horizontal_offset = "-10cell",
+			vertical_offset = "-2cell",
+			opacity = 0.5,
+			width = 249,
+			height = 249,
 		},
 	}
 
