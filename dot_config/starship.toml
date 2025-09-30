@@ -88,7 +88,7 @@ style = 'cyan bold'
 format = '[$indicator]($style)'
 
 [hostname]
-ssh_only = true
+ssh_only = false
 ssh_symbol = " "
 
 [battery]
