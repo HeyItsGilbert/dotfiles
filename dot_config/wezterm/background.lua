@@ -3,8 +3,8 @@ local M = {}
 
 -- Configuration constants
 local BG_IMAGES = {
-	{ File = "C:/Users/me/OneDrive/Pictures/heyitsgilbert logo.png" },
-	{ File = "C:/Users/me/OneDrive/Pictures/goodenough.png" },
+	{ File = wezterm.home_dir .. "\\.config\\wezterm\\backgrounds\\heyitsgilbert_logo.png" },
+	{ File = wezterm.home_dir .. "\\.config\\wezterm\\backgrounds\\goodenough.png" },
 	false, -- No image option (using false instead of nil)
 }
 
