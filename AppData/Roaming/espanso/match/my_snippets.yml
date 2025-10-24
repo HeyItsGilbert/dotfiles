@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://www.ajm.codes/Espanso_Matches_File_Schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/espanso/espanso/dev/schemas/match.schema.json
 matches:
   - trigger: "`qq"
     replace: I am highly leveraged in multiple activities and otherwise engaged so we need to extend the cycle time until my resources free up
