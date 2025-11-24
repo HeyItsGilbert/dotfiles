@@ -18,6 +18,6 @@ matches:
       Be clear, precise, and use simple words.
       Use a friendly and conversational tone of voice.
       </tone>
-  - trigger: "rubrik"
+  - trigger: "`rubrik"
     replace: |-
-      "Before you respond, create an internal rubric for what defines a 'world-class' answer to my request. Then internally iterate on your work until it scores 10/10 against that rubric, and show me only the final, perfect output."
+      Before you respond, create an internal rubric for what defines a 'world-class' answer to my request. Then internally iterate on your work until it scores 10/10 against that rubric, and show me only the final, perfect output.
