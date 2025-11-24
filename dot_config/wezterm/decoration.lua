@@ -106,7 +106,7 @@ function M.setup(config, isWindows11)
 			opacity = 0.5,
 		},
 		{
-			source = { File = "C:/Users/me/OneDrive/Pictures/heyitsgilbert logo.png" },
+			source = { File = wezterm.home_dir .. "\\.config\\wezterm\\backgrounds\\heyitsgilbert_logo.png" },
 			repeat_x = "NoRepeat",
 			repeat_y = "NoRepeat",
 			vertical_align = "Bottom",
