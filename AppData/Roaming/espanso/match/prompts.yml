@@ -21,3 +21,30 @@ matches:
   - trigger: "`rubrik"
     replace: |-
       Before you respond, create an internal rubric for what defines a 'world-class' answer to my request. Then internally iterate on your work until it scores 10/10 against that rubric, and show me only the final, perfect output.
+  - trigger: "`tvz"
+    replace: |-
+      # Process TVZ-Tagged Notes Prompt
+
+      I have a note in my Obsidian vault tagged with #TVZ that needs processing. 
+
+      My workflow:
+      1. Find a note with #TVZ tag to process
+      2. Get a proper Obsidian link to the note (format: `[Note Name](obsidian://open?vault=Brain%20Dump&file=NotePath)`)
+      3. Review what source material I have (or need to find)
+      4. Research the topic to understand key concepts
+      5. Create a light outline focused on concepts I can reference and link
+      6. Fill in the note myself with guidance on structure and relevant connections
+
+      My goals:
+      - Create atomic notes that are easy to link from other notes
+      - Have clear, reference-able concepts (not exhaustive guides)
+      - Identify related notes in my vault to cross-link
+      - Keep it concise - I want to write the content, not have an LLM write it all
+
+      Style preferences:
+      - Light structure/outline, not fully written content
+      - Help with research and finding connections
+      - Guide me on what to include, don't write everything for me
+      - Ask clarifying questions before diving deep
+
+      Please help me process a TVZ note following this approach.
