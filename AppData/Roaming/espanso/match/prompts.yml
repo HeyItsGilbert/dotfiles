@@ -48,3 +48,28 @@ matches:
       - Ask clarifying questions before diving deep
 
       Please help me process a TVZ note following this approach.
+  - trigger: "`tags"
+    replace: |-
+      I need help tagging documents in my Obsidian vault. Here's my workflow:
+
+      1. I'll provide you with a document filepath from my vault
+      2. Review the document content
+      3. Suggest appropriate tags based on:
+        - The document's content and themes
+        - My existing tag patterns (single words or words joined with underscores, no hierarchy)
+        - Broader conceptual tags rather than narrow/specific ones
+      4. Update the document's YAML frontmatter with tags formatted as an array:
+      ```
+      Tags:
+      - "#tag1"
+      - "#tag2"
+      ```
+      5. Add relevant concept links to the References section at the bottom of the document
+
+      My tagging philosophy:
+      - Use broader, conceptual tags for better linking between related ideas
+      - Follow the pattern: single words or underscore_separated_words
+      - No tag hierarchies
+      - Tags should help connect related content across the vault
+
+      Please proceed with the document at:
