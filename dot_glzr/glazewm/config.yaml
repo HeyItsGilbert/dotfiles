@@ -141,6 +141,7 @@ window_rules:
       - window_process: { equals: "YourPhoneAppProxy" }
       - window_title: { equals: "Command Palette" }
       - window_process: { regex: "*PowerToys*" }
+      - window_title: {regex: "Zscaler.*" }
   - commands: ["set-floating"]
     match:
       - window_process: { equals: "Flow.Launcher" }
