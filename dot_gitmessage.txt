@@ -1,0 +1,17 @@
+
+# Format:
+# (<issue-id>|MAINT|DOCS): <imperative summary keep under <72 chars>
+#
+# Guidelines:
+# - Use imperative mood (Add, Fix, Update), not past tense.
+# - Keep the first line under 72 characters.
+# - Include issue ID if applicable (JIRA-123, GH-456, etc.).
+#
+# Branch naming reminder:
+# <work-item-id|maint|docs>/<target-branch>/<synopsis>
+#
+# Commit body (optional, wrap at 72 chars):
+#
+# - Explain *what* and *why*, not *how*.
+# - Add context, references, or links to related issues.
+
