@@ -26,6 +26,14 @@ matches:
         params:
           format: "%m/%d/%Y"
 
+  - trigger: "`date"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%F"
+
   # Print the output of a shell command
   - trigger: ":shell"
     replace: "{{output}}"
