@@ -25,6 +25,9 @@
 	rebase-origin = "!f() { git rebase ${1-HEAD} origin/$(git default-branch); };f "
 	absorb = !c:/tools/git-absorb/git-absorb.exe
 
+	# Fetch, rebase default branch, prune merged branches (gh poi), return to original branch
+	sync = "!f() { cb=$(git branch --show-current); git fetch --all --prune --tags && git checkout $(git default-branch) && git rebase && gh poi && if git show-ref --verify --quiet refs/heads/\"$cb\"; then git checkout \"$cb\"; else echo \"Branch '$cb' was pruned; staying on $(git default-branch)\"; fi; };f"
+
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
