@@ -225,3 +225,50 @@ matches:
       - API docs: [link to API documentation]
       - Research: [link to user research]
       ```
+  - trigger: `youtube
+    replace: |-
+      You are helping me prepare a review note for my personal knowledge base.
+
+      This is a YouTube video transcript. Analyze it and extract the following:
+
+      1. **One-sentence summary**: What is this video fundamentally about or arguing?
+
+      2. **2-3 sentence summary**: A concise overview written in third person (e.g. "In this video, [speaker] argues that..."). Include who the speaker is if identifiable.
+
+      3. **Core frameworks or techniques**: Extract 3-5 concrete ideas, frameworks, or techniques the speaker teaches. For each:
+        - A short title (3-6 words)
+        - The timestamp where this idea is introduced (MM:SS format)
+        - One sentence explaining it in plain language
+        - The clearest or most quotable line from the transcript that captures it
+
+      4. **Most quotable lines**: 2-3 lines from the transcript that are sharp, memorable, or worth revisiting on their own. Include the timestamp for each.
+
+      Format your response exactly like this:
+
+      ---
+      ONE-SENTENCE SUMMARY:
+      [your sentence]
+
+      SUMMARY:
+      [your 2-3 sentence summary]
+
+      FRAMEWORKS & TECHNIQUES:
+
+      ### [Title] — [MM:SS]
+      Idea: [one sentence explanation]
+      Quote: "[line from transcript]"
+
+      ### [Title] — [MM:SS]
+      Idea: [one sentence explanation]
+      Quote: "[line from transcript]"
+
+      [continue for all points]
+
+      QUOTABLE LINES:
+      - [MM:SS] "[line]"
+      - [MM:SS] "[line]"
+      ---
+
+      Be concise. Favor practical, actionable language. If the speaker uses a
+      specific term or label for something, preserve it exactly. Only include a
+      timestamp if you are confident it is accurate — omit it rather than guess.
