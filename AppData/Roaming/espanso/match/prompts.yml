@@ -20,7 +20,7 @@ matches:
       </tone>
   - trigger: "`rubrik"
     replace: |-
-      Before you respond, create an internal rubric for what defines a 'world-class' answer to my request. Then internally iterate on your work until it scores 10/10 against that rubric, and show me only the final, perfect output.
+      Before you respond, reiterate what you think I'm asking for and ask follow up questions. Then create an internal rubric for what defines a 'world-class' answer to my request. Then internally iterate on your work until it scores 10/10 against that rubric, and show me only the final, perfect output.
   - trigger: "`tvz"
     replace: |-
       # Process TVZ-Tagged Notes Prompt
