@@ -225,7 +225,7 @@ matches:
       - API docs: [link to API documentation]
       - Research: [link to user research]
       ```
-  - trigger: `youtube
+  - trigger: "`youtube"
     replace: |-
       You are helping me prepare a review note for my personal knowledge base.
 
