@@ -123,10 +123,16 @@ function Set-LocationButBetter {
     if ($Path -eq '-') {
       Pop-Location
     } else {
-      if ([System.IO.File]::Exists($Path)) {
-        Push-Location (Split-Path $Path -Parent)
-      } else {
-        Push-Location $Path
+      # Check if we got a full path or a relative path. If it's a full path, we
+      # should push that location instead of the parent directory since
+      # Set-Location will handle it correctly and we won't lose the current
+      # location in the stack.
+      $resolvedPath = (Resolve-Path $Path).Path
+      if ([System.IO.File]::Exists($resolvedPath)) {
+        Push-Location (Split-Path $resolvedPath -Parent)
+      }
+      else {
+        Push-Location $resolvedPath
       }
     }
   }
