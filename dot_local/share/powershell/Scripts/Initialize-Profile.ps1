@@ -109,5 +109,10 @@ function Initialize-Profile {
     Set-PSReadLineKeyHandler @parameters
   }
 
+  # Setup the dynamic titles
+  if (Get-Module -Name DynamicTitle -ErrorAction SilentlyContinue) {
+    # You can't beat the example!
+    Start-DTExample GitStatus
+  }
   # endregion
 }
