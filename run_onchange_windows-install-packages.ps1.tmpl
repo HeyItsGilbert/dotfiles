@@ -2,7 +2,10 @@
 
 {{ if eq .chezmoi.os "windows" -}}
 # Choco packages
-choco upgrade {{ range .packages.chocolatey -}} {{.}} {{ end }} -y -s'https://chocolatey.org/api/v2/'
+if (-not (Get-Command gsudo -ErrorAction SilentlyContinue)) {
+  choco install gsudo -y -s'https://chocolatey.org/api/v2/'
+}
+gsudo choco upgrade {{ range .packages.chocolatey -}} {{.}} {{ end }} -y -s'https://chocolatey.org/api/v2/'
 {{ end -}}
 
 # Install Modules

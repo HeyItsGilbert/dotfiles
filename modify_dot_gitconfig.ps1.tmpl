@@ -4,7 +4,7 @@
 
 $currentContent = [Console]::In.ReadToEnd()
 
-# Build the managed block (chezmoi renders {{ }} expressions before this script runs)
+# Build the managed block (chezmoi renders expressions before this script runs)
 $managedBlock = @'
 # BEGIN chezmoi managed - do not edit between these markers
 [include]
