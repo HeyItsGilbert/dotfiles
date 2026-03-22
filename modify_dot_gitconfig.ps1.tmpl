@@ -1,0 +1,37 @@
+# Chezmoi modify script for ~/.gitconfig
+# Manages only the marked section; the rest of the file is left untouched.
+# This allows `git config --global` writes without causing chezmoi drift.
+
+$currentContent = [Console]::In.ReadToEnd()
+
+# Build the managed block (chezmoi renders {{ }} expressions before this script runs)
+$managedBlock = @'
+# BEGIN chezmoi managed - do not edit between these markers
+[include]
+	path = ~/.gitconfig-chezmoi
+[includeIf "gitdir:{{ .git_oss }}"]
+	path = ~/.gitconfig-oss
+{{ if .git_work -}}
+[includeIf "gitdir:{{ .git_work }}"]
+	path = ~/.gitconfig-work
+{{ end -}}# END chezmoi managed
+'@
+
+# Normalize to LF line endings
+$managedBlock = $managedBlock -replace "`r`n", "`n"
+$currentContent = $currentContent -replace "`r`n", "`n"
+
+if ($currentContent -match '(?s)# BEGIN chezmoi managed.*?# END chezmoi managed') {
+    $result = $currentContent -replace '(?s)# BEGIN chezmoi managed.*?# END chezmoi managed', $managedBlock.Trim()
+} else {
+    # First run: import ~/.gitconfig-local contents if it exists, then append managed block
+    $localConfig = Join-Path $env:USERPROFILE '.gitconfig-local'
+    if (Test-Path $localConfig) {
+        $localContent = (Get-Content $localConfig -Raw) -replace "`r`n", "`n"
+        $currentContent = $currentContent.TrimEnd() + "`n`n" + $localContent.Trim() + "`n"
+    }
+    $result = $currentContent.TrimEnd() + "`n`n" + $managedBlock.Trim() + "`n"
+}
+
+$bytes = [System.Text.Encoding]::UTF8.GetBytes($result)
+[Console]::OpenStandardOutput().Write($bytes, 0, $bytes.Length)

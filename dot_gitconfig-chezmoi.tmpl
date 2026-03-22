@@ -123,15 +123,3 @@
 [commit]
 	template = ~/.gitmessage.txt
 
-# Keep some local stuff out of template
-[include]
-	path = ~/.gitconfig-local
-
-# Add conditional settings for OSS/work
-[includeIf "gitdir:{{ .git_oss }}"]
-	path = ~/.gitconfig-oss
-
-{{ if .git_work }}
-[includeIf "gitdir:{{ .git_work }}"]
-	path = ~/.gitconfig-work
-{{- end }}
