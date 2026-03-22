@@ -46,29 +46,15 @@ if ($Host.UI.RawUI.KeyAvailable) {
 }
 #endregion
 
-# Load extra functions
-@(
-  "WorkFunctions.ps1",
-  "Functions.ps1",
-  "ShellIntegration.ps1",
-  "Initialize-Profile.ps1"
-) | ForEach-Object {
-  $path = "$DataHome/powershell/Scripts/$_"
-  if (Test-Path $path -ErrorAction SilentlyContinue) {
-    . (Convert-Path $path)
-  }
-}
-
-#region Add auto completers
-## Import Shell Integration Script
+## Set the term_app for Shell Integration Script
 $global:term_app = $env:TERM_PROGRAM
 # Let's check if its Windows terminal thanks to...
 # https://github.com/microsoft/terminal/issues/1040
 if ($null -ne $env:WT_SESSION) {
   $global:term_app = 'WindowsTerminal'
 }
-#Set-ShellIntegration -TerminalProgram $term_app
 
+#region Add auto completers
 # Add chezmoi auto complete
 if (Get-Command chezmoi -ErrorAction 'SilentlyContinue') {
   chezmoi completion powershell | Out-String | Invoke-Expression
@@ -84,11 +70,29 @@ if (Get-Command gh -ErrorAction 'SilentlyContinue') {
   gh completion -s powershell | Out-String | Invoke-Expression
 }
 
-
+# Completion for fnm
 if (Get-Command fnm -ErrorAction 'SilentlyContinue') {
   fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
 }
+
+# Completion for gsudo
+if (Get-Command gsudo -ErrorAction 'SilentlyContinue') {
+  Import-Module "gsudoModule"
+}
 #endregion
+
+# Load extra functions
+@(
+  "WorkFunctions.ps1",
+  "Functions.ps1",
+  "ShellIntegration.ps1",
+  "Initialize-Profile.ps1"
+) | ForEach-Object {
+  $path = "$DataHome/powershell/Scripts/$_"
+  if (Test-Path $path -ErrorAction SilentlyContinue) {
+    . (Convert-Path $path)
+  }
+}
 
 if (Test-Administrator) {
   $Env:ISELEVATEDSESSION = $true

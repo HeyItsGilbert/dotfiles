@@ -5,6 +5,7 @@
       "chezmoi",
       "espanso",
       "gh",
+      "gsudo",
       "fzf",
       "nerdfont-hack",
       "starship",
@@ -16,10 +17,6 @@
       "zoxide"
     ],
     "ps_modules": {
-      "DynamicTitle": {
-        "Repository": "PSGallery",
-        "Version": "[0.0.0,]"
-      },
       "CompletionPredictor": {
         "Repository": "PSGallery",
         "Version": "[0.0.0,]"
@@ -27,6 +24,10 @@
       "EditorServicesCommandSuite": {
         "Prerelease": true,
         "Version": "1.0.0-beta4"
+      },
+      "DynamicTitle": {
+        "Repository": "PSGallery",
+        "Version": "[0.0.0,]"
       },
       "Microsoft.PowerShell.ConsoleGuiTools": {
         "Repository": "PSGallery",
