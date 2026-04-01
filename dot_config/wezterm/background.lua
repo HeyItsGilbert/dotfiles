@@ -27,7 +27,7 @@ local function getNextItem(table, currentIndex)
 		wezterm.log_error("Nil table passed to getNextItem")
 		return 1, table[1]
 	end
-	
+
 	local nextIndex = currentIndex + 1
 	if nextIndex > BG_IMAGES_COUNT then
 		nextIndex = 1
@@ -57,14 +57,16 @@ local function getDefaultBackground()
 			width = "100%",
 			height = "100%",
 			opacity = OPACITY_OPTIONS[wezterm.GLOBAL.opacityIndex] or OPACITY_OPTIONS[1],
-		}
+		},
 	}
-	
+
 	-- Only add image layer if there's an image selected
 	local currentImage = BG_IMAGES[wezterm.GLOBAL.backgroundIndex]
 	wezterm.log_info("Current background index: " .. (wezterm.GLOBAL.backgroundIndex or "nil"))
-	wezterm.log_info("Current image: " .. (currentImage and (currentImage ~= false and "exists" or "false/no-image") or "nil"))
-	
+	wezterm.log_info(
+		"Current image: " .. (currentImage and (currentImage ~= false and "exists" or "false/no-image") or "nil")
+	)
+
 	if currentImage and currentImage ~= false then
 		table.insert(background, {
 			source = currentImage,
@@ -79,7 +81,7 @@ local function getDefaultBackground()
 			height = 249,
 		})
 	end
-	
+
 	return background
 end
 
@@ -94,38 +96,40 @@ end
 -- Cycle through background images
 function M.swapBgImage(window, _pane)
 	local overrides = window:get_config_overrides() or {}
-	
+
 	local currentIndex = wezterm.GLOBAL.backgroundIndex
 	local nextIndex, nextValue = getNextItem(BG_IMAGES, currentIndex)
-	
+
 	if nextValue and nextValue ~= false then
 		wezterm.log_info("Switching background image from index " .. currentIndex .. " to " .. nextIndex)
 	else
 		wezterm.log_info("Switching to no background image (index " .. nextIndex .. ")")
 	end
-	
+
 	wezterm.GLOBAL.backgroundIndex = nextIndex
-	
+
 	-- Regenerate the entire background configuration to handle no image case
 	overrides.background = getDefaultBackground()
-	
+
 	window:set_config_overrides(overrides)
 end
 
 -- Cycle through opacity levels
 function M.swapBgOpacity(window, _pane)
 	local overrides = window:get_config_overrides() or {}
-	
+
 	local currentIndex = wezterm.GLOBAL.opacityIndex
 	local nextIndex, nextValue = getNextItem(OPACITY_OPTIONS, currentIndex)
-	
-	wezterm.log_info("Switching opacity from index " .. currentIndex .. " to " .. nextIndex .. " (value: " .. nextValue .. ")")
-	
+
+	wezterm.log_info(
+		"Switching opacity from index " .. currentIndex .. " to " .. nextIndex .. " (value: " .. nextValue .. ")"
+	)
+
 	wezterm.GLOBAL.opacityIndex = nextIndex
-	
+
 	-- Regenerate the entire background configuration to handle opacity changes
 	overrides.background = getDefaultBackground()
-	
+
 	window:set_config_overrides(overrides)
 end
 
