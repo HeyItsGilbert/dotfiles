@@ -18,6 +18,12 @@ $ConfigHome = if ($ENV:XDG_CONFIG_HOME) {
   [IO.Path]::Combine($HOME, ".config")
 }
 
+# Add custom module path to avoid OneDrive Documents redirection
+$ModuleHome = [IO.Path]::Combine($DataHome, "powershell", "Modules")
+if (-not ($env:PSModulePath -split [IO.Path]::PathSeparator -contains $ModuleHome)) {
+  $env:PSModulePath = $ModuleHome + [IO.Path]::PathSeparator + $env:PSModulePath
+}
+
 $global:Prompts = @{
   Current = 'Simple'
   Original = $function:prompt

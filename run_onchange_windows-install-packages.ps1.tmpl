@@ -5,54 +5,83 @@
 if (-not (Get-Command gsudo -ErrorAction SilentlyContinue)) {
   choco install gsudo -y -s'https://chocolatey.org/api/v2/'
 }
-gsudo choco upgrade {{ range .packages.chocolatey -}} {{.}} {{ end }} -y -s'https://chocolatey.org/api/v2/'
+
+$desiredPackages = @({{ range .packages.chocolatey }}'{{ . }}', {{ end }}'')
+$desiredPackages = $desiredPackages | Where-Object { $_ -ne '' }
+
+# Check which packages are already installed
+$installedRaw = choco list --limit-output 2>$null
+$installed = @{}
+foreach ($line in $installedRaw) {
+  $parts = $line -split '\|'
+  if ($parts.Count -ge 1) {
+    $installed[$parts[0].ToLower()] = $true
+  }
+}
+
+# Find packages that need to be installed
+$toInstall = $desiredPackages | Where-Object { -not $installed[$_.ToLower()] }
+
+if ($toInstall) {
+  Write-Host "Installing new packages: $($toInstall -join ', ')" -ForegroundColor Cyan
+  gsudo choco install $toInstall -y -s'https://chocolatey.org/api/v2/'
+}
+
+# Check for outdated packages among our desired set
+$outdatedRaw = gsudo choco outdated --limit-output 2>$null
+$toUpgrade = @()
+foreach ($line in $outdatedRaw) {
+  $parts = $line -split '\|'
+  if ($parts.Count -ge 1 -and $desiredPackages -contains $parts[0]) {
+    $toUpgrade += $parts[0]
+    Write-Host "  $($parts[0]): $($parts[1]) -> $($parts[2])" -ForegroundColor Yellow
+  }
+}
+
+if ($toUpgrade) {
+  Write-Host "Upgrading outdated packages: $($toUpgrade -join ', ')" -ForegroundColor Cyan
+  gsudo choco upgrade $toUpgrade -y -s'https://chocolatey.org/api/v2/'
+} else {
+  Write-Host "All Chocolatey packages are up to date." -ForegroundColor Green
+}
 {{ end -}}
 
-# Install Modules
+# Install Modules to a local path to avoid OneDrive Documents redirection
+$ModulePath = [IO.Path]::Combine($HOME, '.local', 'share', 'powershell', 'Modules')
+if (-not (Test-Path $ModulePath)) {
+  New-Item -ItemType Directory -Path $ModulePath -Force | Out-Null
+}
+
+# Trust PSGallery so Save-Module doesn't prompt
+if ((Get-PSRepository -Name PSGallery).InstallationPolicy -ne 'Trusted') {
+  Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+}
+
 $installModules = {
-  if(-not (Get-Module Microsoft.PowerShell.PSResourceGet -ListAvailable)){
-    Install-Module Microsoft.PowerShell.PSResourceGet -Repository PSGallery -Force
-  }
+  param($ModulePath)
+
   $json = @"
 {{.packages.ps_modules | toPrettyJson}}
 "@
-  $installPSResourceSplat = @{
-    Scope = "CurrentUser"
-    RequiredResource = $json
-    Confirm = $False
-    TrustRepository = $True
-  }
-
-  Install-PSResource @installPSResourceSplat
-
-  # Ghetto hash for Windows PS
-  $hash = @{}
-  foreach ($property in $($json | ConvertFrom-Json).PSObject.Properties) {
-    $hash[$property.Name] = $property.Value
-  }
-  $i = 0
-  $total = $hash.Count
-  $hash.GetEnumerator() | ForEach-Object {
-    $updateSplat = @{
-      Name = $_.Key
-      Confirm = $True
+  $modules = $json | ConvertFrom-Json
+  foreach ($property in $modules.PSObject.Properties) {
+    $saveSplat = @{
+      Name  = $property.Name
+      Path  = $ModulePath
+      Force = $true
     }
-    if($_.Repository){
-      $updateSplat['Repository'] = $_.Repository
-      $updateSplat['TrustRepository'] = $True
+    if ($property.Value.Prerelease) {
+      $saveSplat['AllowPrerelease'] = $true
     }
-    if($_.Prerelease){
-      $updateSplat['Prerelease'] = $True
-    }
-    #Update-PSResource @updateSplat
+    Write-Host "Saving module $($property.Name)..." -ForegroundColor Cyan
+    Save-Module @saveSplat
   }
-  Update-PSResource -TrustRepository -Confirm:$false
 }
 
-# Installing Modules in Pwsh
-Invoke-Command $installModules
+# Install modules in pwsh
+& $installModules $ModulePath
 
-# Installing Modules in Windows PowerShell
+# Install modules in Windows PowerShell
 {{ if eq .chezmoi.os "windows" -}}
-powershell.exe -NoProfile -Command $installModules
+powershell.exe -NoProfile -Command "& { $($installModules.ToString()) } '$ModulePath'"
 {{ end -}}
