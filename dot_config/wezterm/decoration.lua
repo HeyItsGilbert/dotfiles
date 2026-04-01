@@ -81,7 +81,7 @@ function M.setup(config, isWindows11)
 	config.default_cursor_style = "BlinkingBar"
 	config.use_fancy_tab_bar = false
 	config.tab_bar_at_bottom = false
-	config.tab_max_width = 24
+	config.tab_max_width = 48
 	config.window_decorations = "NONE | RESIZE"
 	config.cell_width = 0.9
 	config.window_frame = {
@@ -97,6 +97,11 @@ function M.setup(config, isWindows11)
 		tab_bar = {
 			background = "#3c1361",
 		},
+	}
+	config.inactive_pane_hsb = {
+	  hue = 1.0,        -- default: no change
+	  saturation = 0.5, -- e.g., 0.5 for less colorful, 1.0 for normal
+	  brightness = 0.7, -- e.g., 0.7 for dimmer, 1.0 for normal
 	}
 	config.background = {
 		{
