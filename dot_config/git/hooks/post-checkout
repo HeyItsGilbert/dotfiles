@@ -1,0 +1,20 @@
+#!/bin/sh
+# Warn when local branch name differs from its remote tracking branch name.
+# Only runs on branch switches (flag=$3 is 1), not file checkouts.
+
+if [ "$3" != "1" ]; then
+  exit 0
+fi
+
+local_branch=$(git symbolic-ref --short HEAD 2>/dev/null) || exit 0
+remote_ref=$(git for-each-ref --format='%(upstream:short)' "refs/heads/$local_branch" 2>/dev/null)
+
+if [ -z "$remote_ref" ]; then
+  exit 0
+fi
+
+remote_branch="${remote_ref#*/}"
+
+if [ "$local_branch" != "$remote_branch" ]; then
+  printf '\033[33m⚠ Branch name mismatch: local "%s" tracks remote "%s"\033[0m\n' "$local_branch" "$remote_ref"
+fi

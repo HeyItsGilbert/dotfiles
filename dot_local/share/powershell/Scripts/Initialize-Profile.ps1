@@ -9,26 +9,26 @@ function Initialize-Profile {
   $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
   $modules = @{
     "AdvancedHistory" = @{
-      if = $($PSVersionTable.PSEdition -ne 'Core')
+      skipWhen = $($PSVersionTable.PSEdition -ne 'Core')
     }
     "DynamicTitle" = @{}
     "Posh-Git" = @{}
     "PSReadLine" = @{
-      if = $($env:TERM_PROGRAM -ne 'vscode')
+      skipWhen = $($env:TERM_PROGRAM -eq 'vscode')
     }
     "CompletionPredictor" = @{
-      if = $($PSVersionTable.PSEdition -ne 'Core')
+      skipWhen = $($PSVersionTable.PSEdition -ne 'Core')
     }
     "PSStyle" = @{
-      if = $($PSVersionTable.PSEdition -eq 'Core')
+      skipWhen = $($PSVersionTable.PSEdition -eq 'Core')
     }
     "$ChocolateyProfile" = @{
-      if = $(Test-Path($ChocolateyProfile))
+      skipWhen = $(-not (Test-Path $ChocolateyProfile))
     }
     "PSMOTD" = @{}
   }
   foreach ($module in $modules.Keys) {
-    if ($modules.Item($module).ContainsKey("if") -and ($modules.Item($module).Item("if") -eq $True)) {
+    if ($modules[$module].ContainsKey('skipWhen') -and $modules[$module]['skipWhen']) {
       continue
     }
     try {
@@ -72,7 +72,7 @@ function Initialize-Profile {
 
   ## Tab completion
   $keymap = @{
-    Complete = 'Tab'
+    MenuComplete = 'Tab'
     HistorySearchBackward = 'UpArrow'
     HistorySearchForward = 'DownArrow'
     ValidateAndAcceptLine = 'Enter'
