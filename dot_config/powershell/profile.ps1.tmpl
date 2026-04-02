@@ -24,6 +24,11 @@ if (-not ($env:PSModulePath -split [IO.Path]::PathSeparator -contains $ModuleHom
   $env:PSModulePath = $ModuleHome + [IO.Path]::PathSeparator + $env:PSModulePath
 }
 
+# Skip interactive profile for Claude Code / automated tools
+if ($env:CLAUDECODE) {
+  return
+}
+
 $global:Prompts = @{
   Current = 'Simple'
   Original = $function:prompt
