@@ -18,7 +18,6 @@
     ],
     "ps_modules": {
       "CompletionPredictor": {},
-      "DynamicTitle": {},
       "EditorServicesCommandSuite": { "Prerelease": true },
       "Microsoft.PowerShell.ConsoleGuiTools": {},
       "Pester": { "Prerelease": true },
