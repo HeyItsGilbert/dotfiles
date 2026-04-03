@@ -45,6 +45,7 @@
 	editor = nvim
 	pager = delta
 	hooksPath = ~/.config/git/hooks
+	excludesfile = ~/.gitignore_global
 {{ if eq .chezmoi.os "windows" -}}
 	sshCommand = \"C:/Windows/System32/OpenSSH/ssh.exe\"
 {{ end -}}
