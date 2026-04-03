@@ -38,6 +38,13 @@ foreach ($line in $outdatedRaw) {
   }
 }
 
+# powershell-core cannot be upgraded while pwsh is running
+$pwshRunning = Get-Process -Name pwsh -ErrorAction SilentlyContinue
+if ($pwshRunning -and $toUpgrade -contains 'powershell-core') {
+  Write-Warning "Skipping powershell-core upgrade: pwsh is currently running. Close all pwsh instances and run 'chezmoi apply --force' to upgrade."
+  $toUpgrade = $toUpgrade | Where-Object { $_ -ne 'powershell-core' }
+}
+
 if ($toUpgrade) {
   Write-Host "Upgrading outdated packages: $($toUpgrade -join ', ')" -ForegroundColor Cyan
   gsudo choco upgrade $toUpgrade -y -s'https://chocolatey.org/api/v2/'
