@@ -53,6 +53,27 @@ if ($toUpgrade) {
 }
 {{ end -}}
 
+# Install npm global packages
+if (Get-Command npm -ErrorAction SilentlyContinue) {
+  $desiredNpmPackages = @({{ range .packages.npm_globals }}'{{ . }}', {{ end }}'')
+  $desiredNpmPackages = $desiredNpmPackages | Where-Object { $_ -ne '' }
+
+  $installedNpm = npm list -g --depth=0 --json 2>$null | ConvertFrom-Json
+  $installedNpmNames = $installedNpm.dependencies.PSObject.Properties.Name
+
+  foreach ($pkg in $desiredNpmPackages) {
+    if ($installedNpmNames -notcontains $pkg) {
+      Write-Host "Installing npm package: $pkg" -ForegroundColor Cyan
+      npm install -g $pkg
+    }
+  }
+
+  Write-Host "Updating npm global packages..." -ForegroundColor Cyan
+  npm update -g $desiredNpmPackages
+} else {
+  Write-Warning "npm not found; skipping npm global installs."
+}
+
 # Install Modules to a local path to avoid OneDrive Documents redirection
 $ModulePath = [IO.Path]::Combine($HOME, '.local', 'share', 'powershell', 'Modules')
 if (-not (Test-Path $ModulePath)) {

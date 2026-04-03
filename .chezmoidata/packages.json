@@ -16,6 +16,13 @@
       "wezterm",
       "zoxide"
     ],
+    "npm_globals": [
+      "@jsonresume/jsonresume-theme-consultant-polished",
+      "@marp-team/marp-cli",
+      "defuddle",
+      "resume-cli",
+      "resumed"
+    ],
     "ps_modules": {
       "CompletionPredictor": {},
       "EditorServicesCommandSuite": { "Prerelease": true },
