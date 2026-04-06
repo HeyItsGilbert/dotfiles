@@ -28,7 +28,7 @@ if ($toInstall) {
 }
 
 # Check for outdated packages among our desired set
-$outdatedRaw = gsudo choco outdated --limit-output 2>$null
+$outdatedRaw = choco outdated --limit-output 2>$null
 $toUpgrade = @()
 foreach ($line in $outdatedRaw) {
   $parts = $line -split '\|'

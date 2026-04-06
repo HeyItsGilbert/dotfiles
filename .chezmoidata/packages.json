@@ -17,18 +17,18 @@
       "zoxide"
     ],
     "npm_globals": [
-      "@jsonresume/jsonresume-theme-consultant-polished",
       "@marp-team/marp-cli",
-      "defuddle",
-      "resume-cli",
-      "resumed"
+      "defuddle"
     ],
     "ps_modules": {
       "CompletionPredictor": {},
       "EditorServicesCommandSuite": { "Prerelease": true },
       "Microsoft.PowerShell.ConsoleGuiTools": {},
-      "Pester": { "Prerelease": true },
+      "Pester": {},
       "Posh-Git": {},
+      "Psake": {
+        "Prerelease": true
+      },
       "PSReadLine": { "Prerelease": true },
       "PSStyle": {},
       "Terminal-Icons": {}
