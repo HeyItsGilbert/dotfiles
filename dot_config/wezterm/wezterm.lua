@@ -40,6 +40,10 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 		label = "PowerShell No Profile",
 		args = { "powershell.exe", "-NoLogo", "-NoProfile" },
 	})
+	table.insert(launch_menu, {
+		label = "Git Bash",
+		args = { "C:\\Program Files\\Git\\bin\\bash.exe", "--login", "-i" },
+	})
 else
 	--- Non-Windows Machine
 	table.insert(launch_menu, {
