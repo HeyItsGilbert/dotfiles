@@ -45,6 +45,13 @@ if ($pwshRunning -and $toUpgrade -contains 'powershell-core') {
   $toUpgrade = $toUpgrade | Where-Object { $_ -ne 'powershell-core' }
 }
 
+# chezmoi cannot be upgraded while it is running
+$chezmoiRunning = Get-Process -Name chezmoi -ErrorAction SilentlyContinue
+if ($chezmoiRunning -and $toUpgrade -contains 'chezmoi') {
+  Write-Warning "Skipping chezmoi upgrade: chezmoi is currently running. Run 'gsudo choco upgrade chezmoi -y' manually after chezmoi finishes."
+  $toUpgrade = $toUpgrade | Where-Object { $_ -ne 'chezmoi' }
+}
+
 if ($toUpgrade) {
   Write-Host "Upgrading outdated packages: $($toUpgrade -join ', ')" -ForegroundColor Cyan
   gsudo choco upgrade $toUpgrade -y -s'https://chocolatey.org/api/v2/'
