@@ -135,6 +135,11 @@ function Set-LocationButBetter {
         Push-Location $resolvedPath
       }
     }
+    # Feed the new location to zoxide's database
+    if ($global:__zoxide_initialized) {
+      $cwd = (Get-Location).ProviderPath
+      if ($null -ne $cwd) { zoxide add -- $cwd }
+    }
   }
 }
 
@@ -142,6 +147,26 @@ Remove-Item alias:cd
 Set-Alias -Name cd -Value Set-LocationButBetter
 Set-Alias -Name .. -Value Set-LocationButBetter
 Set-Alias -Name ... -Value Set-LocationButBetter
+
+# Zoxide integration — check once per session, integrate with Push-Location stack
+if (-not $global:__zoxide_initialized -and (Get-Command zoxide -ErrorAction SilentlyContinue)) {
+  $global:__zoxide_initialized = $true
+  zoxide init powershell --no-cmd --hook none | Out-String | Invoke-Expression
+  # Override __zoxide_cd to use Push-Location and feed zoxide's database
+  function global:__zoxide_cd($dir, $literal) {
+    if ($dir -eq '-') {
+      Pop-Location
+    } elseif ($literal) {
+      Push-Location -LiteralPath $dir -ErrorAction Stop
+    } else {
+      Push-Location -Path $dir -ErrorAction Stop
+    }
+    $cwd = (Get-Location).ProviderPath
+    if ($null -ne $cwd) { zoxide add -- $cwd }
+  }
+  Set-Alias -Name z -Value __zoxide_z -Option AllScope -Scope Global -Force
+  Set-Alias -Name zi -Value __zoxide_zi -Option AllScope -Scope Global -Force
+}
 
 function Switch-Prompt {
   param(
