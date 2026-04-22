@@ -6,4 +6,4 @@ if (-not (Test-Path $ModulePath)) {
 }
 
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-Save-Module PowerShellGet -Path $ModulePath -Force
+Save-Module PowerShellGet -Path $ModulePath -Repository PSGallery -Force
