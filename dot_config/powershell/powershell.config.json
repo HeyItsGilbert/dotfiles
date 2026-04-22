@@ -1,23 +1,9 @@
 {
   "PSModulePath": "%HOME%/.local/share/powershell/Modules",
   "ExperimentalFeatures": [
-    "PSImplicitRemotingBatching",
-    "PSTempDrive",
-    "PSUseAbbreviationExpansion",
-    "PSTernaryOperator",
-    "PSCoalescingOperators",
-    "PSPipelineChainOperators",
-    "PSNativePSPathResolution",
-    "PSNotApplyErrorActionToStderr",
-    "PSSubsystemPluginModel",
-    "PSCultureInvariantReplaceOperator",
-    "Microsoft.PowerShell.Utility.PSImportPSDataFileSkipLimitCheck",
-    "Microsoft.PowerShell.Utility.PSManageBreakpointsInRunspace",
-    "PSDesiredStateConfiguration.InvokeDscResource",
-    "PSNativeCommandArgumentPassing",
-    "PSAnsiRenderingFileInfo",
+    "PSFeedbackProvider",
     "PSLoadAssemblyFromNativeCode",
-    "PSNativeCommandErrorActionPreference",
-    "GuestConfiguration.Pester"
+    "PSNativeWindowsTildeExpansion",
+    "PSSubsystemPluginModel"
   ]
 }
