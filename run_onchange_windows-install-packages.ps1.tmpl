@@ -80,6 +80,13 @@ if (-not (Test-Path $ModulePath)) {
   New-Item -ItemType Directory -Path $ModulePath -Force | Out-Null
 }
 
+# Set persistent user-level PSModulePath so PowerShell 5.1 discovers modules here
+# (PS 5.1 doesn't read powershell.config.json)
+$currentUserModulePath = [Environment]::GetEnvironmentVariable('PSModulePath', 'User')
+if (-not $currentUserModulePath -or -not ($currentUserModulePath -split [IO.Path]::PathSeparator -contains $ModulePath)) {
+  [Environment]::SetEnvironmentVariable('PSModulePath', $ModulePath, 'User')
+}
+
 # Trust PSGallery so Save-Module doesn't prompt
 if ((Get-PSRepository -Name PSGallery).InstallationPolicy -ne 'Trusted') {
   Set-PSRepository -Name PSGallery -InstallationPolicy Trusted

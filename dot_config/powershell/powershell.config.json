@@ -1,4 +1,5 @@
 {
+  "PSModulePath": "%HOME%/.local/share/powershell/Modules",
   "ExperimentalFeatures": [
     "PSImplicitRemotingBatching",
     "PSTempDrive",
