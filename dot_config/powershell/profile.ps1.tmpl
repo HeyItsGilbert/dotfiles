@@ -71,11 +71,6 @@ if (Get-Command chezmoi -ErrorAction 'SilentlyContinue') {
   chezmoi completion powershell | Out-String | Invoke-Expression
 }
 
-# Add z for file navigation
-if (Get-Command zoxide -ErrorAction 'SilentlyContinue') {
-  zoxide init powershell | Out-String | Invoke-Expression
-}
-
 # Completion for gh cli
 if (Get-Command gh -ErrorAction 'SilentlyContinue') {
   gh completion -s powershell | Out-String | Invoke-Expression
