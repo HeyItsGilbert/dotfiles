@@ -101,9 +101,10 @@ $installModules = {
   $modules = $json | ConvertFrom-Json
   foreach ($property in $modules.PSObject.Properties) {
     $saveSplat = @{
-      Name  = $property.Name
-      Path  = $ModulePath
-      Force = $true
+      Name       = $property.Name
+      Path       = $ModulePath
+      Repository = 'PSGallery'
+      Force      = $true
     }
     if ($property.Value.Prerelease) {
       $saveSplat['AllowPrerelease'] = $true
