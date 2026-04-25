@@ -97,6 +97,7 @@ function M.setup(config, isWindows11)
 		tab_bar = {
 			background = "#3c1361",
 		},
+		split = "#5e409d"
 	}
 	config.inactive_pane_hsb = {
 		hue = 1.0, -- default: no change

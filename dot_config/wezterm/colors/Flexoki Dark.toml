@@ -34,6 +34,8 @@ cursor_fg = "#100F0F"
 selection_bg = "#282726"
 selection_fg = "#CECDC3"
 
+split = "#5e409d"
+
 [colors.indexed]
 
 [metadata]
