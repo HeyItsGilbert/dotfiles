@@ -1,0 +1,34 @@
+# CLAUDE.md
+
+Global context for Claude Code — applies to all projects under this home directory.
+
+## Identity
+
+- Name: {{ .name }}
+- Primary OS: Windows 11 (PowerShell + WezTerm), with Unix support via chezmoi
+
+## Environment
+
+- Shell: PowerShell 7 (`pwsh`) on Windows, zsh on Unix
+- Editor: Neovim / VS Code
+- Terminal: WezTerm
+- Dotfiles managed by [chezmoi](https://chezmoi.io) at `~/.local/share/chezmoi`
+
+## Git
+
+- OSS work lives under `{{ .git_oss }}`
+- Work projects live under `{{ .git_work }}`
+- Dual git identity configured via `includeIf` in `~/.gitconfig`
+- Key aliases: `sync` (fetch+rebase+prune), `stack`/`push-stack` (branch stacking), `absorb`
+
+## Preferences
+
+- Terse responses — no trailing summaries or recaps
+- No unnecessary comments in code
+- No emojis unless asked
+- Prefer editing existing files over creating new ones
+- Always prefer PowerShell over bash on Windows
+
+## Local Overrides
+
+If `~/CLAUDE_LOCAL.md` exists, read it and treat its contents as taking precedence over everything in this file.
