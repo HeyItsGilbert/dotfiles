@@ -1,3 +1,4 @@
+$content = @'
 # CLAUDE.md
 
 Global context for Claude Code — applies to all projects under this home directory.
@@ -12,7 +13,7 @@ Global context for Claude Code — applies to all projects under this home direc
 - Shell: PowerShell 7 (`pwsh`) on Windows, zsh on Unix
 - Editor: Neovim / VS Code
 - Terminal: WezTerm
-- Dotfiles managed by [chezmoi](https://chezmoi.io) at `~/.local/share/chezmoi`
+- Dotfiles managed by chezmoi at `~/.local/share/chezmoi`
 
 ## Git
 
@@ -32,3 +33,6 @@ Global context for Claude Code — applies to all projects under this home direc
 ## Local Overrides
 
 If `~/CLAUDE_LOCAL.md` exists, read it and treat its contents as taking precedence over everything in this file.
+'@
+
+Set-Content -Path "$HOME\CLAUDE.md" -Value $content -Encoding UTF8
