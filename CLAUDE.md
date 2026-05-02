@@ -83,39 +83,3 @@ Files excluded per platform via `.chezmoiignore`:
 ## Espanso Prompts
 
 AI prompt snippets live in `AppData/Roaming/espanso/match/prompts.yml`. Triggers use backtick prefix (e.g., `` `prompt ``, `` `rubrik ``). These are text-expansion templates for Claude/AI workflows.
-
-## Build Tool Issue Reporting
-
-When a build tool issue is discovered (e.g., a failing `chezmoi apply`, broken install script, package manager error, or template rendering failure), use the `AskUserQuestion` tool to ask whether a GitHub issue should be opened before proceeding.
-
-If the user says yes, file the issue against the relevant upstream tool (e.g., `twpayne/chezmoi`) and include:
-
-- **Description**: A clear summary of the unexpected behavior
-- **Environment**: OS, tool version (`chezmoi --version`, `choco --version`, etc.), shell
-- **Steps to reproduce**:
-  1. Minimal, self-contained reproduction (ideally a single command or config snippet)
-  2. Exact command run and its full output
-- **Expected behavior**: What should have happened
-- **Actual behavior**: What actually happened, including the full error message/stack trace
-
-Example issue body structure:
-
-```
-**chezmoi version**: 2.x.x
-**OS**: Windows 11 / Ubuntu 22.04
-**Shell**: pwsh 7.x / bash 5.x
-
-## Steps to Reproduce
-1. Add the following to `.chezmoiexternal.toml.tmpl`:
-   ...
-2. Run `chezmoi apply`
-
-## Expected
-External repo cloned to `~/.local/share/...`
-
-## Actual
-Error: <full error output here>
-
-## Notes
-<any relevant context, workarounds tried, etc.>
-```
