@@ -1,4 +1,3 @@
-$content = @'
 # CLAUDE.md
 
 Global context for Claude Code — applies to all projects under this home directory.
@@ -30,6 +29,13 @@ Global context for Claude Code — applies to all projects under this home direc
 - Prefer editing existing files over creating new ones
 - Always prefer PowerShell over bash on Windows
 
+## Open Brain
+
+When I make a project decision, share new context about people or projects,
+express a workflow preference, or land on a reusable insight, proactively offer
+to capture it to my Open Brain via the capture_thought tool at a natural pause.
+Skip transient state and duplicates.
+
 ## Issue Reporting
 
 When a problem is discovered with a tool or module (e.g., a failing `chezmoi apply`, broken install script, package manager error, unexpected PowerShell module behavior), use the `AskUserQuestion` tool to ask whether a GitHub issue should be opened before proceeding.
@@ -58,16 +64,21 @@ If the user says yes, file the issue against the relevant repo and include:
    Import-Module ModuleName
    Invoke-SomeFunction -Param 'value'
    ```
-3. Observe error
+
+1. Observe error
 
 ## Expected
+
 <what should have happened>
 
 ## Actual
+
 <full error output, including any inner exceptions>
 
 ## Notes
+
 <any relevant context, workarounds tried, etc.>
+
 ```
 
 ### chezmoi / dotfiles example
@@ -95,6 +106,3 @@ Error: <full error output here>
 ## Local Overrides
 
 If `~/CLAUDE_LOCAL.md` exists, read it and treat its contents as taking precedence over everything in this file.
-'@
-
-Set-Content -Path "$HOME\CLAUDE.md" -Value $content -Encoding UTF8
