@@ -5,11 +5,11 @@ Global context for Claude Code — applies to all projects under this home direc
 ## Identity
 
 - Name: {{ .name }}
-- Primary OS: Windows 11 (PowerShell + WezTerm), with Unix support via chezmoi
+- Primary OS: Windows 11 (PowerShell + WezTerm)
 
 ## Environment
 
-- Shell: PowerShell 7 (`pwsh`) on Windows, zsh on Unix
+- Shell: PowerShell 7 (`pwsh`)
 - Editor: Neovim / VS Code
 - Terminal: WezTerm
 - Dotfiles managed by chezmoi at `~/.local/share/chezmoi`
@@ -27,7 +27,8 @@ Global context for Claude Code — applies to all projects under this home direc
 - No unnecessary comments in code
 - No emojis unless asked
 - Prefer editing existing files over creating new ones
-- Always prefer PowerShell over bash on Windows
+- Always prefer PowerShell over bash
+- Files that support schemas should always call it explicitly.
 
 ## Open Brain
 
@@ -35,73 +36,6 @@ When I make a project decision, share new context about people or projects,
 express a workflow preference, or land on a reusable insight, proactively offer
 to capture it to my Open Brain via the capture_thought tool at a natural pause.
 Skip transient state and duplicates.
-
-## Issue Reporting
-
-When a problem is discovered with a tool or module (e.g., a failing `chezmoi apply`, broken install script, package manager error, unexpected PowerShell module behavior), use the `AskUserQuestion` tool to ask whether a GitHub issue should be opened before proceeding.
-
-If the user says yes, file the issue against the relevant repo and include:
-
-- **Description**: A clear summary of the unexpected behavior
-- **Environment**: OS, tool/module version, shell version
-- **Steps to reproduce**:
-  1. Minimal, self-contained reproduction (ideally a single command or config snippet)
-  2. Exact command run and its full output
-- **Expected behavior**: What should have happened
-- **Actual behavior**: What actually happened, including the full error message/stack trace
-
-### PowerShell module example
-
-```markdown
-**Module version**: x.x.x
-**PowerShell version**: `$PSVersionTable` output (PSVersion, PSEdition, OS)
-**OS**: Windows 11 / Ubuntu 22.04
-
-## Steps to Reproduce
-1. Install the module: `Install-Module ModuleName -Force`
-2. Import and invoke:
-   ```powershell
-   Import-Module ModuleName
-   Invoke-SomeFunction -Param 'value'
-   ```
-
-1. Observe error
-
-## Expected
-
-<what should have happened>
-
-## Actual
-
-<full error output, including any inner exceptions>
-
-## Notes
-
-<any relevant context, workarounds tried, etc.>
-
-```
-
-### chezmoi / dotfiles example
-
-```markdown
-**chezmoi version**: 2.x.x
-**OS**: Windows 11 / Ubuntu 22.04
-**Shell**: pwsh 7.x / bash 5.x
-
-## Steps to Reproduce
-1. Add the following to `.chezmoiexternal.toml.tmpl`:
-   ...
-2. Run `chezmoi apply`
-
-## Expected
-<what should have happened>
-
-## Actual
-Error: <full error output here>
-
-## Notes
-<any relevant context, workarounds tried, etc.>
-```
 
 ## Local Overrides
 
