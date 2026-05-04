@@ -95,3 +95,70 @@ AI prompt snippets live in `AppData/Roaming/espanso/match/prompts.yml`. Triggers
 
 Files in dot_claude are synced to all systems and should be system agnostic.
 When adding new "global" claude updates, they should be made to `dot_claude\CLAUDE.md`
+
+## Issue Reporting
+
+When a problem is discovered with a tool or module (e.g., a failing `chezmoi apply`, broken install script, package manager error, unexpected PowerShell module behavior), use the `AskUserQuestion` tool to ask whether a GitHub issue should be opened before proceeding.
+
+If the user says yes, file the issue against the relevant repo and include:
+
+- **Description**: A clear summary of the unexpected behavior
+- **Environment**: OS, tool/module version, shell version
+- **Steps to reproduce**:
+  1. Minimal, self-contained reproduction (ideally a single command or config snippet)
+  2. Exact command run and its full output
+- **Expected behavior**: What should have happened
+- **Actual behavior**: What actually happened, including the full error message/stack trace
+
+### PowerShell module example
+
+```markdown
+**Module version**: x.x.x
+**PowerShell version**: `$PSVersionTable` output (PSVersion, PSEdition, OS)
+**OS**: Windows 11 / Ubuntu 22.04
+
+## Steps to Reproduce
+1. Install the module: `Install-Module ModuleName -Force`
+2. Import and invoke:
+   ```powershell
+   Import-Module ModuleName
+   Invoke-SomeFunction -Param 'value'
+   ```
+
+1. Observe error
+
+## Expected
+
+<what should have happened>
+
+## Actual
+
+<full error output, including any inner exceptions>
+
+## Notes
+
+<any relevant context, workarounds tried, etc.>
+
+```
+
+### chezmoi / dotfiles example
+
+```markdown
+**chezmoi version**: 2.x.x
+**OS**: Windows 11 / Ubuntu 22.04
+**Shell**: pwsh 7.x / bash 5.x
+
+## Steps to Reproduce
+1. Add the following to `.chezmoiexternal.toml.tmpl`:
+   ...
+2. Run `chezmoi apply`
+
+## Expected
+<what should have happened>
+
+## Actual
+Error: <full error output here>
+
+## Notes
+<any relevant context, workarounds tried, etc.>
+```
