@@ -25,8 +25,9 @@
 	rebase-origin = "!f() { git rebase ${1-HEAD} origin/$(git default-branch); };f "
 	absorb = !c:/tools/git-absorb/git-absorb.exe
 
-	# Fetch, rebase default branch, prune merged branches (gh poi), return to original branch
-	sync = "!f() { cb=$(git branch --show-current); git fetch --all --prune --tags && git checkout $(git default-branch) && git rebase && gh poi && if git show-ref --verify --quiet refs/heads/\"$cb\"; then git checkout \"$cb\"; else echo \"Branch '$cb' was pruned; staying on $(git default-branch)\"; fi; };f"
+	# Fetch + rebase default + prune merged + flag orphans + return to original branch.
+	# Implementation lives in ~/.config/git/scripts/git-sync.sh for readability.
+	sync = !bash ~/.config/git/scripts/git-sync.sh
 
 [filter "lfs"]
 	required = true
@@ -46,9 +47,11 @@
 	pager = delta
 	hooksPath = ~/.config/git/hooks
 	excludesfile = ~/.gitignore_global
-{{ if eq .chezmoi.os "windows" -}}
-	sshCommand = \"C:/Windows/System32/OpenSSH/ssh.exe\"
-{{ end -}}
+	fsmonitor = true
+	untrackedcache = true
+{{ if eq .chezmoi.os "windows" }}
+	sshCommand = "C:/Windows/System32/OpenSSH/ssh.exe"
+{{ end }}
 
 [delta]
 	true-color = "always"
