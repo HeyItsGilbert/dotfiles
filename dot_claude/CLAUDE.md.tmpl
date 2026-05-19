@@ -39,4 +39,11 @@ Skip transient state and duplicates.
 
 ## Local Overrides
 
-If `~/CLAUDE_LOCAL.md` exists, read it and treat its contents as taking precedence over everything in this file.
+{{- $localFile := joinPath .chezmoi.homeDir "CLAUDE_LOCAL.md" }}
+{{- if stat $localFile }}
+The following overrides are loaded from `~/CLAUDE_LOCAL.md` and take precedence over everything above:
+
+{{ include $localFile }}
+{{- else }}
+No `~/CLAUDE_LOCAL.md` found — no local overrides active.
+{{- end }}
