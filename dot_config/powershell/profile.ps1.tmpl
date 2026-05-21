@@ -65,35 +65,13 @@ if ($null -ne $env:WT_SESSION) {
   $global:term_app = 'WindowsTerminal'
 }
 
-#region Add auto completers
-# Add chezmoi auto complete
-if (Get-Command chezmoi -ErrorAction 'SilentlyContinue') {
-  chezmoi completion powershell | Out-String | Invoke-Expression
-}
-
-# Completion for gh cli
-if (Get-Command gh -ErrorAction 'SilentlyContinue') {
-  gh completion -s powershell | Out-String | Invoke-Expression
-}
-
-# Completion for fnm
-if (Get-Command fnm -ErrorAction 'SilentlyContinue') {
-  # fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
-  fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
-}
-
-# Completion for gsudo
-if (Get-Command gsudo -ErrorAction 'SilentlyContinue') {
-  Import-Module "gsudoModule"
-}
-#endregion
-
 # Load extra functions
 @(
-  "WorkFunctions.ps1",
+  "Completions.ps1",
   "Functions.ps1",
   "ShellIntegration.ps1",
-  "Initialize-Profile.ps1"
+  "Initialize-Profile.ps1",
+  "WorkFunctions.ps1"
 ) | ForEach-Object {
   $path = "$DataHome/powershell/Scripts/$_"
   if (Test-Path $path -ErrorAction SilentlyContinue) {
@@ -108,7 +86,7 @@ if (Test-Administrator) {
 # Starship overwrite the prompt. Do this so its available on first open.
 # There is a cost for this but it should be minimal.
 if (Get-Command 'starship' -ErrorAction SilentlyContinue) {
-  Invoke-Expression (&starship init powershell)
+  Invoke-CachedCompletion starship 'init', 'powershell', '--print-full-init'
   $global:Prompts.Starship = $function:prompt
   $global:Prompts.StarshipShort = { &starship prompt --profile short }
   Switch-Prompt -Prompt 'Starship'
@@ -122,4 +100,4 @@ if (Get-Command 'starship' -ErrorAction SilentlyContinue) {
   Switch-Prompt -Prompt 'OldPrompt'
 }
 
-Get-MOTD
+if (Get-Command Get-MOTD -ErrorAction SilentlyContinue) { Get-MOTD }

@@ -21,11 +21,13 @@
       "defuddle"
     ],
     "ps_modules": {
+      "AdvancedHistory": {},
       "CompletionPredictor": {},
       "EditorServicesCommandSuite": { "Prerelease": true },
       "Microsoft.PowerShell.ConsoleGuiTools": {},
       "Pester": {},
       "Posh-Git": {},
+      "PSMOTD": {},
       "Psake": {
         "Prerelease": true
       },

@@ -6,7 +6,6 @@ function Initialize-Profile {
   Write-Host "Initializing profile..." -ForegroundColor Cyan
   [Console]::OutputEncoding = [Console]::InputEncoding = $global:OutputEncoding = [System.Text.UTF8Encoding]::new()
   # Prompt
-  $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
   $modules = @{
     "AdvancedHistory" = @{
       skipWhen = $($PSVersionTable.PSEdition -ne 'Core')
@@ -20,9 +19,6 @@ function Initialize-Profile {
     }
     "PSStyle" = @{
       skipWhen = $($PSVersionTable.PSEdition -eq 'Core')
-    }
-    "$ChocolateyProfile" = @{
-      skipWhen = $(-not (Test-Path $ChocolateyProfile))
     }
     "PSMOTD" = @{}
   }

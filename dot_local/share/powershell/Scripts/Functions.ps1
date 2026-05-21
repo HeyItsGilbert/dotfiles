@@ -151,7 +151,7 @@ Set-Alias -Name ... -Value Set-LocationButBetter
 # Zoxide integration — check once per session, integrate with Push-Location stack
 if (-not $global:__zoxide_initialized -and (Get-Command zoxide -ErrorAction SilentlyContinue)) {
   $global:__zoxide_initialized = $true
-  zoxide init powershell --no-cmd --hook none | Out-String | Invoke-Expression
+  Invoke-CachedCompletion zoxide 'init', 'powershell', '--no-cmd', '--hook', 'none'
   # Override __zoxide_cd to use Push-Location and feed zoxide's database
   function global:__zoxide_cd($dir, $literal) {
     if ($dir -eq '-') {

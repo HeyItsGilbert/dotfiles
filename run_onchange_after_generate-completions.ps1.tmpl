@@ -1,0 +1,25 @@
+{{- /* Rebuild completion cache whenever installed tool versions change */ -}}
+{{- if lookPath "chezmoi" }}# chezmoi: {{ output "chezmoi" "--version" | trim | splitList "\n" | first }}{{ end -}}
+{{- if lookPath "gh" }}# gh: {{ output "gh" "--version" | trim | splitList "\n" | first }}{{ end -}}
+{{- if lookPath "fnm" }}# fnm: {{ output "fnm" "--version" | trim | splitList "\n" | first }}{{ end -}}
+{{- if lookPath "zoxide" }}# zoxide: {{ output "zoxide" "--version" | trim | splitList "\n" | first }}{{ end -}}
+{{- if lookPath "starship" }}# starship: {{ output "starship" "--version" | trim | splitList "\n" | first }}{{ end }}
+
+$cacheDir = [IO.Path]::Combine($HOME, '.local', 'share', 'powershell', 'CompletionCache')
+New-Item -ItemType Directory -Force $cacheDir | Out-Null
+
+$tools = [ordered]@{
+    chezmoi  = @('completion', 'powershell')
+    gh       = @('completion', '-s', 'powershell')
+    fnm      = @('env', '--use-on-cd', '--shell', 'powershell')
+    zoxide   = @('init', 'powershell', '--no-cmd', '--hook', 'none')
+    starship = @('init', 'powershell', '--print-full-init')
+}
+
+foreach ($tool in $tools.Keys) {
+    $cmd = Get-Command $tool -ErrorAction SilentlyContinue
+    if (-not $cmd) { continue }
+    $outFile = [IO.Path]::Combine($cacheDir, "$tool.ps1")
+    & $tool @($tools[$tool]) | Set-Content $outFile -Encoding UTF8
+    Write-Host "  cached: $outFile"
+}
