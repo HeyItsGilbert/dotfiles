@@ -91,7 +91,8 @@ if (-not (Test-Path $ModulePath)) {
 # (PS 5.1 doesn't read powershell.config.json)
 $currentUserModulePath = [Environment]::GetEnvironmentVariable('PSModulePath', 'User')
 if (-not $currentUserModulePath -or -not ($currentUserModulePath -split [IO.Path]::PathSeparator -contains $ModulePath)) {
-  [Environment]::SetEnvironmentVariable('PSModulePath', $ModulePath, 'User')
+  $newPath = ($ModulePath, $currentUserModulePath | Where-Object { $_ }) -join [IO.Path]::PathSeparator
+  [Environment]::SetEnvironmentVariable('PSModulePath', $newPath, 'User')
 }
 
 # Trust PSGallery so Save-Module doesn't prompt
