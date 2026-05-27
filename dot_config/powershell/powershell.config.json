@@ -1,5 +1,4 @@
 {
-  "PSModulePath": "%HOME%/.local/share/powershell/Modules",
   "ExperimentalFeatures": [
     "PSFeedbackProvider",
     "PSLoadAssemblyFromNativeCode",
