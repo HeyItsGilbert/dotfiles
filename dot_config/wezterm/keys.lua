@@ -220,6 +220,28 @@ function M.setup(config)
 			-- toggling opacity
 			action = wezterm.action.EmitEvent("toggle-opacity"),
 		},
+		-- Open the current working directory in VS Code
+		{
+			key = "o",
+			mods = "LEADER",
+			action = wezterm.action_callback(function(window, pane)
+				local cwd = pane:get_current_working_dir()
+				if not cwd then
+					return
+				end
+				-- get_current_working_dir() may return a Url object or a string
+				local path = type(cwd) == "userdata" and cwd.file_path or tostring(cwd)
+				path = path:gsub("^file://[^/]*", "")
+				-- Strip the leading slash on Windows drive paths (/C:/... -> C:/...)
+				if wezterm.target_triple == "x86_64-pc-windows-msvc" then
+					path = path:gsub("^/([A-Za-z]:)", "%1")
+					-- `code` is `code.cmd`; spawn through cmd.exe so it resolves
+					wezterm.background_child_process({ "cmd.exe", "/c", "code", path })
+				else
+					wezterm.background_child_process({ "code", path })
+				end
+			end),
+		},
 		-- Rename current tab
 		{
 			key = "E",
