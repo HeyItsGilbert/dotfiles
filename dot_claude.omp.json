@@ -1,0 +1,67 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "text",
+          "style": "diamond",
+          "leading_diamond": "░▒▓",
+          "trailing_diamond": "",
+          "background": "#575653",
+          "foreground": "#D97757",
+          "template": " 󰯉 "
+        },
+        {
+          "type": "path",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "background": "#100f0f",
+          "foreground": "#3aa99f",
+          "properties": {
+            "style": "agnoster_short",
+            "max_depth": 2
+          },
+          "template": " {{ .Path }} "
+        },
+        {
+          "type": "git",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "background": "#575653",
+          "foreground": "#8b7ec8",
+          "properties": {
+            "fetch_status": true
+          },
+          "template": "  {{ .HEAD }}{{ if or .Working.Changed .Staging.Changed }}<#cecdc3> {{ .Working.String }}{{ .Staging.String }}</>{{ end }}"
+        },
+        {
+          "type": "claude",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "background": "#100f0f",
+          "foreground": "#4385be",
+          "template": " {{ if contains \"haiku\" .Model.ID }}{{ else if contains \"opus\" .Model.ID }}󱙦{{ else }}󰊩{{ end }} {{ lower .Model.DisplayName }} "
+        },
+        {
+          "type": "claude",
+          "style": "powerline",
+          "powerline_symbol": "",
+          "background": "#575653",
+          "foreground": "#d0a215",
+          "template": " {{ if .ContextWindow.UsedPercentage }}{{ .ContextWindow.UsedPercentage }}%{{ else }}~~%{{ end }} "
+        },
+        {
+          "type": "claude",
+          "style": "diamond",
+          "trailing_diamond": "",
+          "background": "#343331",
+          "foreground": "#879a39",
+          "template": "{{ .FormattedCost }} "
+        }
+      ]
+    }
+  ]
+}

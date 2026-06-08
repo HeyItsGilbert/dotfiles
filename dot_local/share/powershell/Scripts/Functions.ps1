@@ -171,7 +171,7 @@ if (-not $global:__zoxide_initialized -and (Get-Command zoxide -ErrorAction Sile
 function Switch-Prompt {
   param(
     [Parameter(Position = 0)]
-    [ValidateSet('Simple', 'Starship', 'Original', 'OldPrompt')]
+    [ValidateSet('Simple', 'OhMyPosh', 'Starship', 'Original', 'OldPrompt')]
     [string]$Prompt,
     [switch]
     $NoShellIntegration
