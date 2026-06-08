@@ -5,7 +5,10 @@
     "dictionaries": [
         "powershell"
     ],
-    "words": [],
+    "words": [
+        "agnoster",
+        "powerline"
+    ],
     "ignoreWords": [
         "ocgv",
         "Jaykul",

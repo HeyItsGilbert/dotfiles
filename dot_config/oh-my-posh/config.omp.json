@@ -25,7 +25,7 @@
           "powerline_symbol": "",
           "background": "#5e409d",
           "foreground": "#fffcf0",
-          "properties": {
+          "options": {
             "style": "agnoster_short",
             "max_depth": 3
           },
@@ -37,10 +37,10 @@
           "powerline_symbol": "",
           "background": "#575653",
           "foreground": "#8b7ec8",
-          "properties": {
+          "options": {
             "fetch_status": true
           },
-          "template": "  {{ .HEAD }}{{ if or .Working.Changed .Staging.Changed }} <#cecdc3>{{ .Working.String }}{{ .Staging.String }}</>{{ end }} "
+          "template": " {{ .HEAD }}{{ if or .Working.Changed .Staging.Changed }} <#cecdc3>{{ .Working.String }}{{ .Staging.String }}</>{{ end }} "
         }
       ]
     },
@@ -53,7 +53,7 @@
           "style": "plain",
           "background": "transparent",
           "foreground": "#cecdc3",
-          "properties": {
+          "options": {
             "threshold": 2000,
             "style": "austin",
             "always_enabled": false
@@ -79,7 +79,7 @@
           "style": "plain",
           "background": "transparent",
           "foreground": "#3aa99f",
-          "properties": {
+          "options": {
             "mapped_shell_names": {
               "pwsh": "",
               "powershell": "",
