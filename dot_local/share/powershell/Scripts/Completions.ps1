@@ -16,9 +16,12 @@ function global:Invoke-CachedCompletion {
     . $cacheFile
 }
 
-Invoke-CachedCompletion chezmoi 'completion', 'powershell'
-Invoke-CachedCompletion gh     'completion', '-s', 'powershell'
-Invoke-CachedCompletion fnm    'env', '--use-on-cd', '--shell', 'powershell'
+Invoke-CachedCompletion chezmoi     'completion', 'powershell'
+Invoke-CachedCompletion gh          'completion', '-s', 'powershell'
+Invoke-CachedCompletion fnm         'env', '--use-on-cd', '--shell', 'powershell'
+Invoke-CachedCompletion starship    'init', 'powershell', '--print-full-init'
+if ($global:Prompts) { $global:Prompts.Starship = $function:prompt }
+Invoke-CachedCompletion oh-my-posh  'init', 'pwsh', '--config', ([IO.Path]::Combine($ConfigHome, 'oh-my-posh', 'config.omp.json'))
 
 if (Get-Command gsudo -ErrorAction SilentlyContinue) {
     Import-Module gsudoModule
