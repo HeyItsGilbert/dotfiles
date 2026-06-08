@@ -5,7 +5,7 @@ general:
     - "shell-exec zebar"
     # work:startup_commands
   shutdown_commands:
-    - "shell-exec taskkill /IM zebar.exe /F"
+    - "shell-exec pwsh -NoProfile -File C:/Users/gilbsanchez/.glzr/zebar/quiet-velvet/scripts/Restart-Zebar.ps1 -NoStart"
     # work:shutdown_commands
 
   # Whether to automatically focus windows underneath the cursor.
