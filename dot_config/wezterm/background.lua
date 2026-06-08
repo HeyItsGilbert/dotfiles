@@ -15,10 +15,10 @@ local DEFAULT_BG_COLOR = "#100F0F"
 
 -- Initialize global state if not exists
 if not wezterm.GLOBAL.backgroundIndex then
-	wezterm.GLOBAL.backgroundIndex = 1
+	wezterm.GLOBAL.backgroundIndex = BG_IMAGES_COUNT
 end
 if not wezterm.GLOBAL.opacityIndex then
-	wezterm.GLOBAL.opacityIndex = 1
+	wezterm.GLOBAL.opacityIndex = #OPACITY_OPTIONS
 end
 
 -- Helper function to get the next item in a table cyclically
