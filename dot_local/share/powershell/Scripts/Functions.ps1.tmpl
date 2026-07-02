@@ -130,8 +130,7 @@ function Set-LocationButBetter {
       $resolvedPath = (Resolve-Path $Path).Path
       if ([System.IO.File]::Exists($resolvedPath)) {
         Push-Location (Split-Path $resolvedPath -Parent)
-      }
-      else {
+      } else {
         Push-Location $resolvedPath
       }
     }
@@ -206,5 +205,52 @@ function Switch-Prompt {
   # Add the shell integration
   if (-not $NoShellIntegration) {
     Set-ShellIntegration -TerminalProgram $global:term_app -NoOriginalReset
+  }
+}
+
+function omp-dev {
+  if ($script:omp_dev_folder) {
+    $repo = $script:omp_dev_folder
+  } else {
+    # Test for the oh-my-pi repo in the default location
+    $defaultRepo = 'D:\oh-my-pi\packages\coding-agent'
+    if (Test-Path $defaultRepo) {
+      $repo = $defaultRepo
+    } else {
+      # Prompt the user for the path to the oh-my-pi repo
+      $repo = Read-Host "Enter the path to your oh-my-pi repo"
+      if (-not (Test-Path $repo)) {
+        Write-Error "The specified path '$repo' does not exist. Please check the path and try again."
+        return
+      }
+    }
+  }
+  # Run the local oh-my-pi dev build from any repo.
+  # Edit $repo if your checkout moves.
+  $repo = 'D:\oh-my-pi\packages\coding-agent'
+  $cli = Join-Path $repo 'src\cli.ts'
+  $preload = Join-Path $repo 'scripts\omp.ts'
+
+  if (-not (Test-Path $cli)) {
+    Write-Error "omp-dev: CLI not found at $cli (fix `$repo)"; return
+  }
+
+  # Bun reads bunfig.toml from the *exact* cwd and runs its `preload` before
+  # the entrypoint, so launch from an empty dir and restore cwd via the shim.
+  $launch = Join-Path $HOME '.omp\.dev-cwd'
+  New-Item -ItemType Directory -Force -Path $launch | Out-Null
+
+  $env:OMP_LAUNCH_CWD = $PWD.Path
+  Push-Location $launch
+  try {
+    if ($env:PI_TIMING) {
+      $timing = Join-Path $repo '..\utils\src\module-timer.ts'
+      & bun --preload $preload --preload $timing $cli @args
+    } else {
+      & bun --preload $preload $cli @args
+    }
+  } finally {
+    Pop-Location
+    Remove-Item Env:OMP_LAUNCH_CWD -ErrorAction SilentlyContinue
   }
 }
