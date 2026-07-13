@@ -49,7 +49,7 @@ function Initialize-Profile {
     $psOption['PredictionSource'] = 'History'
   }
   $psOption['PredictionViewStyle'] = 'InlineView'
-  $psOption['ShowToolTips'] = $True
+  $psOption['ShowToolTips'] = $false
   ## Colors
   $psOption['Colors'] = @{
     'Command' = [System.ConsoleColor]::DarkMagenta

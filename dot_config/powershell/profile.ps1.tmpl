@@ -18,11 +18,17 @@ $ConfigHome = if ($ENV:XDG_CONFIG_HOME) {
   [IO.Path]::Combine($HOME, ".config")
 }
 
-# Add custom module path to avoid OneDrive Documents redirection
+# Prefer local module path; drop OneDrive Documents redirection (slow completion)
 $ModuleHome = [IO.Path]::Combine($DataHome, "powershell", "Modules")
-if (-not ($env:PSModulePath -split [IO.Path]::PathSeparator -contains $ModuleHome)) {
-  $env:PSModulePath = $ModuleHome + [IO.Path]::PathSeparator + $env:PSModulePath
-}
+$env:PSModulePath = @(
+  $ModuleHome
+  ($env:PSModulePath -split [IO.Path]::PathSeparator |
+    Where-Object {
+      $_ -and
+      ($_ -ne $ModuleHome) -and
+      ($_ -notmatch '(?i)OneDrive.*Documents.*PowerShell.*Modules')
+    })
+) -join [IO.Path]::PathSeparator
 
 # Skip interactive profile for Claude Code / automated tools
 if ($env:CLAUDECODE) {

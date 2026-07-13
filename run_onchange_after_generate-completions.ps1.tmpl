@@ -9,17 +9,25 @@ $cacheDir = [IO.Path]::Combine($HOME, '.local', 'share', 'powershell', 'Completi
 New-Item -ItemType Directory -Force $cacheDir | Out-Null
 
 $tools = [ordered]@{
-    chezmoi  = @('completion', 'powershell')
-    gh       = @('completion', '-s', 'powershell')
-    fnm      = @('env', '--use-on-cd', '--shell', 'powershell')
-    zoxide   = @('init', 'powershell', '--no-cmd', '--hook', 'none')
-    starship = @('init', 'powershell', '--print-full-init')
+    chezmoi  = @{ Args = @('completion', 'powershell'); Native = $true }
+    gh       = @{ Args = @('completion', '-s', 'powershell'); Native = $true }
+    fnm      = @{ Args = @('env', '--use-on-cd', '--shell', 'powershell'); Native = $false }
+    zoxide   = @{ Args = @('init', 'powershell', '--no-cmd', '--hook', 'none'); Native = $false }
+    starship = @{ Args = @('init', 'powershell', '--print-full-init'); Native = $false }
 }
 
 foreach ($tool in $tools.Keys) {
     $cmd = Get-Command $tool -ErrorAction SilentlyContinue
     if (-not $cmd) { continue }
     $outFile = [IO.Path]::Combine($cacheDir, "$tool.ps1")
-    & $tool @($tools[$tool]) | Set-Content $outFile -Encoding UTF8
+    $spec = $tools[$tool]
+    & $tool @($spec.Args) | Set-Content $outFile -Encoding UTF8
+    if ($spec.Native) {
+        $content = Get-Content -LiteralPath $outFile -Raw
+        if ($content -match 'Register-ArgumentCompleter' -and $content -notmatch 'Register-ArgumentCompleter\s+-Native\b') {
+            $content = $content -replace 'Register-ArgumentCompleter\s+-CommandName', 'Register-ArgumentCompleter -Native -CommandName'
+            Set-Content -LiteralPath $outFile -Value $content -Encoding UTF8 -NoNewline
+        }
+    }
     Write-Host "  cached: $outFile"
 }
