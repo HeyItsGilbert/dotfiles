@@ -214,23 +214,30 @@ function omp-dev {
     $repo = $script:omp_dev_folder
   } else {
     # Test for the oh-my-pi repo in the default location
-    $defaultRepo = 'D:\oh-my-pi\packages\coding-agent'
+    $defaultRepo = Join-Path {{ .git_oss }} 'packages\coding-agent'
+    $localFile = Join-Path $PSScriptRoot 'omp-path.txt'
     if (Test-Path $defaultRepo) {
       $repo = $defaultRepo
     } else {
-      # Prompt the user for the path to the oh-my-pi repo
-      $repo = Read-Host "Enter the path to your oh-my-pi repo"
-      if (-not (Test-Path $repo)) {
-        Write-Error "The specified path '$repo' does not exist. Please check the path and try again."
-        return
+      if (Test-Path $localFile) {
+        $repo = Get-Content -Path $localFile
+      } else {
+        # Prompt the user for the path to the oh-my-pi repo
+        $repo = Read-Host "Enter the path to your oh-my-pi repo"
+        if (-not (Test-Path $repo)) {
+          Write-Error "The specified path '$repo' does not exist. Please check the path and try again."
+          return
+        }
+        # Save to local file for future use
+        Set-Content -Path $localFile -Value $repo -Force
       }
     }
   }
   # Run the local oh-my-pi dev build from any repo.
   # Edit $repo if your checkout moves.
-  $repo = 'D:\oh-my-pi\packages\coding-agent'
-  $cli = Join-Path $repo 'src\cli.ts'
-  $preload = Join-Path $repo 'scripts\omp.ts'
+  $pkgPath = Join-Path $repo 'packages\coding-agent'
+  $cli = Join-Path $pkgPath 'src\cli.ts'
+  $preload = Join-Path $pkgPath 'scripts\omp.ts'
 
   if (-not (Test-Path $cli)) {
     Write-Error "omp-dev: CLI not found at $cli (fix `$repo)"; return
@@ -245,7 +252,7 @@ function omp-dev {
   Push-Location $launch
   try {
     if ($env:PI_TIMING) {
-      $timing = Join-Path $repo '..\utils\src\module-timer.ts'
+      $timing = Join-Path $pkgPath '..\utils\src\module-timer.ts'
       & bun --preload $preload --preload $timing $cli @args
     } else {
       & bun --preload $preload $cli @args
