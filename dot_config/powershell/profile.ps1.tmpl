@@ -92,6 +92,12 @@ if (Test-Administrator) {
 if (Get-Command 'oh-my-posh' -ErrorAction SilentlyContinue) {
   $global:Prompts.OhMyPosh = $function:prompt
   Switch-Prompt -Prompt 'OhMyPosh'
+  # oh-my-posh 30+ installs an async trampoline that returns nothing on the first
+  # prompt() call while it loads the module. Force that init now (after PSReadLine
+  # is configured by Initialize-Profile) so the first interactive prompt isn't blank.
+  if (-not $global:_ompInitialized) {
+    $null = & $global:Prompts.OhMyPosh
+  }
 } else {
   Write-Host "Preparing interactive session for first use..." -ForegroundColor Cyan
   Switch-Prompt -Prompt 'OldPrompt'
