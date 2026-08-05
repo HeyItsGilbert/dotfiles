@@ -38,7 +38,10 @@ foreach ($entry in @(
 }
 if ($global:Prompts) { $global:Prompts.Starship = $function:prompt }
 if (Get-Command oh-my-posh -ErrorAction SilentlyContinue) {
-    oh-my-posh init pwsh --config ([IO.Path]::Combine($ConfigHome, 'oh-my-posh', 'config.omp.json')) | Invoke-Expression
+  # --print emits the full module (sync). Default init installs an async
+  # trampoline whose first prompt() call returns nothing — blank first line.
+  $ompInit = oh-my-posh init pwsh --print --config ([IO.Path]::Combine($ConfigHome, 'oh-my-posh', 'config.omp.json')) | Out-String
+  Invoke-Expression $ompInit
 }
 
 if (Get-Command gsudo -ErrorAction SilentlyContinue) {

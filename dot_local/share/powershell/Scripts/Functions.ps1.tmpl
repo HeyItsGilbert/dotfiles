@@ -178,7 +178,11 @@ function Switch-Prompt {
   )
   if ($global:profile_initialized -ne $true) {
     $global:profile_initialized = $true
-    Initialize-Profile
+    try {
+      Initialize-Profile
+    } catch {
+      Write-Warning "Initialize-Profile failed: $_"
+    }
   }
   $current = $global:Prompts.Current
   if ([string]::IsNullOrEmpty($Prompt)) {
@@ -203,6 +207,13 @@ function Switch-Prompt {
   Write-Host "Switching prompt from '$($current)' to '$Prompt'"
   $global:Prompts.Current = $Prompt
   $function:prompt = $global:Prompts.$Prompt
+
+  # oh-my-posh 30+ async trampoline returns nothing on first prompt() while the
+  # module loads. Force that init before shell integration wraps the prompt.
+  if ($Prompt -eq 'OhMyPosh' -and -not $global:_ompInitialized -and $global:Prompts.OhMyPosh) {
+    $null = & $global:Prompts.OhMyPosh
+  }
+
   # Add the shell integration
   if (-not $NoShellIntegration) {
     Set-ShellIntegration -TerminalProgram $global:term_app -NoOriginalReset
