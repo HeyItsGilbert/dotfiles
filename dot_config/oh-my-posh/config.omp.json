@@ -1,5 +1,142 @@
 {
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 4,
+  "enable_cursor_positioning": true,
+  "shell_integration": true,
+  "pwd": "osc7",
+  "async": true,
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "session",
+          "style": "powerline",
+          "foreground": "p:bright-white",
+          "background": "p:purple",
+          "template": "{{ if .Root }} \u26a1{{ end }}{{ if .SSHSession }}\ueba9 {{ end }}{{ .UserName }}@{{ .HostName }} ",
+          "leading_powerline_symbol": "\ue0b6"
+        },
+        {
+          "type": "path",
+          "style": "powerline",
+          "foreground": "p:bright-white",
+          "background": "p:green",
+          "template": " {{ path .Path .Location }}{{ if not .Writable }} \uf023{{ end }} ",
+          "powerline_symbol": "\ue0b0",
+          "interactive": true,
+          "options": {
+            "style": "agnoster_short",
+            "max_depth": 3
+          }
+        },
+        {
+          "type": "git",
+          "style": "powerline",
+          "foreground": "p:bright-white",
+          "background": "p:bright-black",
+          "template": " {{ .HEAD }}{{ if or .Working.Changed .Staging.Changed }} <#cecdc3>{{ .Working.String }}{{ .Staging.String }}</>{{ end }} ",
+          "powerline_symbol": "\ue0b0",
+          "interactive": true,
+          "options": {
+            "fetch_status": true
+          },
+          "cache": {
+            "duration": "2s",
+            "strategy": "session"
+          }
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "right",
+      "segments": [
+        {
+          "type": "executiontime",
+          "alias": "ExecutionTime",
+          "style": "plain",
+          "foreground": "p:bright-white",
+          "background": "transparent",
+          "template": "{{ .FormattedMs }} ",
+          "options": {
+            "threshold": 2000,
+            "style": "austin",
+            "always_enabled": false
+          }
+        },
+        {
+          "type": "time",
+          "style": "plain",
+          "foreground": "p:bright-white",
+          "background": "transparent",
+          "template": "{{ .CurrentDate | date \"15:04:05\" }} "
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "type": "vimode",
+          "style": "plain",
+          "foreground": "p:bright-green",
+          "background": "transparent",
+          "template": "{{ if ne .Mode \"insert\"}}\uf044{{ end }} ",
+          "powerline_symbol": "\ue0b0"
+        },
+        {
+          "type": "shell",
+          "style": "plain",
+          "foreground": "p:bright-cyan",
+          "background": "transparent",
+          "template": "{{ .Name }} ",
+          "options": {
+            "mapped_shell_names": {
+              "pwsh": "\uebc7",
+              "powershell": "\ue683",
+              "bash": "\uebca",
+              "zsh": "%_",
+              "cmd": "\uebc4",
+              "unknown": "\ue691"
+            }
+          }
+        },
+        {
+          "type": "status",
+          "style": "plain",
+          "foreground": "p:bright-green",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}p:bright-red{{ end }}"
+          ],
+          "background": "transparent",
+          "template": "\u276f ",
+          "options": {
+            "always_enabled": true
+          }
+        }
+      ]
+    }
+  ],
+  "transient_prompt": {
+    "background": "transparent",
+    "foreground": "p:purple",
+    "template": "{{ if .Segments.ExecutionTime }}{{ .Segments.ExecutionTime.FormattedMs  }}{{ end }} [{{ now | date \"15:04:05\" }}] \u276f "
+  },
+  "valid_line": {
+    "template": "> "
+  },
+  "error_line": {
+    "template": "> ",
+    "foreground": "#ff0000"
+  },
+  "debug_prompt": {
+    "template": "> "
+  },
   "palette": {
     "black": "#100f0f",
     "red": "#af3029",
@@ -17,112 +154,5 @@
     "bright-purple": "#8b7ec8",
     "bright-cyan": "#3aa99f",
     "bright-white": "#fffcf0"
-  },
-  "transient_prompt": {
-    "background": "transparent",
-    "foreground": "p:purple",
-    "template": "❯ "
-  },
-  "blocks": [
-    {
-      "type": "prompt",
-      "alignment": "left",
-      "segments": [
-        {
-          "type": "session",
-          "style": "powerline",
-          "leading_powerline_symbol": "",
-          "trailing_powerline_symbol": "",
-          "background": "p:purple",
-          "foreground": "p:bright-white",
-          "template": "{{ if .Root }} ⚡{{ end }}{{ if .SSHSession }}\ueba9 {{ end }}{{ .UserName }}@{{ .HostName }} "
-        },
-        {
-          "type": "path",
-          "style": "powerline",
-          "powerline_symbol": "",
-          "background": "p:green",
-          "foreground": "p:bright-white",
-          "options": {
-            "style": "agnoster_short",
-            "max_depth": 3
-          },
-          "template": " {{ .Path }}{{ if not .Writable }} {{ end }} "
-        },
-        {
-          "type": "git",
-          "style": "powerline",
-          "powerline_symbol": "",
-          "background": "p:bright-black",
-          "foreground": "p:bright-white",
-          "options": {
-            "fetch_status": true
-          },
-          "template": " {{ .HEAD }}{{ if or .Working.Changed .Staging.Changed }} <#cecdc3>{{ .Working.String }}{{ .Staging.String }}</>{{ end }} "
-        }
-      ]
-    },
-    {
-      "type": "prompt",
-      "alignment": "right",
-      "segments": [
-        {
-          "type": "executiontime",
-          "style": "plain",
-          "background": "transparent",
-          "foreground": "p:bright-white",
-          "options": {
-            "threshold": 2000,
-            "style": "austin",
-            "always_enabled": false
-          },
-          "template": "{{ .FormattedMs }} "
-        },
-        {
-          "type": "time",
-          "style": "plain",
-          "background": "transparent",
-          "foreground": "p:bright-white",
-          "template": "{{ .CurrentDate | date \"15:04:05\" }} "
-        }
-      ]
-    },
-    {
-      "type": "prompt",
-      "alignment": "left",
-      "newline": true,
-      "segments": [
-        {
-          "type": "shell",
-          "style": "plain",
-          "background": "transparent",
-          "foreground": "p:bright-cyan",
-          "options": {
-            "mapped_shell_names": {
-              "pwsh": "",
-              "powershell": "",
-              "bash": "",
-              "zsh": "%_",
-              "cmd": "",
-              "unknown": ""
-            }
-          },
-          "template": "{{ .Name }} "
-        },
-        {
-          "type": "status",
-          "style": "plain",
-          "background": "transparent",
-          "foreground": "p:bright-green",
-          "foreground_templates": [
-            "{{ if gt .Code 0 }}p:bright-red{{ end }}"
-          ],
-          "template": "❯ ",
-          "options": {
-            "always_enabled": true
-          }
-        }
-      ]
-    }
-  ]
+  }
 }

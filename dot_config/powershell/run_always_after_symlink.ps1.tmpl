@@ -1,6 +1,10 @@
 #!/usr/bin/env pwsh
+$ErrorActionPreference = 'Continue'
 $ErrorView = 'DetailedView'
-# This could resolve to a linux directory
+
+# PowerShell profiles live under Documents (often OneDrive). Chezmoi manages the
+# XDG copies under ~/.config/powershell; this script mirrors them into the paths
+# $PROFILE actually loads.
 $Dest = $HOME
 if ($Env:OneDriveCommercial) {
   $Dest = $Env:OneDriveCommercial
@@ -8,45 +12,55 @@ if ($Env:OneDriveCommercial) {
 if ($Env:OneDrive) {
   $Dest = $env:OneDrive
 }
+$Dest = Join-Path $Dest 'Documents'
 
-$Dest += '\Documents'
+$ConfigHome = if ($ENV:XDG_CONFIG_HOME) {
+  $ENV:XDG_CONFIG_HOME
+} else {
+  [IO.Path]::Combine($HOME, '.config')
+}
+$SrcDir = Join-Path $ConfigHome 'powershell'
 
 $FilesToCopy = @{
   'profile.ps1' = @(
-    "$Dest\PowerShell\Microsoft.dotnet-interactive_profile.ps1",
+    (Join-Path $Dest 'PowerShell\Microsoft.dotnet-interactive_profile.ps1')
     $Profile.CurrentUserAllHosts
   )
   'powershell.config.json' = @(
-    "$Dest\PowerShell\powershell.config.json"
+    (Join-Path $Dest 'PowerShell\powershell.config.json')
   )
   'GitTools.ps1' = @()
   'ShellIntegration.ps1' = @()
   'Microsoft.VSCode_profile.ps1' = @()
 }
 
-# If this is windows, append WindowsPowerShell options
 if (-not $IsLinux) {
-  @('profile.ps1', 'GitTools.ps1', 'ShellIntegration.ps1', 'Microsoft.VSCode_profile.ps1') | ForEach-Object {
-    $FilesToCopy.$_ += "$Dest\WindowsPowerShell\$_"
-    $FilesToCopy.$_ += "$Dest\PowerShell\$_"
+  foreach ($name in @('profile.ps1', 'GitTools.ps1', 'ShellIntegration.ps1', 'Microsoft.VSCode_profile.ps1')) {
+    $FilesToCopy[$name] += @(
+      (Join-Path $Dest "WindowsPowerShell\$name")
+      (Join-Path $Dest "PowerShell\$name")
+    )
   }
 }
 
-$ConfigHome = if ($ENV:XDG_CONFIG_HOME) {
-  $ENV:XDG_CONFIG_HOME
-} else {
-  [IO.Path]::Combine($HOME, ".config")
-}
+foreach ($name in @($FilesToCopy.Keys)) {
+  $src = Join-Path $SrcDir $name
+  if (-not (Test-Path -LiteralPath $src)) {
+    Write-Warning "Skipping missing source: $src"
+    continue
+  }
 
-# Now we copy to all the destinations.
-$FilesToCopy.Keys | ForEach-Object {
-  foreach ($dest in $FilesToCopy.Item($_)) {
-
-    $src = Join-Path $ConfigHome 'powershell' $_
-    $parent = Split-Path $dest
-    if (-not (Test-Path $parent)) {
-      New-Item -ItemType Directory $parent -Force | Select-Object -Property FullName
+  foreach ($dest in $FilesToCopy[$name]) {
+    if ([string]::IsNullOrWhiteSpace($dest)) { continue }
+    $parent = Split-Path -Parent $dest
+    if (-not (Test-Path -LiteralPath $parent)) {
+      New-Item -ItemType Directory -Path $parent -Force | Out-Null
     }
-    Copy-Item $src $dest
+    try {
+      Copy-Item -LiteralPath $src -Destination $dest -Force
+      Write-Host "Copied $name -> $dest"
+    } catch {
+      Write-Warning "Failed copying $src -> $dest : $_"
+    }
   }
 }

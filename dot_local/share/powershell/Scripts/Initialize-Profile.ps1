@@ -43,11 +43,6 @@ function Initialize-Profile {
 
   # Setup PSReadLineOption Splat
   $psOption = @{}
-  if ([enum]::GetValues('Microsoft.PowerShell.PredictionSource') -contains 'HistoryAndPlugin') {
-    $psOption['PredictionSource'] = 'HistoryAndPlugin'
-  } else {
-    $psOption['PredictionSource'] = 'History'
-  }
   $psOption['PredictionViewStyle'] = 'InlineView'
   $psOption['ShowToolTips'] = $false
   ## Colors
@@ -64,6 +59,17 @@ function Initialize-Profile {
   ## VI Edit Mode
   $psOption['EditMode'] = 'Vi'
   Set-PSReadLineOption @psOption
+
+  # Prediction needs VT support; skip rather than abort profile init.
+  try {
+    if ([enum]::GetValues('Microsoft.PowerShell.PredictionSource') -contains 'HistoryAndPlugin') {
+      Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+    } else {
+      Set-PSReadLineOption -PredictionSource History
+    }
+  } catch {
+    Write-Verbose "PSReadLine predictions unavailable: $_"
+  }
 
   ## Tab completion
   $keymap = @{
