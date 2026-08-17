@@ -77,38 +77,6 @@ function Get-MessageOfTheDay {
   $output = [System.Text.StringBuilder]::new()
   $dash = "." * $Host.UI.RawUI.WindowSize.Width
 
-  # https://asciiart.website/art/6234
-  $crimsonGhost = @'
-     +**@@@@#+========*##*==
-  :@@@@@@@@@@@@@@@@@@@@@@@@@@@=.
- .@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-.@@@@.....@@@@@@@@@@@@@.   ..+@@@:
-.@-        :#@@@@@@@#:        .=@:
-             -@@@@@*    ::++
-     %,,%%    #@@@@@.   **+. :@@@@
- -@          @@@@@@@@%.      @@@@@
- @@@         @@@@@@@@@@=    @@@@@@.
--@@@@%%- -#%@@@@@*:@@@@@@@@@@@@@@@=
-=@@@@@@@@@@@@@@:    *@@@@@@@@@@@@@*
-*@@@@@@@@@@@@@:      %@@@@@@@@@@@@+
-#@@@@@@@@@@@@@       =@@@@@@@@@#
-      :@@@@@@#  ;; .#@@@@@@@@-
-       @@@@@@@%@@@@@@@@@@@@@@
-      --%@@@@@@@@@@@@@@@@@@@  +#'
-     @= :=+@@@@@@@@@@@@@#====+@-
-     *%@*    ---:::.. -:*-%@*.   *
-    #%#.    @@-=@%#@#@@%%%=::*:  %
-    *::@     # :*         .@:   :@
-     @*  :.#@@@@@# %*      . :-@@.
-     *@**    .=#. .     - :. @@@-
-     :@@@@@@%@==++=++@=@@#@@@@%
-      .@@@@@@@@@@@@@@@@@@@@@@@=
-        @@@@@@@@@@@@@@@@@@@@@
-         @@@@@@@@@@@@@@@@@@@.
-          :-@@@@@@@@@@@@@-:
-             =+***@@@*=:
-'@
-  [void]$output.AppendLine($crimsonGhost)
   [void]$output.AppendLine($dash)
   [void]$output.AppendLine("- Hostname: $(hostname)")
   [void]$output.AppendLine("- User: $(whoami)")
@@ -256,15 +224,15 @@ function omp-dev {
   if ($script:omp_dev_folder) {
     $repo = $script:omp_dev_folder
   } else {
-    # Test for the oh-my-pi repo in the default location, derived from the
-    # chezmoi OSS git dir ({{ .git_oss }}).
-    $defaultRepo = Join-Path '{{ .git_oss }}' 'oh-my-pi/packages/coding-agent'
+    # Default: <oss>/oh-my-pi (repo root). Older defaults pointed at
+    # packages\coding-agent and then joined that segment again, which never resolved.
+    $defaultRepo = Join-Path {{ .git_oss }} 'oh-my-pi'
     $localFile = Join-Path $PSScriptRoot 'omp-path.txt'
     if (Test-Path $defaultRepo) {
       $repo = $defaultRepo
     } else {
       if (Test-Path $localFile) {
-        $repo = Get-Content -Path $localFile
+        $repo = (Get-Content -Path $localFile -Raw).Trim()
       } else {
         # Prompt the user for the path to the oh-my-pi repo
         $repo = Read-Host "Enter the path to your oh-my-pi repo"
@@ -277,8 +245,11 @@ function omp-dev {
       }
     }
   }
-  $cli = Join-Path $repo 'src\cli.ts'
-  $preload = Join-Path $repo 'scripts\omp.ts'
+  # Run the local oh-my-pi dev build from any repo.
+  # Edit $repo if your checkout moves.
+  $pkgPath = Join-Path $repo 'packages\coding-agent'
+  $cli = Join-Path $pkgPath 'src\cli.ts'
+  $preload = Join-Path $pkgPath 'scripts\omp.ts'
 
   if (-not (Test-Path $cli)) {
     Write-Error "omp-dev: CLI not found at $cli (fix `$repo)"; return
@@ -289,14 +260,66 @@ function omp-dev {
   $launch = Join-Path $HOME '.omp\.dev-cwd'
   New-Item -ItemType Directory -Force -Path $launch | Out-Null
 
+  # Herdr panes sometimes inherit a PATH snapshot that predates the Herdr
+  # install. Ensure the CLI is reachable for the agent and any child tools.
+  $herdrBin = Join-Path $env:LOCALAPPDATA 'Programs\Herdr\bin'
+  if ((Test-Path -LiteralPath (Join-Path $herdrBin 'herdr.exe')) -and
+    -not (($env:PATH -split ';') -contains $herdrBin)) {
+    $env:PATH = "$herdrBin;$env:PATH"
+  }
+
+  # Herdr identifies agents by the foreground process image name. On macOS the
+  # official scripts/omp launcher uses `exec -a omp`; Windows has no argv0
+  # rename, so run through a hardlink named omp.exe when inside Herdr.
+  $bunCmd = Get-Command bun -ErrorAction SilentlyContinue
+  if (-not $bunCmd) {
+    Write-Error 'omp-dev: bun not found on PATH'; return
+  }
+  $bunPath = $bunCmd.Source
+  $runner = $bunPath
+  if ($env:HERDR_ENV -eq '1') {
+    $shimDir = Join-Path $HOME '.omp\dev-shims'
+    $ompHost = Join-Path $shimDir 'omp.exe'
+    New-Item -ItemType Directory -Force -Path $shimDir | Out-Null
+    $needLink = $true
+    if (Test-Path -LiteralPath $ompHost) {
+      try {
+        $hostItem = Get-Item -LiteralPath $ompHost
+        $bunItem = Get-Item -LiteralPath $bunPath
+        # Same file (hardlink) → reuse; otherwise refresh.
+        if ($hostItem.LinkType -eq 'HardLink' -or $hostItem.Length -eq $bunItem.Length) {
+          # Cheap freshness check: if bun.exe is newer, relink.
+          if ($hostItem.LastWriteTime -ge $bunItem.LastWriteTime -or
+            (Get-FileHash -LiteralPath $ompHost -Algorithm SHA256).Hash -eq
+            (Get-FileHash -LiteralPath $bunPath -Algorithm SHA256).Hash) {
+            $needLink = $false
+          }
+        }
+      } catch {
+        $needLink = $true
+      }
+    }
+    if ($needLink) {
+      Remove-Item -LiteralPath $ompHost -Force -ErrorAction SilentlyContinue
+      try {
+        New-Item -ItemType HardLink -Path $ompHost -Target $bunPath -Force | Out-Null
+      } catch {
+        Copy-Item -LiteralPath $bunPath -Destination $ompHost -Force
+      }
+    }
+    if (Test-Path -LiteralPath $ompHost) {
+      $runner = $ompHost
+    }
+  }
+
   $env:OMP_LAUNCH_CWD = $PWD.Path
   Push-Location $launch
   try {
     if ($env:PI_TIMING) {
-      $timing = Join-Path $repo '..\utils\src\module-timer.ts'
-      & bun --preload $preload --preload $timing $cli @args
+      $timing = Join-Path $pkgPath '..\utils\src\module-timer.ts'
+      & $runner --preload $preload --preload $timing $cli @args
     } else {
-      & bun --preload $preload $cli @args
+      & $runner --preload $preload $cli @args
     }
   } finally {
     Pop-Location
