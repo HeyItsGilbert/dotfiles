@@ -30,11 +30,16 @@ function global:Invoke-CachedCompletion {
 foreach ($entry in @(
     @{ Tool = 'chezmoi';  Native = $true;  Arguments = @('completion', 'powershell') },
     @{ Tool = 'gh';       Native = $true;  Arguments = @('completion', '-s', 'powershell') },
-    @{ Tool = 'fnm';      Native = $false; Arguments = @('env', '--use-on-cd', '--shell', 'powershell') },
     @{ Tool = 'starship'; Native = $false; Arguments = @('init', 'powershell', '--print-full-init') }
 )) {
     $cacheFile = Invoke-CachedCompletion @entry
     if ($cacheFile) { . $cacheFile }
+}
+# fnm env emits a full $env:PATH = "..." snapshot. Caching that freezes whatever
+# PATH existed when the cache was first built and wipes later user entries
+# (cargo, etc.) on every interactive shell.
+if (Get-Command fnm -ErrorAction SilentlyContinue) {
+    Invoke-Expression (& fnm env --use-on-cd --shell powershell | Out-String)
 }
 if ($global:Prompts) { $global:Prompts.Starship = $function:prompt }
 if (Get-Command oh-my-posh -ErrorAction SilentlyContinue) {
