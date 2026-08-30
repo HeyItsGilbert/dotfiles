@@ -5,6 +5,7 @@
   "shell_integration": true,
   "pwd": "osc7",
   "async": true,
+  "console_title_template": "{{ .Shell }} in {{ .Folder }}",
   "blocks": [
     {
       "type": "prompt",
