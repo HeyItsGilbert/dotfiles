@@ -88,17 +88,14 @@ wezterm.on("user-var-changed", function(window, pane, name, value)
 	wezterm.log_info("var", name, value)
 end)
 
-config.ssh_domains = {
-	{
-		name = "nuc",
-		remote_address = "192.168.1.6",
-		username = "gilbert",
-	},
-	{
-		name = "docker",
-		remote_address = "docker.lan",
-		username = "root",
-	},
-}
+config.ssh_domains = {}
+
+for host, host_config in pairs(wezterm.enumerate_ssh_hosts()) do
+	table.insert(config.ssh_domains, {
+		name = host,
+		remote_address = host,
+		username = host_config.user,
+	})
+end
 
 return config
