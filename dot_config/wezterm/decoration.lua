@@ -67,9 +67,6 @@ function M.setup(config, isWindows11)
 		-- config.window_background_opacity = 0.5
 		-- config.win32_system_backdrop = "Acrylic"
 		config.win32_acrylic_accent_color = "rgb(94, 64, 157)"
-		config.webgpu_power_preference = "HighPerformance"
-		config.front_end = "OpenGL"
-		config.prefer_egl = true
 		config.window_padding = {
 			left = 5,
 			right = 5,
@@ -104,43 +101,6 @@ function M.setup(config, isWindows11)
 		saturation = 0.5, -- e.g., 0.5 for less colorful, 1.0 for normal
 		brightness = 0.7, -- e.g., 0.7 for dimmer, 1.0 for normal
 	}
-	config.background = {
-		{
-			source = { Color = "#100F0F" },
-			width = "100%",
-			height = "100%",
-			opacity = 0.5,
-		},
-		{
-			source = { File = wezterm.home_dir .. "\\.config\\wezterm\\backgrounds\\heyitsgilbert_logo.png" },
-			repeat_x = "NoRepeat",
-			repeat_y = "NoRepeat",
-			vertical_align = "Bottom",
-			horizontal_align = "Right",
-			horizontal_offset = "-10cell",
-			vertical_offset = "-2cell",
-			opacity = 0.5,
-			width = 249,
-			height = 249,
-		},
-	}
-
-	--- This was to change the background to a funny photo.
-	--- wezterm.on("user-var-changed", function(window, pane, name, value)
-	--- 	wezterm.log_info("var", name, value)
-	--- 	local overrides = window:get_config_overrides() or {}
-	--- 	if
-	--- 		overrides.background ~= nil
-	--- 		and overrides.background[1] ~= nil
-	--- 		and name == "LastCommand"
-	--- 		and value == "Error"
-	--- 	then
-	--- 		overrides.background[1].source = { File = "C:/Users/me/OneDrive/Pictures/goodenough.png" }
-	--- 	else
-	--- 		overrides.background[1].source = { File = "C:/Users/me/OneDrive/Pictures/heyitsgilbert logo.png" }
-	--- 	end
-	--- 	window:set_config_overrides(overrides)
-	--- end)
 
 	wezterm.on("update-right-status", function(window, pane)
 		-- Each element holds the text for a cell in a "powerline" style << fade

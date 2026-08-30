@@ -1,33 +1,31 @@
 local wezterm = require("wezterm")
-local bg = require("background")
 local act = wezterm.action
 local M = {}
 
-wezterm.on("toggle-colorscheme", function(window, pane)
-	local overrides = window:get_config_overrides() or {}
-	if overrides.color_scheme == "Flexoki Dark" then
-		overrides.color_scheme = "Adventure Time (Gogh)"
-	else
-		overrides.color_scheme = "Flexoki Dark"
+-- Wrap event handlers so a Lua-side error can never unwind across the
+-- Win32 callback boundary (that produces STATUS_FATAL_USER_CALLBACK_EXCEPTION
+-- / access violation crashes on Windows instead of a caught error).
+local function safe_handler(name, fn)
+	return function(window, pane)
+		local ok, err = pcall(fn, window, pane)
+		if not ok then
+			wezterm.log_error("Handler '" .. name .. "' failed: " .. tostring(err))
+		end
 	end
-	window:set_config_overrides(overrides)
-end)
+end
 
-wezterm.on("toggle-opacity", function(window, pane)
-	wezterm.log_info("Toggling opacity")
-	bg.swapBgOpacity(window, pane)
-	wezterm.log_info("Opacity toggled")
-end)
-
-wezterm.on("toggle-background", function(window, pane)
-	wezterm.log_info("Toggling background")
-	bg.swapBgImage(window, pane)
-	wezterm.log_info("Background toggled")
-end)
-
-wezterm.on("reset-background", function(window, pane)
-	bg.resetBackground(window, pane)
-end)
+wezterm.on(
+	"toggle-colorscheme",
+	safe_handler("toggle-colorscheme", function(window, pane)
+		local overrides = window:get_config_overrides() or {}
+		if overrides.color_scheme == "Flexoki Dark" then
+			overrides.color_scheme = "Adventure Time (Gogh)"
+		else
+			overrides.color_scheme = "Flexoki Dark"
+		end
+		window:set_config_overrides(overrides)
+	end)
+)
 
 function M.setup(config)
 	--- Disable defaul keys and set some minimum ones for now.
@@ -207,19 +205,6 @@ function M.setup(config)
 		{ key = "F11", mods = "NONE", action = act.ToggleFullScreen },
 		{ key = "Copy", mods = "NONE", action = act.CopyTo("Clipboard") },
 		{ key = "Paste", mods = "NONE", action = act.PasteFrom("Clipboard") },
-		{
-			key = "o",
-			mods = "CTRL|SHIFT",
-			-- mods = "CTRL|ALT|SHIFT",
-			-- toggling opacity
-			action = wezterm.action.EmitEvent("toggle-background"),
-		},
-		{
-			key = "o",
-			mods = "CTRL|ALT|SHIFT",
-			-- toggling opacity
-			action = wezterm.action.EmitEvent("toggle-opacity"),
-		},
 		-- Open the current working directory in VS Code
 		{
 			key = "o",
