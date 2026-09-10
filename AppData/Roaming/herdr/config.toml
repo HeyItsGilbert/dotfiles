@@ -1,0 +1,26 @@
+onboarding = false
+[terminal]
+default_shell = "pwsh"
+
+[ui]
+window_title = " {hostname}: {workspace}"
+show_agent_labels_on_pane_borders = true
+
+status_indicators = "symbols"
+agent_panel_sort = "priority"
+
+[ui.sidebar.agents]
+row_gap = 0
+rows = [
+  ["state_icon", "terminal_title_stripped"],
+  ["workspace", "tab"],
+]
+[ui.toast]
+delivery = "herdr"
+
+[ui.sound]
+enabled = true
+
+[theme]
+name = "vesper"
+auto_switch = false
