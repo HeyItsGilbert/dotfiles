@@ -10,4 +10,7 @@ install.ps1
 .zlogin
 .zprofile
 .zshrc
+.config/herdr/config.toml
+{{- else }}
+AppData/Roaming/herdr/config.toml
 {{- end }}
