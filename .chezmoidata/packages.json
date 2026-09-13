@@ -1,7 +1,6 @@
 {
   "packages": {
     "chocolatey": [
-      "1password-cli",
       "chezmoi",
       "espanso",
       "gh",
