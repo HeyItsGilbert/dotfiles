@@ -1,0 +1,52 @@
+# Flexoki Purple for tuicr.
+# Palette source: https://stephango.com/flexoki
+# Purple is the primary UI accent; all values use the official Flexoki Dark palette.
+panel_bg = "#100F0F"
+bg_highlight = "#1C1B1A"
+fg_primary = "#CECDC3"
+fg_secondary = "#878580"
+fg_dim = "#575653"
+
+diff_add = "#879A39"
+diff_add_bg = "#252D09"
+diff_del = "#D14D41"
+diff_del_bg = "#3E1715"
+diff_context = "#CECDC3"
+diff_hunk_header = "#8B7EC8"
+expanded_context_fg = "#575653"
+
+syntax_add_bg = "#252D09"
+syntax_del_bg = "#3E1715"
+
+file_added = "#879A39"
+file_modified = "#D0A215"
+file_deleted = "#D14D41"
+file_renamed = "#8B7EC8"
+
+reviewed = "#879A39"
+pending = "#D0A215"
+
+comment_note = "#4385BE"
+comment_suggestion = "#3AA99F"
+comment_issue = "#D14D41"
+comment_praise = "#879A39"
+
+border_focused = "#8B7EC8"
+border_unfocused = "#343331"
+status_bar_bg = "#1C1B1A"
+cursor_color = "#8B7EC8"
+cursor_line_bg = "#282726"
+branch_name = "#8B7EC8"
+help_indicator = "#878580"
+
+message_info_fg = "#100F0F"
+message_info_bg = "#8B7EC8"
+message_warning_fg = "#100F0F"
+message_warning_bg = "#D0A215"
+message_error_fg = "#100F0F"
+message_error_bg = "#D14D41"
+update_badge_fg = "#100F0F"
+update_badge_bg = "#D0A215"
+
+mode_fg = "#100F0F"
+mode_bg = "#8B7EC8"

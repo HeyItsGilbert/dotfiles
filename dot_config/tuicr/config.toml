@@ -1,0 +1,10 @@
+# Common review comment categories. The configured order is the Tab cycle order.
+theme = "flexoki-purple"
+
+comment_types = [
+  { id = "question", label = "QUESTION", definition = "ask for clarification", color = "#4385BE" },
+  { id = "suggestion", label = "SUGGESTION", definition = "possible improvement", color = "#3AA99F" },
+  { id = "issue", label = "ISSUE", definition = "problem to fix", color = "#D14D41" },
+  { id = "praise", label = "PRAISE", definition = "positive feedback", color = "#879A39" },
+  { id = "nit", label = "NIT", definition = "small optional tweak", color = "#8B7EC8" },
+]
