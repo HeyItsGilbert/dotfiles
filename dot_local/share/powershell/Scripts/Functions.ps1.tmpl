@@ -35,8 +35,12 @@ function ocgv_history {
 }
 
 function Test-Administrator {
+  if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) {
+    return $false
+  }
+
   $CurrentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
-  $AdministratorRole = [Security.Principal.WindowsBuiltInRole] "Administrator"
+  $AdministratorRole = [Security.Principal.WindowsBuiltInRole] 'Administrator'
   ([Security.Principal.WindowsPrincipal]$CurrentUser).IsInRole($AdministratorRole)
 }
 
@@ -214,8 +218,9 @@ function Switch-Prompt {
     $null = & $global:Prompts.OhMyPosh
   }
 
-  # Add the shell integration
-  if (-not $NoShellIntegration) {
+  # Shell integration emits terminal-specific escape sequences. Only configure
+  # it when the detected terminal has a supported protocol.
+  if (-not $NoShellIntegration -and $global:term_app -in @('WindowsTerminal', 'ITerm2', 'WezTerm', 'vscode')) {
     Set-ShellIntegration -TerminalProgram $global:term_app -NoOriginalReset
   }
 }
