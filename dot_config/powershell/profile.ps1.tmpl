@@ -18,37 +18,39 @@ $ConfigHome = if ($ENV:XDG_CONFIG_HOME) {
   [IO.Path]::Combine($HOME, ".config")
 }
 
-# Process PATH is inherited from the parent (explorer/wezterm/etc). Those parents
-# often keep a pre-install snapshot, so user entries like ~/.cargo/bin are missing
-# until refreshenv. Rebuild from Machine+User registry and keep process-only extras
-# (pyenv, fnm multishell, transient shims).
-$machinePath = [Environment]::GetEnvironmentVariable('Path', 'Machine')
-$userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
-if ($machinePath -or $userPath) {
-  $sep = [IO.Path]::PathSeparator
-  $registryParts = @(
-    @($machinePath, $userPath) |
-      Where-Object { $_ } |
-      ForEach-Object { $_ -split [regex]::Escape($sep) } |
-      Where-Object { $_ }
-  )
-  $registryLookup = @{}
-  foreach ($part in $registryParts) {
-    $registryLookup[$part.ToLowerInvariant()] = $true
-  }
-  $processOnly = @(
-    $env:Path -split [regex]::Escape($sep) |
-      Where-Object { $_ -and -not $registryLookup.ContainsKey($_.ToLowerInvariant()) }
-  )
-  $seen = @{}
-  $merged = foreach ($part in ($registryParts + $processOnly)) {
-    $key = $part.ToLowerInvariant()
-    if (-not $seen.ContainsKey($key)) {
-      $seen[$key] = $true
-      $part
+# Process PATH is inherited from the parent (explorer/wezterm/etc). On Windows,
+# those parents often keep a pre-install snapshot, so user entries like
+# ~/.cargo/bin are missing until refreshenv. Rebuild from Machine+User registry
+# and keep process-only extras (pyenv, fnm multishell, transient shims).
+if ([Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT) {
+  $machinePath = [Environment]::GetEnvironmentVariable('Path', 'Machine')
+  $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+  if ($machinePath -or $userPath) {
+    $sep = [IO.Path]::PathSeparator
+    $registryParts = @(
+      @($machinePath, $userPath) |
+        Where-Object { $_ } |
+        ForEach-Object { $_ -split [regex]::Escape($sep) } |
+        Where-Object { $_ }
+    )
+    $registryLookup = @{}
+    foreach ($part in $registryParts) {
+      $registryLookup[$part.ToLowerInvariant()] = $true
     }
+    $processOnly = @(
+      $env:Path -split [regex]::Escape($sep) |
+        Where-Object { $_ -and -not $registryLookup.ContainsKey($_.ToLowerInvariant()) }
+    )
+    $seen = @{}
+    $merged = foreach ($part in ($registryParts + $processOnly)) {
+      $key = $part.ToLowerInvariant()
+      if (-not $seen.ContainsKey($key)) {
+        $seen[$key] = $true
+        $part
+      }
+    }
+    $env:Path = $merged -join $sep
   }
-  $env:Path = $merged -join $sep
 }
 
 # Prefer local module path; drop OneDrive Documents redirection (slow completion)
@@ -118,7 +120,7 @@ if ($null -ne $env:WT_SESSION) {
   }
 }
 
-if (Test-Administrator) {
+if ([Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT -and (Test-Administrator)) {
   $Env:ISELEVATEDSESSION = $true
 }
 
@@ -136,4 +138,10 @@ if (Get-Command 'oh-my-posh' -ErrorAction SilentlyContinue) {
   Switch-Prompt -Prompt 'OldPrompt'
 }
 
-if (Get-Command Get-MOTD -ErrorAction SilentlyContinue) { Get-MOTD }
+if ([Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT -and (Get-Command Get-MOTD -ErrorAction SilentlyContinue)) { Get-MOTD }
+
+# Load Cargo's environment when it is installed on this machine.
+$cargoEnvironment = Join-Path $HOME '.cargo/env.ps1'
+if (Test-Path $cargoEnvironment -PathType Leaf) {
+  . $cargoEnvironment
+}
