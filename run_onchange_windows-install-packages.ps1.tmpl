@@ -69,14 +69,17 @@ if (Get-Command npm -ErrorAction SilentlyContinue) {
   $installedNpmNames = $installedNpm.dependencies.PSObject.Properties.Name
 
   foreach ($pkg in $desiredNpmPackages) {
+    if ([string]::IsNullOrWhiteSpace([string]$pkg)) {
+      Write-Warning 'Ignoring an empty npm package name.'
+      continue
+    }
     if ($installedNpmNames -notcontains $pkg) {
       Write-Host "Installing npm package: $pkg" -ForegroundColor Cyan
-      npm install -g $pkg
+      npm install -g -- $pkg
     }
+    Write-Host "Updating npm global package: $pkg" -ForegroundColor Cyan
+    npm update -g -- $pkg
   }
-
-  Write-Host "Updating npm global packages..." -ForegroundColor Cyan
-  npm update -g $desiredNpmPackages
 } else {
   Write-Warning "npm not found; skipping npm global installs."
 }
@@ -107,18 +110,37 @@ $installModules = {
 {{.packages.ps_modules | toPrettyJson}}
 "@
   $modules = $json | ConvertFrom-Json
-  foreach ($property in $modules.PSObject.Properties) {
-    $saveSplat = @{
-      Name       = $property.Name
-      Path       = $ModulePath
-      Repository = 'PSGallery'
-      Force      = $true
+  $stagingPath = Join-Path ([IO.Path]::GetTempPath()) "chezmoi-modules-$([guid]::NewGuid())"
+
+  try {
+    New-Item -ItemType Directory -Path $stagingPath -Force | Out-Null
+    foreach ($property in $modules.PSObject.Properties) {
+      $saveSplat = @{
+        Name       = $property.Name
+        Path       = $stagingPath
+        Repository = 'PSGallery'
+        Force      = $true
+      }
+      if ($property.Value.Prerelease) {
+        $saveSplat['AllowPrerelease'] = $true
+      }
+      Write-Host "Saving module $($property.Name) to staging..." -ForegroundColor Cyan
+      Save-Module @saveSplat
     }
-    if ($property.Value.Prerelease) {
-      $saveSplat['AllowPrerelease'] = $true
+
+    foreach ($moduleDirectory in Get-ChildItem -LiteralPath $stagingPath -Directory) {
+      $moduleDestination = Join-Path $ModulePath $moduleDirectory.Name
+      New-Item -ItemType Directory -Path $moduleDestination -Force | Out-Null
+      foreach ($versionDirectory in Get-ChildItem -LiteralPath $moduleDirectory.FullName -Directory) {
+        $versionDestination = Join-Path $moduleDestination $versionDirectory.Name
+        if (Test-Path -LiteralPath $versionDestination) {
+          continue
+        }
+        Move-Item -LiteralPath $versionDirectory.FullName -Destination $moduleDestination
+      }
     }
-    Write-Host "Saving module $($property.Name)..." -ForegroundColor Cyan
-    Save-Module @saveSplat
+  } finally {
+    Remove-Item -LiteralPath $stagingPath -Recurse -Force -ErrorAction SilentlyContinue
   }
 }
 
