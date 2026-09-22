@@ -24,19 +24,22 @@ $SrcDir = Join-Path $ConfigHome 'powershell'
 $FilesToCopy = @{
   'profile.ps1' = @(
     (Join-Path $Dest 'PowerShell\Microsoft.dotnet-interactive_profile.ps1')
-    $Profile.CurrentUserAllHosts
   )
-  'powershell.config.json' = @(
-    (Join-Path $Dest 'PowerShell\powershell.config.json')
-  )
-  'GitTools.ps1' = @()
-  'ShellIntegration.ps1' = @()
-  'Microsoft.VSCode_profile.ps1' = @()
 }
 
+# On Unix PowerShell loads its profile and configuration directly from the XDG
+# directory Chezmoi manages. Only dotnet-interactive needs its Documents-hosted
+# compatibility profile. Windows hosts need the legacy Documents mirrors too.
 if (-not $IsLinux) {
-  foreach ($name in @('profile.ps1', 'GitTools.ps1', 'ShellIntegration.ps1', 'Microsoft.VSCode_profile.ps1')) {
-    $FilesToCopy[$name] += @(
+  $FilesToCopy['profile.ps1'] += @(
+    (Join-Path $Dest 'WindowsPowerShell\profile.ps1')
+    (Join-Path $Dest 'PowerShell\profile.ps1')
+  )
+  $FilesToCopy['powershell.config.json'] = @(
+    (Join-Path $Dest 'PowerShell\powershell.config.json')
+  )
+  foreach ($name in @('GitTools.ps1', 'ShellIntegration.ps1', 'Microsoft.VSCode_profile.ps1')) {
+    $FilesToCopy[$name] = @(
       (Join-Path $Dest "WindowsPowerShell\$name")
       (Join-Path $Dest "PowerShell\$name")
     )
