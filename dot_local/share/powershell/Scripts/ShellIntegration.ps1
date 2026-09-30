@@ -4,7 +4,7 @@
 function Set-ShellIntegration {
   param
   (
-    [ValidateSet('WindowsTerminal', 'ITerm2', 'WezTerm', 'vscode')]
+    [ValidateSet('WindowsTerminal', 'ITerm2', 'WezTerm', 'vscode', 'herdr')]
     [String]$TerminalProgram = $global:term_app,
     [switch]$NoOriginalReset
   )
@@ -65,7 +65,9 @@ function Set-ShellIntegration {
     switch ($global:shellIntegrationGlobals.terminalProgram) {
       'WindowsTerminal' { $setWorkingDirectory = "$([char]27)]9;9;`"$currentLocation`"$([char]7)" }
       'ITerm2' { $setWorkingDirectory = "$([char]27)]1337;CurrentDir=$currentLocation$([char]7)" }
-      'WezTerm' {
+      { $_ -in 'WezTerm', 'herdr' } {
+        # OSC 7 file URI. Herdr sets TERM_PROGRAM=herdr and tracks process cwd;
+        # it does not document a private sequence, so reuse WezTerm's OSC 7.
         $provider_path = $currentLocation.ProviderPath -replace "\\", "/"
         $setWorkingDirectory = "$([char]27)]7;file://${env:COMPUTERNAME}/${provider_path}$([char]27)\"
       }
