@@ -107,7 +107,7 @@
             "{{ if gt .Code 0 }}p:bright-red{{ end }}"
           ],
           "background": "transparent",
-          "template": "\u276f ",
+          "template": "{{ if eq .Env.POSH_VI_MODE \"vicmd\" }}\u276e{{ else }}\u276f{{ end }} ",
           "options": {
             "always_enabled": true
           }
@@ -115,9 +115,9 @@
         {
           "type": "vimode",
           "style": "plain",
-          "foreground": "p:bright-red",
+          "foreground": "transparent",
           "background": "transparent",
-          "template": "{{ if ne .Mode \"insert\"}}\ue62b{{ end }} "
+          "template": "{{ if false }}{{ end }}"
         }
       ]
     }
