@@ -83,14 +83,6 @@
       "newline": true,
       "segments": [
         {
-          "type": "vimode",
-          "style": "plain",
-          "foreground": "p:bright-green",
-          "background": "transparent",
-          "template": "{{ if ne .Mode \"insert\"}}\uf044{{ end }} ",
-          "powerline_symbol": "\ue0b0"
-        },
-        {
           "type": "shell",
           "style": "plain",
           "foreground": "p:bright-cyan",
@@ -119,6 +111,13 @@
           "options": {
             "always_enabled": true
           }
+        },
+        {
+          "type": "vimode",
+          "style": "plain",
+          "foreground": "p:bright-red",
+          "background": "transparent",
+          "template": "{{ if ne .Mode \"insert\"}}\ue62b{{ end }} "
         }
       ]
     }

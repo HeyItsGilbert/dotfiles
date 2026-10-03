@@ -98,6 +98,13 @@ if ($Host.UI.RawUI.KeyAvailable) {
 }
 #endregion
 
+# oh-my-posh wires its PSReadLine Vi-mode handler (POSH_VI_MODE, read by the
+# `vimode` segment) only if EditMode is already "Vi" when `oh-my-posh init
+# pwsh` runs inside Completions.ps1 below. Initialize-Profile also sets
+# EditMode, but it's invoked lazily from Switch-Prompt *after* Completions.ps1
+# has already loaded oh-my-posh — too late for its vi-mode handler setup.
+Set-PSReadLineOption -EditMode Vi
+
 ## Set the term_app for Shell Integration Script
 $global:term_app = $env:TERM_PROGRAM
 # Let's check if its Windows terminal thanks to...
