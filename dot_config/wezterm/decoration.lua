@@ -22,8 +22,13 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 	local foreground = "#808080"
 
 	if tab.is_active then
-		background = "#2b2042"
-		foreground = "#c0c0c0"
+		-- Blend into the tab-bar chrome (same color as edge_background /
+		-- window_frame.active_titlebar_bg / colors.tab_bar.background) so
+		-- the active tab has no pill outline -- only its brighter text
+		-- marks it, which stays legible even when the multiplexer's own
+		-- status line is wrong.
+		background = edge_background
+		foreground = "#ffffff"
 	elseif hover then
 		background = "#3b3052"
 		foreground = "#909090"
