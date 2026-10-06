@@ -236,10 +236,6 @@ keybindings:
   - commands: ["wm-redraw"]
     bindings: ["alt+shift+w"]
 
-  # Launch WezTerm.
-  - commands: ["shell-exec %ProgramFiles%/WezTerm/wezterm.exe"]
-    bindings: ["alt+enter"]
-
   # Focus the next/previous workspace defined in `workspaces` config.
   - commands: ["focus --next-workspace"]
     bindings: ["ctrl+alt+shift+right"]
