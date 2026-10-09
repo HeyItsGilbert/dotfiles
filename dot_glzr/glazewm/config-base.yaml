@@ -133,6 +133,8 @@ window_rules:
       # Handy STT recording overlay (tauri label recording_overlay, title "Recording").
       # Ignore so glazeWM does not tile/center it; Handy forces HWND_TOPMOST itself.
       - window_process: { equals: "handy" }
+      # Keyviz keystroke overlay. Ignore so glazeWM does not tile/center it.
+      - window_process: { equals: "keyviz" }
       - window_process: { regex: "*PowerToys*" }
       # work:ignore_rules
   - commands: ["set-floating"]
