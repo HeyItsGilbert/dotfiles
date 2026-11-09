@@ -45,8 +45,16 @@ if ($global:Prompts) { $global:Prompts.Starship = $function:prompt }
 if (Get-Command oh-my-posh -ErrorAction SilentlyContinue) {
   # --print emits the full module (sync). Default init installs an async
   # trampoline whose first prompt() call returns nothing — blank first line.
-  $ompInit = oh-my-posh init pwsh --print --config ([IO.Path]::Combine($ConfigHome, 'oh-my-posh', 'config.omp.json')) | Out-String
-  Invoke-Expression $ompInit
+  # Cached like starship/chezmoi/gh above: avoids spawning oh-my-posh.exe
+  # (child process + init computation) on every interactive shell start.
+  $cacheFile = Invoke-CachedCompletion -Tool 'oh-my-posh' -Arguments @('init', 'pwsh', '--print', '--config', ([IO.Path]::Combine($ConfigHome, 'oh-my-posh', 'config.omp.json')))
+  if ($cacheFile) {
+    . $cacheFile
+    # The cached script freezes the POSH_SESSION_ID generated when the cache
+    # was built. oh-my-posh.exe reads this env var at prompt-render time, so
+    # reusing a stale ID would make every shell share one session's state.
+    $env:POSH_SESSION_ID = [guid]::NewGuid().ToString()
+  }
 }
 
 if (Get-Command gsudo -ErrorAction SilentlyContinue) {
