@@ -219,8 +219,15 @@ function Switch-Prompt {
   }
 
   # Shell integration emits terminal-specific escape sequences. Only configure
-  # it when the detected terminal has a supported protocol.
-  if (-not $NoShellIntegration -and $global:term_app -in @('WindowsTerminal', 'ITerm2', 'WezTerm', 'vscode', 'herdr')) {
+  # it when the detected terminal has a supported protocol. oh-my-posh config
+  # (dot_config/oh-my-posh/config.omp.json) sets "shell_integration": true, so
+  # its own prompt function already emits OSC 133 FTCS marks (Enable-KeyHandlers
+  # sets $global:_ompFTCSMarks = $true). Wrapping it again here double-emits
+  # OSC 133 A/D per prompt, which confuses WezTerm's prompt-zone tracking into
+  # an infinite reprint loop (confirmed by bisection: skipping only this wrap
+  # while leaving oh-my-posh's native integration on stops the loop). Only
+  # prompts without native integration (Simple, OldPrompt, Starship) need it.
+  if (-not $NoShellIntegration -and $Prompt -ne 'OhMyPosh' -and $global:term_app -in @('WindowsTerminal', 'ITerm2', 'WezTerm', 'vscode', 'herdr')) {
     Set-ShellIntegration -TerminalProgram $global:term_app -NoOriginalReset
   }
 }
