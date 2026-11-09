@@ -178,6 +178,16 @@
         }
       ],
       "resizable": false
+    },
+    {
+      "id": "b5521f974ba02b4426a165f941002a890",
+      "type": "block",
+      "content": {
+        "mod": "wayfinder"
+      },
+      "size": {
+        "px": 320
+      }
     }
   ],
   "background": "canvas",
