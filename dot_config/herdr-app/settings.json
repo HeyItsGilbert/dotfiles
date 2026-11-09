@@ -1,0 +1,12 @@
+{
+  "zoom": 1.0,
+  "sounds": {
+    "enabled": true
+  },
+  "font": "FiraCode Nerd Font Propo",
+  "font_size": 10.0,
+  "font_ligatures": true,
+  "telemetry": false,
+  "minimum_contrast": 1.0,
+  "appearance": "dark"
+}
