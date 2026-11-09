@@ -11,6 +11,17 @@ function find(node, id) {
   return null;
 }
 
+// Finds a block by its mod, not id: the wayfinder panel's id is layout-generated and
+// may change under a clone/reset, but its `content.mod` won't.
+function findMod(node, mod) {
+  if (node?.content?.mod === mod) return node;
+  for (const child of node?.children ?? []) {
+    const found = findMod(child, mod);
+    if (found) return found;
+  }
+  return null;
+}
+
 export default class Tabs extends View {
   init() {
     this.pressed = null;
@@ -76,7 +87,7 @@ export default class Tabs extends View {
     const lightsPadding = w?.platform === "macos" && w.titlebar === "none" && !w.fullscreen && root?.traffic_lights
       ? Math.max(10, (root.traffic_lights[0] + 64) / settings().zoom - (sidebar?.hidden ? 0 : sidebar?.size?.px ?? 0))
       : 10;
-    const panel = find(root, "panel"), body = find(root, "panel-body");
+    const panel = find(root, "panel"), body = find(root, "panel-body"), wayfinder = findMod(root, "wayfinder");
     const enabled = shared("workspace.panels") ?? ["files", "changes"];
     this.syncPanel(space, panel, body, enabled);
     const panelButton = (id, label, icon) => {
@@ -89,6 +100,12 @@ export default class Tabs extends View {
           else { run("layout.select", { stack: "panel-body", child: id }); run("layout.show", { id: "panel" }); }
         }).child(svg(icon).size(14)).child(label);
     };
+    const wayfinderOn = wayfinder && !wayfinder.hidden;
+    const wayfinderButton = h_flex().id("wayfinder-toggle").h(26).px(8).gap(5).flex_none().items_center().rounded(6)
+      .text_size(12).bg(wayfinderOn ? t.selected : t.chrome).text_color(wayfinderOn ? t.foreground : t.muted)
+      .hover(s => s.bg(t.hover)).on_mouse_down("left", stop)
+      .on_click(() => run("layout.toggle", { id: wayfinder.id }))
+      .child(svg("mods/wayfinder/map.svg").size(14)).child("Wayfinder");
     return h_flex().size_full().min_w(0).px(10).pl(lightsPadding).gap(3).items_center().bg(t.chrome).border_b(1).border_color(t.border)
       .on_mouse_up("left", () => { this.pressed = null; })
       .on_scroll_wheel(e => { if (Math.abs(e.delta.y) >= 1) run(e.delta.y > 0 ? "tab.prev" : "tab.next"); })
@@ -97,6 +114,7 @@ export default class Tabs extends View {
       .when(enabled.includes("files"), el => el.child(panelButton("files", "Files", "mods/files/file.svg")))
       .when(enabled.includes("changes"), el => el.child(panelButton("changes", "Changes", "mods/changes/changes.svg")))
       .when(enabled.includes("ci"), el => el.child(panelButton("ci", "CI", "mods/ci-dash/ci.svg")))
+      .when(wayfinder, el => el.child(wayfinderButton))
       .when(w?.buttons, el => el.child(button("minimize", w.platform === "windows" ? svg("mods/tabs-ci/win-min.svg").size(16) : "−", () => run("window.minimize")))
         .child(button("maximize", w.platform === "windows" ? svg(`mods/tabs-ci/${w.maximized ? "win-restore" : "win-max"}.svg`).size(16) : "□", () => run("window.maximize")))
         .child(button("close-window", w.platform === "windows" ? svg("mods/tabs-ci/win-close.svg").size(16) : svg("mods/pane/close.svg").size(13), () => run("window.close"))));

@@ -1,12 +1,13 @@
 {
-  "zoom": 1.0,
+  "zoom": 1,
   "sounds": {
     "enabled": true
   },
   "font": "FiraCode Nerd Font Propo",
-  "font_size": 10.0,
+  "font_size": 10,
   "font_ligatures": true,
   "telemetry": false,
-  "minimum_contrast": 1.0,
-  "appearance": "dark"
+  "minimum_contrast": 1,
+  "appearance": "dark",
+  "ui_font": "GeistMono Nerd Font"
 }

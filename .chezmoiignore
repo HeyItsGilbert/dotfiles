@@ -26,6 +26,8 @@ AppData/Roaming/herdr/config.toml
 .config/herdr-app/herdr.d.ts
 .config/herdr-app/herdr-app.sock
 .config/herdr-app/icons
+.config/herdr-app/mods/*/.cache
+.config/herdr-app/mods/*/gpui-kit.d.ts
 .config/herdr-app/installed.json
 .config/herdr-app/layouts/.state
 .config/herdr-app/seen.json
