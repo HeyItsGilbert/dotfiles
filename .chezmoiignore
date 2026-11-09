@@ -14,3 +14,25 @@ install.ps1
 {{- else }}
 AppData/Roaming/herdr/config.toml
 {{- end }}
+
+# herdr-app (desktop UI) rewrites these every start or as session/bookkeeping
+# state; never chezmoi-manage them. User config (settings.json, keys.json,
+# programs.json) and any custom layouts/mods/themes you author are added
+# explicitly with `chezmoi add` instead of adding the whole directory.
+.config/herdr-app/AGENTS.md
+.config/herdr-app/data
+.config/herdr-app/frame
+.config/herdr-app/gpui-kit.d.ts
+.config/herdr-app/herdr.d.ts
+.config/herdr-app/herdr-app.sock
+.config/herdr-app/icons
+.config/herdr-app/installed.json
+.config/herdr-app/layouts/.state
+.config/herdr-app/seen.json
+.config/herdr-app/shared.json
+.config/herdr-app/update-notes-cache.md
+.config/herdr-app/update-notes-media
+.config/herdr-app/update-notes.json
+.config/herdr-app/view.json
+.config/herdr-app/window.json
+.config/herdr-app/windows.json

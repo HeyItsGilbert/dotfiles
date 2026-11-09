@@ -1,0 +1,24 @@
+digraph {
+graph [rankdir=LR, bgcolor="transparent", pad=0.1, nodesep=0.12, ranksep=0.45];
+node [shape=box, fixedsize=true, style=invis, label="", width=2.3333333333333335];
+edge [color="#696a6d", arrowsize=0.6, penwidth=1.1];
+n0 [height=0.6388888888888888];
+n1 [height=0.8472222222222222];
+n2 [height=0.8472222222222222];
+n3 [height=0.8472222222222222];
+n4 [height=0.8472222222222222];
+n5 [height=0.8472222222222222];
+n6 [height=0.8472222222222222];
+n7 [height=0.8472222222222222];
+n8 [height=0.8472222222222222];
+n9 [height=0.8472222222222222];
+n10 [height=0.8472222222222222];
+n11 [height=0.8472222222222222];
+n12 [height=0.8472222222222222];
+n4 -> n5;
+n3 -> n5;
+n2 -> n6;
+n2 -> n7;
+n2 -> n8;
+n9 -> n12;
+}
