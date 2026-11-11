@@ -214,8 +214,11 @@ function Switch-Prompt {
 
   # oh-my-posh 30+ async trampoline returns nothing on first prompt() while the
   # module loads. Force that init before shell integration wraps the prompt.
+  # Only once per session: forcing it on every Switch-Prompt call pays the
+  # full render cost (process spawn + git/status segments) repeatedly.
   if ($Prompt -eq 'OhMyPosh' -and -not $global:_ompInitialized -and $global:Prompts.OhMyPosh) {
     $null = & $global:Prompts.OhMyPosh
+    $global:_ompInitialized = $true
   }
 
   # Shell integration emits terminal-specific escape sequences. Only configure

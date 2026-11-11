@@ -6,11 +6,16 @@ function Initialize-Profile {
   Write-Host "Initializing profile..." -ForegroundColor Cyan
   [Console]::OutputEncoding = [Console]::InputEncoding = $global:OutputEncoding = [System.Text.UTF8Encoding]::new()
   # Prompt
+  $motdCachePath = Join-Path $DataHome 'powershell\motd-last-shown.txt'
+  $motdShownToday = (Test-Path $motdCachePath) -and
+    ((Get-Item $motdCachePath).LastWriteTime.Date -eq [datetime]::Today)
   $modules = @{
     "AdvancedHistory" = @{
       skipWhen = $($PSVersionTable.PSEdition -ne 'Core')
     }
-    "Posh-Git" = @{}
+    # Posh-Git is lazy-loaded on first Get-GitStatus/Write-VcsStatus call
+    # (see GitTools.ps1) instead of imported eagerly here; saves ~1.1s on
+    # shells that never touch git tooling.
     "PSReadLine" = @{
       skipWhen = $($env:TERM_PROGRAM -eq 'vscode')
     }
@@ -20,7 +25,9 @@ function Initialize-Profile {
     "PSStyle" = @{
       skipWhen = $($PSVersionTable.PSEdition -eq 'Core')
     }
-    "PSMOTD" = @{}
+    "PSMOTD" = @{
+      skipWhen = $motdShownToday
+    }
   }
   foreach ($module in $modules.Keys) {
     if ($modules[$module].ContainsKey('skipWhen') -and $modules[$module]['skipWhen']) {

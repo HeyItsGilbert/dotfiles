@@ -134,19 +134,28 @@ if ([Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT -and (Test-Admin
 
 if (Get-Command 'oh-my-posh' -ErrorAction SilentlyContinue) {
   $global:Prompts.OhMyPosh = $function:prompt
+  # Switch-Prompt forces the oh-my-posh render itself (and sets
+  # $global:_ompInitialized) on this first call, avoiding a blank first
+  # prompt without rendering a second time here.
   Switch-Prompt -Prompt 'OhMyPosh'
-  # oh-my-posh 30+ installs an async trampoline that returns nothing on the first
-  # prompt() call while it loads the module. Force that init now (after PSReadLine
-  # is configured by Initialize-Profile) so the first interactive prompt isn't blank.
-  if (-not $global:_ompInitialized) {
-    $null = & $global:Prompts.OhMyPosh
-  }
 } else {
   Write-Host "Preparing interactive session for first use..." -ForegroundColor Cyan
   Switch-Prompt -Prompt 'OldPrompt'
 }
 
-if ([Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT -and (Get-Command Get-MOTD -ErrorAction SilentlyContinue)) { Get-MOTD }
+$motdCachePath = Join-Path $DataHome 'powershell\motd-last-shown.txt'
+$motdShownToday = (Test-Path $motdCachePath) -and
+  ((Get-Item $motdCachePath).LastWriteTime.Date -eq [datetime]::Today)
+# Checking $motdShownToday first matters: Get-Command Get-MOTD triggers
+# PowerShell module auto-loading (importing PSMOTD) just to resolve the
+# command, regardless of whether Initialize-Profile skipped importing it.
+# PSMOTD's own Get-MOTD costs 5+s on first call, so this must short-circuit
+# before ever referencing Get-Command/Get-MOTD.
+if (-not $motdShownToday -and [Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT -and (Get-Command Get-MOTD -ErrorAction SilentlyContinue)) {
+  Get-MOTD
+  New-Item -ItemType Directory -Force -Path (Split-Path $motdCachePath) | Out-Null
+  Set-Content -Path $motdCachePath -Value ([datetime]::Now.ToString('o')) -Force
+}
 
 # Load Cargo's environment when it is installed on this machine.
 $cargoEnvironment = Join-Path $HOME '.cargo/env.ps1'

@@ -4,6 +4,22 @@
 #-------------------------------------------------------------------------------
 
 #-------------------------------------------------------
+#region Lazy posh-git load
+# posh-git costs ~1.1s to import (8 internal files + a `git help -a` scan).
+# Loading it eagerly on every shell start costs that even when no posh-git
+# function is ever called. These shims import it on first real use only.
+#-------------------------------------------------------
+function global:Get-GitStatus {
+  Import-Module posh-git -Global
+  & "posh-git\Get-GitStatus" @args
+}
+function global:Write-VcsStatus {
+  Import-Module posh-git -Global
+  & "posh-git\Write-VcsStatus" @args
+}
+#endregion Lazy posh-git load
+
+#-------------------------------------------------------
 #region Private functions
 #-------------------------------------------------------
 function Get-RepoData {
