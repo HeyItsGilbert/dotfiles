@@ -63,8 +63,8 @@
   },
   "terminal": {
     "ctrl-backspace": "send:\u0017",
-    "ctrl-left": "send:\u001bb",
-    "ctrl-right": "send:\u001bf",
+    "ctrl-left": "send:\u001b[1;5D",
+    "ctrl-right": "send:\u001b[1;5C",
     "ctrl-shift-c": "terminal.copy",
     "ctrl-shift-v": "terminal.paste",
     "ctrl-shift-f": "terminal.search",

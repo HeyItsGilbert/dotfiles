@@ -41,6 +41,13 @@ foreach ($entry in @(
 if (Get-Command fnm -ErrorAction SilentlyContinue) {
     Invoke-Expression (& fnm env --use-on-cd --shell powershell | Out-String)
 }
+
+# git-wt shell init defines the wrapper function (parent-shell cd directive)
+# and registers clap completions. Not cached: the script resolves the binary
+# via Get-Command / $env:WORKTRUNK_BIN at eval time.
+if (Get-Command git-wt -ErrorAction SilentlyContinue) {
+    Invoke-Expression (& git-wt config shell init powershell | Out-String)
+}
 if ($global:Prompts) { $global:Prompts.Starship = $function:prompt }
 if (Get-Command oh-my-posh -ErrorAction SilentlyContinue) {
   # --print emits the full module (sync). Default init installs an async
