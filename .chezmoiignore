@@ -28,6 +28,8 @@ AppData/Roaming/herdr/config.toml
 .config/herdr-app/icons
 .config/herdr-app/mods/*/.cache
 .config/herdr-app/mods/*/gpui-kit.d.ts
+.config/herdr-app/mods/*/jsconfig.json
+.config/herdr-app/mods/*/*.error
 .config/herdr-app/installed.json
 .config/herdr-app/layouts/.state
 .config/herdr-app/seen.json
@@ -38,3 +40,8 @@ AppData/Roaming/herdr/config.toml
 .config/herdr-app/view.json
 .config/herdr-app/window.json
 .config/herdr-app/windows.json
+
+# Org-coupled mods (morning: Tesla OneDrive/Obsidian paths; wayfinder: Jira VMWA
+# bridge): local-only by choice, never sync to this public repo.
+.config/herdr-app/mods/morning
+.config/herdr-app/mods/wayfinder

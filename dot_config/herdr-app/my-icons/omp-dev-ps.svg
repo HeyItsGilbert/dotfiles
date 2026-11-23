@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="omp-dev-ps" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2671BE" />
+      <stop offset="0.55" stop-color="#32A0E0" />
+      <stop offset="1" stop-color="#4CC2FF" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="#0f0a14" />
+  <path fill="url(#omp-dev-ps)" d="M14 16h36v8H40v32h-8V24h-6v22h-8V24h-4z" />
+</svg>

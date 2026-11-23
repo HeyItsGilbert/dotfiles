@@ -29,7 +29,7 @@
               "id": "spaces",
               "type": "block",
               "content": {
-                "mod": "spaces"
+                "mod": "my-spaces"
               },
               "size": {
                 "weight": 1
@@ -40,7 +40,7 @@
               "id": "agents",
               "type": "block",
               "content": {
-                "mod": "agents"
+                "mod": "omp-agents"
               },
               "size": {
                 "weight": 1
@@ -79,7 +79,7 @@
           "id": "tabs",
           "type": "block",
           "content": {
-            "mod": "tabs-ci"
+            "mod": "tabs-ci-agents"
           },
           "size": {
             "px": 42
@@ -150,6 +150,13 @@
                           "panel": true
                         }
                       }
+                    },
+                    {
+                      "id": "wayfinder",
+                      "type": "block",
+                      "content": {
+                        "mod": "wayfinder"
+                      }
                     }
                   ],
                   "active": "files"
@@ -180,10 +187,10 @@
       "resizable": false
     },
     {
-      "id": "b5521f974ba02b4426a165f941002a890",
+      "id": "morning",
       "type": "block",
       "content": {
-        "mod": "wayfinder"
+        "mod": "morning"
       },
       "size": {
         "px": 320

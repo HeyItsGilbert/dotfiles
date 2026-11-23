@@ -1,0 +1,8 @@
+{
+  "place": "none",
+  "title": "Tabs",
+  "cloned_from": {
+    "name": "tabs-ci",
+    "version": "0.1.15"
+  }
+}

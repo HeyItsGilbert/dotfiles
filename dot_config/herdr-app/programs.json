@@ -1,0 +1,30 @@
+{
+  "programs": {
+    "omp": {
+      "name": "OMP",
+      "icon": "my-icons/omp.svg",
+      "tint": false,
+      "tile": "#1c1d21",
+      "color": "#ffffff",
+      "match": [
+        "omp.exe"
+      ],
+      "run": [
+        "omp"
+      ]
+    },
+    "omp-dev": {
+      "name": "omp-dev",
+      "icon": "my-icons/omp-dev-ps.svg",
+      "tint": false,
+      "tile": "#0f0a14",
+      "color": "#ffffff",
+      "match": [
+        "omp-dev.exe"
+      ],
+      "run": [
+        "omp-dev"
+      ]
+    }
+  }
+}
