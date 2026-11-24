@@ -41,7 +41,7 @@ AppData/Roaming/herdr/config.toml
 .config/herdr-app/window.json
 .config/herdr-app/windows.json
 
-# Org-coupled mods (morning: Tesla OneDrive/Obsidian paths; wayfinder: Jira VMWA
-# bridge): local-only by choice, never sync to this public repo.
+# Org-coupled mod (Tesla OneDrive/Obsidian data paths): local-only by choice, never
+# sync to this public repo. wayfinder used to be here: its work-specific values now live
+# in wayfinder.json at the tracker repo's root, so the mod itself syncs clean.
 .config/herdr-app/mods/morning
-.config/herdr-app/mods/wayfinder
